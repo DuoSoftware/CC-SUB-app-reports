@@ -1,0 +1,100 @@
+<div>
+  <a id="top"></a>
+  <toast></toast>
+  <!--<div class="header-wrap animated fadeIn" flex>-->
+    <!--<div class="report-main-wrap report-filter-header position-fixed">-->
+      <!--<div layout="row">-->
+        <!--<div layout="row" flex class="header-report-name">-->
+            <!--<h3>{{eventHandler.reportName}}</h3>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+
+  <!--&lt;!&ndash; #filed view &ndash;&gt;-->
+  <!--<div class="report-view-wrap" md-whiteframe="2dp">-->
+    <!--<div flex layout="row" class="left-wrap position-fixed">-->
+      <!--&lt;!&ndash;<div class="parameter-header" ng-show="reportLayout">&ndash;&gt;-->
+      <!--&lt;!&ndash;<small>Parameters</small>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+      <!--<div flex layout="row">-->
+
+        <!--<div ng-repeat="picker in reportFiledList.UIDate">-->
+          <!--<md-datepicker ng-model="reportFiledList.selectedDate[picker.fieldname]" flex md-placeholder="{{picker.label}}"></md-datepicker>-->
+          <!--&lt;!&ndash;<label>{{picker.label}}</label>&ndash;&gt;-->
+          <!--&lt;!&ndash;<input type="text" datepicker&ndash;&gt;-->
+          <!--&lt;!&ndash;class="form-control datep"&ndash;&gt;-->
+          <!--&lt;!&ndash;ng-model="reportFiledList.selectedDate[picker.fieldname]">&ndash;&gt;-->
+        <!--</div>-->
+      <!--</div>-->
+
+      <!--<div flex="10"></div>-->
+
+      <!--<div flex class="drop-down">-->
+        <!--<div layout="row" class="p-l-r-25 position-over" ng-repeat="dropDown in reportFiledList.UIDropDown"-->
+             <!--layout="column">-->
+          <!--<div flex="15" class="filed-loading" layout-align="center center"-->
+               <!--ng-class="dropDown.loader==true?'display-block':'display-none'">-->
+            <!--<svg class="spinner-container" width="20px" height="20px" viewBox="0 0 52 52">-->
+              <!--<circle class="path" cx="26px" cy="26px" r="20px" fill="none" stroke-width="4px"/>-->
+            <!--</svg>-->
+          <!--</div>-->
+          <!--<md-input-container flex class="report-dropdown">-->
+            <!--<label>Select {{dropDown.fieldname}}</label>-->
+            <!--<md-select ng-model="selectedVal"-->
+                       <!--id="{{dropDown.fieldname}}"-->
+                       <!--ng-change="onChangeSelected(selectedVal,dropDown.fieldname)">-->
+              <!--<md-option value="{{filed}}"-->
+                         <!--ng-repeat="filed in  dropDown.data track by filed">-->
+                <!--{{filed}}-->
+              <!--</md-option>-->
+            <!--</md-select>-->
+          <!--</md-input-container>-->
+
+        <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="report-btn-wrap" flex="32">-->
+        <!--<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>-->
+          <!--<div>-->
+            <!--<md-button ng-disabled="reportFldLoading || ! reportLayout" ng-click="onClickRefresh()" class="md-primary btn-case ">Clear-->
+            <!--</md-button>-->
+          <!--</div>-->
+          <!--<div flex>-->
+            <!--<md-button ng-disabled="reportFldLoading" class="md-raised btn-case" ng-click="onCreateReport()">-->
+              <!--Genarate Report-->
+            <!--</md-button>-->
+          <!--</div>-->
+        <!--</section>-->
+      <!--</div>-->
+
+    <!--</div>-->
+  <!--</div>-->
+
+  <div layout="row" flex style="width: 100%;">
+    <div class="report" id="report">
+      <div class="report-loading" layout-align="center center"
+           ng-if="reportFldLoading">
+        <div class="loader more"></div>
+      </div>
+      <iframe frameborder='0' src="{{reportURL}}"
+              frameborder="0"
+              id="reportFram"
+              marginwidth="0"
+              marginheight="0"
+              height="{{iframeHeight}}"
+              onload=""
+              allowfullscreen>
+      </iframe>
+
+    </div>
+  </div>
+  <!--<div class="fab-go-up">-->
+    <!--<md-button id="scrollToTop"-->
+               <!--ng-click="goToTop()"-->
+               <!--class="md-fab up-btn scrollToTo">-->
+      <!--<i class="fa fa-arrow-up"></i>-->
+    <!--</md-button>-->
+  <!--</div>-->
+</div>
