@@ -67,8 +67,10 @@
         vm.reportCategorySwitchState = 'default';
         vm.sidenavActiveState = '';
         vm.toggleinnerView = toggleinnerView;
+        vm.maximizeReport = maximizeReport;
 
       vm.loadByKeyword = $scope.loadByKeywordPayment;
+		vm.showSidenav = true;
 
         //////////
 
@@ -89,6 +91,11 @@
         {
             vm.dynamicHeight = current;
         });
+
+        $scope.$watch(function () {
+        	var containerHeight = document.getElementsByClassName('content-wrapper');
+			containerHeight.length != 0 ? $scope.iframeHeight=containerHeight[0].scrollHeight - 5 : null
+		});
 
         /**
          * Select product
@@ -116,23 +123,22 @@
 
       function selectReport(report)
         {
-            vm.selectedReport = report;
 
             $scope.showFinanceReport=false;
             $scope.showTenantDetailReport=false;
             $scope.showAppUsageReport=false;
-            $scope.iframeHeight=screen.height;
+            // $scope.iframeHeight=screen.height;
 
-            $timeout(function ()
-            {
-                vm.activeInvoicePaneIndex = 1;
-
-                // Store the current scrollPos
-                vm.scrollPos = vm.scrollEl.scrollTop();
-
-                // Scroll to the top
-                vm.scrollEl.scrollTop(0);
-            });
+            // $timeout(function ()
+            // {
+            //     vm.activeInvoicePaneIndex = 1;
+			//
+            //     // Store the current scrollPos
+            //     vm.scrollPos = vm.scrollEl.scrollTop();
+			//
+            //     // Scroll to the top
+            //     vm.scrollEl.scrollTop(0);
+            // });
         }
 
         /**
@@ -308,10 +314,11 @@
 
       $scope.loadFilterCategories= function (category) {
         //$scope.reportCategory=category;
-        $timeout(function ()
-        {
-          vm.activeInvoicePaneIndex = 0;
-        });
+        // $timeout(function ()
+        // {
+        //   vm.activeInvoicePaneIndex = 0;
+        // });
+		  vm.selectedReport = category;
 
         var reportURL1="http://azure.cloudcharge.com/services/reports/stimulsoft/index.php?stimulsoft_client_key=ViewerFx";
         var reportURL2="&stimulsoft_report_key="+category;
@@ -422,7 +429,7 @@
       var reportNme;
       $scope.clickGoToFilter = function (reportName) {
         //$state.go('reportFilter', {'reportNme': reportName});
-        angular.element('.sidenav').hide();
+        // angular.element('.sidenav').hide();
 
         reportNme=reportName;
         $location.hash('top');
@@ -436,16 +443,14 @@
         //onClickRefresh();
         privateFun.clearAllUI();
 
-        $timeout(function ()
-        {
-          vm.activeInvoicePaneIndex = 1;
-
-          // Store the current scrollPos
-          vm.scrollPos = vm.scrollEl.scrollTop();
-
-          // Scroll to the top
-          vm.scrollEl.scrollTop(0);
-        });
+        // $timeout(function ()
+        // {
+        //   // Store the current scrollPos
+        //   vm.scrollPos = vm.scrollEl.scrollTop();
+		//
+        //   // Scroll to the top
+        //   vm.scrollEl.scrollTop(0);
+        // });
         //selectReport('');
       };
 
@@ -513,16 +518,16 @@
         //onClickRefresh();
         privateFun.clearAllUI();
 
-        $timeout(function ()
-        {
-          vm.activeInvoicePaneIndex = 1;
-
-          // Store the current scrollPos
-          vm.scrollPos = vm.scrollEl.scrollTop();
-
-          // Scroll to the top
-          vm.scrollEl.scrollTop(0);
-        });
+        // $timeout(function ()
+        // {
+        //   vm.activeInvoicePaneIndex = 1;
+		//
+        //   // Store the current scrollPos
+        //   vm.scrollPos = vm.scrollEl.scrollTop();
+		//
+        //   // Scroll to the top
+        //   vm.scrollEl.scrollTop(0);
+        // });
       }
 
       var from="";
@@ -748,16 +753,16 @@
         //onClickRefresh();
         privateFun.clearAllUI();
 
-        $timeout(function ()
-        {
-          vm.activeInvoicePaneIndex = 1;
-
-          // Store the current scrollPos
-          vm.scrollPos = vm.scrollEl.scrollTop();
-
-          // Scroll to the top
-          vm.scrollEl.scrollTop(0);
-        });
+        // $timeout(function ()
+        // {
+        //   vm.activeInvoicePaneIndex = 1;
+		//
+        //   // Store the current scrollPos
+        //   vm.scrollPos = vm.scrollEl.scrollTop();
+		//
+        //   // Scroll to the top
+        //   vm.scrollEl.scrollTop(0);
+        // });
       }
 
       $scope.applyTenantDetailFilter = function () {
@@ -1265,6 +1270,10 @@
 
       //Initialize DashBoard Report to Start
       $scope.loadFilterCategories('dashBoardReport.mrt');
+
+      function maximizeReport(action) {
+		  action ? vm.showSidenav = false : vm.showSidenav = true
+	  }
 
 
 //#server request

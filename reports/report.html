@@ -5,8 +5,9 @@
   <!-- / TOP BACKGROUND -->
 
   <!-- SIDENAV -->
-  <md-sidenav class="sidenav" md-is-locked-open="$mdMedia('gt-md')" md-component-id="main-sidenav"
-              ng-include="'app/main/reports/sidenavs/main/main-sidenav.html'" ms-scroll ms-sidenav-helper>
+  <md-sidenav class="sidenav animate-slide-left" md-is-locked-open="$mdMedia('gt-md')" md-component-id="main-sidenav"
+              ng-include="'app/main/reports/sidenavs/main/main-sidenav.html'"
+              ng-if="vm.showSidenav" ms-scroll ms-sidenav-helper>
   </md-sidenav>
   <!-- / SIDENAV -->
 
@@ -19,18 +20,30 @@
     <div class="content-card" layout="column" flex>
 
       <!-- INVOICE VIEW PANE TOOLBAR -->
-      <div class="toolbar" layout-align="space-between center" ng-if="vm.activeInvoicePaneIndex === 1" md-whiteframe="1dp">
-        <div layout="row">
+      <div class="toolbar" md-whiteframe="1dp">
+        <div layout="row" layout-align="end center" class="tools-row" flex>
           <!-- INVOICE VIEW PANE TOOLBAR -->
-            <md-button ng-if="vm.activeInvoicePaneIndex === 1" class="md-icon-button"
-                       ng-click="vm.closeReadPane()"
+            <!--<md-button class="md-icon-button"-->
+                       <!--ng-click="vm.closeReadPane()"-->
+                       <!--aria-label="Back">-->
+              <!--<md-icon md-font-icon="icon-keyboard-backspace"></md-icon>-->
+            <!--</md-button>-->
+            <md-button class="md-icon-button"
+                       ng-click="vm.maximizeReport(true)"
+                       ng-if="vm.showSidenav"
                        aria-label="Back">
-              <md-icon md-font-icon="icon-keyboard-backspace"></md-icon>
+                <md-icon md-font-icon="icon-fullscreen"></md-icon>
+            </md-button>
+            <md-button class="md-icon-button"
+                       ng-click="vm.maximizeReport(false)"
+                       ng-if="!vm.showSidenav"
+                       aria-label="Back">
+                <md-icon md-font-icon="icon-fullscreen-exit"></md-icon>
             </md-button>
           <!-- / INVOICE VIEW PANE TOOLBAR -->
-          <div layout="row" layout-align="center center" flex>
-            <h2 class="report-heading">{{eventHandler.reportName}}</h2>
-          </div>
+          <!--<div layout="row" layout-align="center center" flex>-->
+            <!--<h2 class="report-heading">{{eventHandler.reportName}}</h2>-->
+          <!--</div>-->
 
           <!--<div class="actions">-->
             <!--<md-menu>-->
@@ -50,87 +63,86 @@
             <!--</md-menu>-->
           <!--</div>-->
         </div>
-        <md-divider></md-divider>
-        <div layout="row" flex>
-          <!-- #filed view -->
-          <div class="report-view-wrap" flex>
-            <div flex layout="row" class="left-wrap position-fixed" ng-hide="showFinanceReport||showTenantDetailReport||showAppUsageReport">
-              <!--<div class="parameter-header" ng-show="reportLayout">-->
-              <!--<small>Parameters</small>-->
+        <!--<div layout="row" flex>-->
+          <!--&lt;!&ndash; #filed view &ndash;&gt;-->
+          <!--<div class="report-view-wrap" flex>-->
+            <!--<div flex layout="row" class="left-wrap position-fixed" ng-hide="showFinanceReport||showTenantDetailReport||showAppUsageReport">-->
+              <!--&lt;!&ndash;<div class="parameter-header" ng-show="reportLayout">&ndash;&gt;-->
+              <!--&lt;!&ndash;<small>Parameters</small>&ndash;&gt;-->
+              <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+              <!--<div flex layout="row">-->
+
+                <!--<div ng-repeat="picker in reportFiledList.UIDate" style="margin-right: 20px">-->
+                  <!--&lt;!&ndash;<md-datepicker ng-model="reportFiledList.selectedDate[picker.fieldname]" flex md-placeholder="{{picker.label}}"></md-datepicker>&ndash;&gt;-->
+
+                  <!--&lt;!&ndash;<md-input-container class="report-dropdown" flex-gt-sm>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<label>{{picker.label}}</label>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<input minlength="null" md-maxlength="null" type="date" name="date_of_birth" ng-pattern="" ng-model="reportFiledList.selectedDate[picker.fieldname]">&ndash;&gt;-->
+                  <!--&lt;!&ndash;</md-input-container>&ndash;&gt;-->
+
+                    <!--&lt;!&ndash;<label>{{picker.label}}</label>&ndash;&gt;-->
+                  <!--<div layout="row" layout-align="center center">-->
+                    <!--<md-icon md-font-icon="icon-calendar" style="margin-right: 10px;margin-bottom: 0px"></md-icon>-->
+                    <!--<md-input-container class="report-dropdown" flex-gt-sm>-->
+                      <!--<datepicker date-format="yyyy-MM-dd" button-prev="<md-icon md-font-icon='icon-chevron-left' style='color:rgba(255,255,255,0.8)'></md-icon>" button-next="<md-icon md-font-icon='icon-chevron-right' style='color:rgba(255,255,255,0.8)'></md-icon>" layout="row" layout-align="center center">-->
+                        <!--<input ng-model="reportFiledList.selectedDate[picker.fieldname]" type="text" placeholder="{{picker.label}}"/>-->
+                      <!--</datepicker>-->
+                    <!--</md-input-container>-->
+                  <!--</div>-->
+
+                  <!--&lt;!&ndash;<input type="text" class="datepicker" datepicker&ndash;&gt;-->
+                  <!--&lt;!&ndash;ng-model="reportFiledList.selectedDate[picker.fieldname]"/>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<label>{{picker.label}}</label>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<input type="text" datepicker&ndash;&gt;-->
+                  <!--&lt;!&ndash;class="form-control datep"&ndash;&gt;-->
+                  <!--&lt;!&ndash;ng-model="reportFiledList.selectedDate[picker.fieldname]">&ndash;&gt;-->
+                <!--</div>-->
               <!--</div>-->
 
-              <div flex layout="row">
+              <!--<div flex="10"></div>-->
 
-                <div ng-repeat="picker in reportFiledList.UIDate" style="margin-right: 20px">
-                  <!--<md-datepicker ng-model="reportFiledList.selectedDate[picker.fieldname]" flex md-placeholder="{{picker.label}}"></md-datepicker>-->
-
-                  <!--<md-input-container class="report-dropdown" flex-gt-sm>-->
-                    <!--<label>{{picker.label}}</label>-->
-                    <!--<input minlength="null" md-maxlength="null" type="date" name="date_of_birth" ng-pattern="" ng-model="reportFiledList.selectedDate[picker.fieldname]">-->
+              <!--<div flex class="drop-down" layout="row">-->
+                <!--<div layout="row" class="p-l-r-25 position-over" ng-repeat="dropDown in reportFiledList.UIDropDown" flex>-->
+                  <!--<div flex="15" class="filed-loading" layout-align="center center"-->
+                       <!--ng-class="dropDown.loader==true?'display-block':'display-none'">-->
+                    <!--<svg class="spinner-container" width="20px" height="20px" viewBox="0 0 52 52">-->
+                      <!--<circle class="path" cx="26px" cy="26px" r="20px" fill="none" stroke-width="4px"/>-->
+                    <!--</svg>-->
+                  <!--</div>-->
+                  <!--<md-input-container flex class="report-dropdown">-->
+                    <!--<label>Select {{dropDown.fieldname}}</label>-->
+                    <!--<md-select ng-model="dropDown.selectedVal"-->
+                               <!--id="{{dropDown.fieldname}}"-->
+                               <!--ng-change="onChangeSelected(dropDown.selectedVal,dropDown.fieldname)">-->
+                      <!--<md-option value="{{filed}}"-->
+                                 <!--ng-repeat="filed in  dropDown.data track by filed">-->
+                        <!--{{filed}}-->
+                      <!--</md-option>-->
+                    <!--</md-select>-->
                   <!--</md-input-container>-->
 
-                    <!--<label>{{picker.label}}</label>-->
-                  <div layout="row" layout-align="center center">
-                    <md-icon md-font-icon="icon-calendar" style="margin-right: 10px;margin-bottom: 0px"></md-icon>
-                    <md-input-container class="report-dropdown" flex-gt-sm>
-                      <datepicker date-format="yyyy-MM-dd" button-prev="<md-icon md-font-icon='icon-chevron-left' style='color:rgba(255,255,255,0.8)'></md-icon>" button-next="<md-icon md-font-icon='icon-chevron-right' style='color:rgba(255,255,255,0.8)'></md-icon>" layout="row" layout-align="center center">
-                        <input ng-model="reportFiledList.selectedDate[picker.fieldname]" type="text" placeholder="{{picker.label}}"/>
-                      </datepicker>
-                    </md-input-container>
-                  </div>
-
-                  <!--<input type="text" class="datepicker" datepicker-->
-                  <!--ng-model="reportFiledList.selectedDate[picker.fieldname]"/>-->
-                  <!--<label>{{picker.label}}</label>-->
-                  <!--<input type="text" datepicker-->
-                  <!--class="form-control datep"-->
-                  <!--ng-model="reportFiledList.selectedDate[picker.fieldname]">-->
-                </div>
-              </div>
-
-              <div flex="10"></div>
-
-              <div flex class="drop-down" layout="row">
-                <div layout="row" class="p-l-r-25 position-over" ng-repeat="dropDown in reportFiledList.UIDropDown" flex>
-                  <div flex="15" class="filed-loading" layout-align="center center"
-                       ng-class="dropDown.loader==true?'display-block':'display-none'">
-                    <svg class="spinner-container" width="20px" height="20px" viewBox="0 0 52 52">
-                      <circle class="path" cx="26px" cy="26px" r="20px" fill="none" stroke-width="4px"/>
-                    </svg>
-                  </div>
-                  <md-input-container flex class="report-dropdown">
-                    <label>Select {{dropDown.fieldname}}</label>
-                    <md-select ng-model="dropDown.selectedVal"
-                               id="{{dropDown.fieldname}}"
-                               ng-change="onChangeSelected(dropDown.selectedVal,dropDown.fieldname)">
-                      <md-option value="{{filed}}"
-                                 ng-repeat="filed in  dropDown.data track by filed">
-                        {{filed}}
-                      </md-option>
-                    </md-select>
-                  </md-input-container>
-
-                </div>
-              </div>
-
-              <!--<div class="report-btn-wrap" flex="32">-->
-                <!--<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>-->
-                  <!--<div>-->
-                    <!--<md-button ng-disabled="reportFldLoading || ! reportLayout" ng-click="onClickRefresh()" class="md-primary btn-case ">Clear-->
-                    <!--</md-button>-->
-                  <!--</div>-->
-                  <!--<div flex>-->
-                    <!--<md-button ng-disabled="reportFldLoading" class="md-raised md-accent btn-case" ng-click="onCreateReport()">-->
-                      <!--Generate Report-->
-                    <!--</md-button>-->
-                  <!--</div>-->
-                <!--</section>-->
+                <!--</div>-->
               <!--</div>-->
 
-            </div>
+              <!--&lt;!&ndash;<div class="report-btn-wrap" flex="32">&ndash;&gt;-->
+                <!--&lt;!&ndash;<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<md-button ng-disabled="reportFldLoading || ! reportLayout" ng-click="onClickRefresh()" class="md-primary btn-case ">Clear&ndash;&gt;-->
+                    <!--&lt;!&ndash;</md-button>&ndash;&gt;-->
+                  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<div flex>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<md-button ng-disabled="reportFldLoading" class="md-raised md-accent btn-case" ng-click="onCreateReport()">&ndash;&gt;-->
+                      <!--&lt;!&ndash;Generate Report&ndash;&gt;-->
+                    <!--&lt;!&ndash;</md-button>&ndash;&gt;-->
+                  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</section>&ndash;&gt;-->
+              <!--&lt;!&ndash;</div>&ndash;&gt;-->
 
-          </div>
-        </div>
+            <!--</div>-->
+
+          <!--</div>-->
+        <!--</div>-->
 
       </div>
       <!-- / INVOICE VIEW PANE TOOLBAR -->
@@ -138,13 +150,13 @@
       <!-- CONTENT WRAPPER -->
       <div class="content-wrapper" layout="row" flex>
 
-        <md-tabs md-selected="vm.activeInvoicePaneIndex" class="invoice-tabs" md-dynamic-height="{{vm.dynamicHeight}}" flex>
+        <md-tabs md-selected="vm.activeInvoicePaneIndex" class="content-tabs" md-dynamic-height="{{vm.dynamicHeight}}" flex>
           <!-- INVOICE LIST PANE -->
           <md-tab>
             <md-tab-label>Report List Pane</md-tab-label>
             <md-tab-body>
               <div class="content invoice-list-pane"
-                   ng-include="'app/main/reports/views/list/list-view.html'" ms-scroll>
+                   ng-include="'app/main/reports/views/list/list-view.html'">
               </div>
             </md-tab-body>
           </md-tab>
@@ -167,18 +179,6 @@
 
     </div>
     <!-- / CONTENT CARD -->
-  </div>
-
-  <!-- / CENTER -->
-
-  <!-- CENTER -->
-  <div ng-switch-when="add" class="center" layout="column" flex>
-    <!-- CONTENT HEADER -->
-    <div class="header" layout="row" layout-align="start center">
-
-    </div>
-    <!-- / CONTENT HEADER -->
-
   </div>
 
   <!-- / CENTER -->
