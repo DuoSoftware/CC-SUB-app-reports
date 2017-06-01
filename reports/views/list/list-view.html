@@ -1,57 +1,69 @@
 <div>
+    <toast></toast>
 
-  <div id="top" class="header-wrap animated fadeIn" flex>
+    <iframe fill-width
+            frameborder='0' src="{{reportURL}}"
+            frameborder="0"
+            id="reportFram"
+            marginwidth="0"
+            marginheight="0"
+            height="{{iframeHeight}}"
+            onload=""
+            allowfullscreen>
+    </iframe>
 
-    <!--<div layout="row" ng-show="isReportLoading==false">-->
-      <!--<div flex="20"></div>-->
-      <!--<md-input-container class="md-block" flex-gt-sm>-->
-        <!--<label>Search Reports here..</label>-->
-        <!--<input ng-model="searchReport">-->
-      <!--</md-input-container>-->
-      <!--<div flex="20"></div>-->
-    <!--</div>-->
+  <!--<div id="top" class="header-wrap animated fadeIn" flex>-->
 
-    <!--<div layout="row">-->
-      <!--<div flex="45"></div>-->
-      <!--<div class="header-btn-wrap" flex="10">-->
-        <!--<md-button ng-click="refresh()" class="md-raised md-search-btn btn-case">Refresh</md-button>-->
-      <!--</div>-->
-      <!--<div flex="45"></div>-->
-    <!--</div>-->
+    <!--&lt;!&ndash;<div layout="row" ng-show="isReportLoading==false">&ndash;&gt;-->
+      <!--&lt;!&ndash;<div flex="20"></div>&ndash;&gt;-->
+      <!--&lt;!&ndash;<md-input-container class="md-block" flex-gt-sm>&ndash;&gt;-->
+        <!--&lt;!&ndash;<label>Search Reports here..</label>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input ng-model="searchReport">&ndash;&gt;-->
+      <!--&lt;!&ndash;</md-input-container>&ndash;&gt;-->
+      <!--&lt;!&ndash;<div flex="20"></div>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
 
-    <div class="navigation-simple" layout="column">
-      <!--<div class="item subheader">General</div>-->
-      <!--<h3 style="font-size: 16px;color: #999;font-weight: 500;padding-left: 10px">Select your report</h3>-->
-      <md-button class="item" aria-label="inbox" ng-repeat="report in reports | filter : reportCategory | filter :vm.search" ng-mouseover = "tooltip = true" ng-mouseleave = "tooltip = false"  ng-click="clickGoToFilter(report)" ng-hide="reportCategory=='Finance'||reportCategory=='Tenant'" ng-class="{'sidenav-active': vm.sidenavActiveState == report}">
-        <div layout="row" layout-align="start center">
-          <md-icon md-font-icon="icon-document" class="s16 report-doc-ico"></md-icon>
-          <!--<span class="title">{{ report }}</span>-->
-          <a class="title">{{ report }}</a>
-        </div>
-        <!--<md-tooltip md-direction = "bottom">{{report}}</md-tooltip>-->
-      </md-button>
+    <!--&lt;!&ndash;<div layout="row">&ndash;&gt;-->
+      <!--&lt;!&ndash;<div flex="45"></div>&ndash;&gt;-->
+      <!--&lt;!&ndash;<div class="header-btn-wrap" flex="10">&ndash;&gt;-->
+        <!--&lt;!&ndash;<md-button ng-click="refresh()" class="md-raised md-search-btn btn-case">Refresh</md-button>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;<div flex="45"></div>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
 
-      <md-button class="item" aria-label="inbox" ng-repeat="report in companyReportList | filter :vm.search" ng-mouseover = "tooltip = true" ng-mouseleave = "tooltip = false"  ng-click="clickGoToComapny(report.type)" ng-show="reportCategory=='Finance'" ng-class="{'sidenav-active': vm.sidenavActiveState == report}">
-        <div layout="row" layout-align="start center">
-          <md-icon md-font-icon="icon-document" class="s16 report-doc-ico"></md-icon>
-          <!--<span class="title">{{ report }}</span>-->
-          <a class="title">{{ report.company }}</a>
-        </div>
-        <!--<md-tooltip md-direction = "bottom">{{report}}</md-tooltip>-->
-      </md-button>
+    <!--&lt;!&ndash;<div class="navigation-simple" layout="column">&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;<div class="item subheader">General</div>&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;<h3 style="font-size: 16px;color: #999;font-weight: 500;padding-left: 10px">Select your report</h3>&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;<md-button class="item" aria-label="inbox" ng-repeat="report in reports | filter : reportCategory | filter :vm.search" ng-mouseover = "tooltip = true" ng-mouseleave = "tooltip = false"  ng-click="clickGoToFilter(report)" ng-hide="reportCategory=='Finance'||reportCategory=='Tenant'" ng-class="{'sidenav-active': vm.sidenavActiveState == report}">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div layout="row" layout-align="start center">&ndash;&gt;-->
+          <!--&lt;!&ndash;<md-icon md-font-icon="icon-document" class="s16 report-doc-ico"></md-icon>&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;<span class="title">{{ report }}</span>&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;<a class="title">{{ report }}</a>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<md-tooltip md-direction = "bottom">{{report}}</md-tooltip>&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;</md-button>&ndash;&gt;-->
 
-      <md-button class="item" aria-label="inbox" ng-repeat="report in tenantReportList | filter :vm.search" ng-mouseover = "tooltip = true" ng-mouseleave = "tooltip = false"  ng-click="clickGoToTenantDetails(report.type)" ng-show="reportCategory=='Tenant'" ng-class="{'sidenav-active': vm.sidenavActiveState == report}">
-        <div layout="row" layout-align="start center">
-          <md-icon md-font-icon="icon-document" class="s16 report-doc-ico"></md-icon>
-          <!--<span class="title">{{ report }}</span>-->
-          <a class="title">{{ report.name }}</a>
-        </div>
-        <!--<md-tooltip md-direction = "bottom">{{report}}</md-tooltip>-->
-      </md-button>
+      <!--&lt;!&ndash;<md-button class="item" aria-label="inbox" ng-repeat="report in companyReportList | filter :vm.search" ng-mouseover = "tooltip = true" ng-mouseleave = "tooltip = false"  ng-click="clickGoToComapny(report.type)" ng-show="reportCategory=='Finance'" ng-class="{'sidenav-active': vm.sidenavActiveState == report}">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div layout="row" layout-align="start center">&ndash;&gt;-->
+          <!--&lt;!&ndash;<md-icon md-font-icon="icon-document" class="s16 report-doc-ico"></md-icon>&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;<span class="title">{{ report }}</span>&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;<a class="title">{{ report.company }}</a>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<md-tooltip md-direction = "bottom">{{report}}</md-tooltip>&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;</md-button>&ndash;&gt;-->
 
-    </div>
+      <!--&lt;!&ndash;<md-button class="item" aria-label="inbox" ng-repeat="report in tenantReportList | filter :vm.search" ng-mouseover = "tooltip = true" ng-mouseleave = "tooltip = false"  ng-click="clickGoToTenantDetails(report.type)" ng-show="reportCategory=='Tenant'" ng-class="{'sidenav-active': vm.sidenavActiveState == report}">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div layout="row" layout-align="start center">&ndash;&gt;-->
+          <!--&lt;!&ndash;<md-icon md-font-icon="icon-document" class="s16 report-doc-ico"></md-icon>&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;<span class="title">{{ report }}</span>&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;<a class="title">{{ report.name }}</a>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<md-tooltip md-direction = "bottom">{{report}}</md-tooltip>&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;</md-button>&ndash;&gt;-->
 
-  </div>
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+  <!--</div>-->
 
   <!--<div class="report-view-wrap report-viewer-wrap">-->
     <!--<div layout="row" layout-align="center center">-->
