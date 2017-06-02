@@ -299,13 +299,13 @@
 
       $http.get('app/core/cloudcharge/js/reportList.json').then(function(data){
 
-        console.log(data);
+        //console.log(data);
 
         for (key in data.data) {
           $scope.reportList.push(data.data[key]);
         }
       }, function(errorResponse){
-        console.log(errorResponse);
+        //console.log(errorResponse);
       });
 
       $scope.showFinanceReport=false;
@@ -325,7 +325,7 @@
         var reportURL3="&idToken="+getIdTokenForServices();
 
         $scope.reportURL=reportURL1+reportURL2+reportURL3;
-        console.log($scope.reportURL);
+        //console.log($scope.reportURL);
 
         $scope.clickGoToFilter(category.split('.')[0]);
 
@@ -544,7 +544,7 @@
         $scope.moreReportsLoding=true;
 
         $charge.paymentgateway().getAll(skip,take,selectedFinanceReport,to,from,type,value).success(function(data){
-          console.log(data);
+          //console.log(data);
 
           for (var i = 0; i < data.length; i++) {
             //
@@ -561,7 +561,7 @@
           }
 
         }).error(function(data){
-          console.log(data);
+          //console.log(data);
           $scope.loadFinanceReports=false;
           $scope.moreReportsLoding=false;
         })
@@ -585,7 +585,7 @@
         $scope.loadFinanceReports=false;
         $scope.reportsLoding=true;
         $charge.paymentgateway().getAll(skip,take,selectedFinanceReport,to,from,type,value).success(function(data){
-          console.log(data);
+          //console.log(data);
 
           for (var i = 0; i < data.length; i++) {
             //
@@ -603,7 +603,7 @@
           }
 
         }).error(function(data){
-          console.log(data);
+          //console.log(data);
           $scope.loadFinanceReports=false;
           $scope.reportsLoding=false;
         })
@@ -635,10 +635,10 @@
           loadCompanyRecurr(skip,take,reportName);
 
         }).error(function(data){
-          console.log(data);
+          //console.log(data);
           $scope.CompanyDetailList=tempCompanyList;
           var dd=$scope.CompanyDetailList[1];
-          console.log(dd);
+          //console.log(dd);
         })
       }
 
@@ -784,7 +784,7 @@
         plan="'"+plan+"'";
         $charge.dashboard().getTenantInfoFilter(skipTenantWiseDetails,takeTenantDetails,'desc',fromTenatDate,toTenantDate,plan).success(function(data){
         //$charge.dashboard().getTenantInfoFilter(skipTenantWiseDetails,takeTenantDetails,'desc','2016-01-05 00:00:00','2017-01-05 00:00:00','free_trial').success(function(data){
-          console.log(data);
+        //  console.log(data);
 
           for (var i = 0; i < data.Tenants.length; i++) {
             //
@@ -809,7 +809,7 @@
           }
 
         }).error(function(data){
-          console.log(data);
+          //console.log(data);
           $scope.loadTenantReports=false;
           $scope.reportsLoding=false;
         })
@@ -820,7 +820,7 @@
         $scope.moreReportsLoding=true;
 
         $charge.dashboard().getTenantInfoFilter(skipTenantWiseDetails,takeTenantDetails,'desc',fromTenatDate,toTenantDate,plan).success(function(data){
-          console.log(data);
+          //console.log(data);
 
           for (var i = 0; i < data.Tenants.length; i++) {
             //
@@ -844,7 +844,7 @@
           }
 
         }).error(function(data){
-          console.log(data);
+          //console.log(data);
           $scope.loadTenantReports=false;
           $scope.moreReportsLoding=false;
         })
@@ -879,7 +879,7 @@
         if(appUsageFilterType=='tenant')
         {
           $charge.dashboard().getAppUsageTenantFilter(tenantName).success(function(data){
-            console.log(data);
+            //console.log(data);
 
             tempTenantList.push({
               Tenant:tenantName,
@@ -891,7 +891,7 @@
             $scope.reportsLoding=false;
 
           }).error(function(data){
-            console.log(data);
+            //console.log(data);
             $scope.reportsLoding=false;
           })
         }
@@ -902,7 +902,7 @@
         else
         {
           $charge.dashboard().getAppUsageInfo(skipAppUsageDetails,takeTenantDetails,'desc').success(function(data){
-            console.log(data);
+            //console.log(data);
 
             for (var i = 0; i < data.length; i++) {
               //
@@ -920,7 +920,7 @@
             }
 
           }).error(function(data){
-            console.log(data);
+            //console.log(data);
             $scope.loadTenantReports=false;
             $scope.reportsLoding=false;
           })
@@ -933,7 +933,7 @@
         $scope.moreReportsLoding=true;
 
         $charge.dashboard().getAppUsageInfo(skipAppUsageDetails,takeTenantDetails,'desc').success(function(data){
-          console.log(data);
+          //console.log(data);
 
           for (var i = 0; i < data.length; i++) {
             //
@@ -950,7 +950,7 @@
           }
 
         }).error(function(data){
-          console.log(data);
+          //console.log(data);
           $scope.loadTenantReports=false;
           $scope.moreReportsLoding=false;
         })
@@ -1696,7 +1696,7 @@
         if (newVal && newVal !== oldVal) {
           $timeout(function () {
             var noResultsLink = $('.select2-no-results');
-            console.log(noResultsLink.contents());
+            //console.log(noResultsLink.contents());
             $compile(noResultsLink.contents())($scope);
           });
         }

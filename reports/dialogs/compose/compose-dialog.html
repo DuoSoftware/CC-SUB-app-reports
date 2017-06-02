@@ -1,0 +1,75 @@
+<md-dialog class="compose-dialog" aria-label="New Message">
+    <form class="md-inline-form">
+        <md-toolbar class="md-accent md-hue-2">
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+                <span class="title">New Product</span>
+                <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Close dialog">
+                    <md-icon md-font-icon="icon-close"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content ms-scroll>
+            <md-input-container class="md-block">
+                <label>Product Name</label>
+                <input ng-model="vm.product.name" type="text">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Product Code</label>
+                <input ng-model="vm.product.code" type="text">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Product Category</label>
+                <input ng-model="vm.product.category" type="text">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Brand</label>
+                <input ng-model="vm.product.brand" type="text">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Quantity of Unit</label>
+                <input ng-model="vm.product.QOU" type="text">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Unit of Meassure</label>
+                <input ng-model="vm.product.UOM" type="text">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Currency</label>
+                <input ng-model="vm.product.currency" type="text">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Price</label>
+                <input ng-model="vm.product.price" type="text">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Cost Price</label>
+                <input ng-model="vm.product.costprice" type="text">
+            </md-input-container>
+
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-button ng-click="vm.closeDialog()" class="send-button md-accent md-raised" aria-label="Create Product">
+                    Create
+                </md-button>
+            </div>
+
+            <div layout="row">
+                <md-button class="md-icon-button" aria-label="Delete">
+                    <md-icon md-font-icon="icon-delete"></md-icon>
+                    <md-tooltip>Clear Product</md-tooltip>
+                </md-button>
+            </div>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
