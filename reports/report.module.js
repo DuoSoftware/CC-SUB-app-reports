@@ -1,9 +1,9 @@
 ////////////////////////////////
 // App : Reports
 // Owner  : Gihan Herath
-// Last changed date : 2017/05/31
-// Version : 6.1.0.2
-// Modified By : GihanHerath
+// Last changed date : 2017/06/13
+// Version : 6.1.0.3
+// Modified By : Gihan
 /////////////////////////////////
 (function ()
 {
@@ -133,14 +133,14 @@
         if ( res.Custom_Message == "No user settings saved for given user and domain"){
           dynamicallyReportSrv.initialize_tenant(reqParameter).success(function(res) {
             if (res.Is_Success){
-              console.log("initialized");
+              //console.log("initialized");
               $rootScope.userStatus = true;
             }
             else{
-              console.log("Not initialized");
+              //console.log("Not initialized");
             }
           }).error(function (res){
-            console.log("Not initialized");
+            //console.log("Not initialized");
           });
         }
         else{
@@ -148,7 +148,7 @@
         }
       }
     }).error(function (res) {
-      console.log("Error!");
+      //console.log("Error!");
     });
   }
 
