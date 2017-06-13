@@ -317,11 +317,13 @@
         // $timeout(function ()
         // {
         //   vm.activeInvoicePaneIndex = 0;
-        // });
+        // });azure.cloudcharge.com/services/reports/JS/viewer.php?report=&idToken=
 		  vm.selectedReport = category;
 
-        var reportURL1="http://azure.cloudcharge.com/services/reports/stimulsoft/index.php?stimulsoft_client_key=ViewerFx";
-        var reportURL2="&stimulsoft_report_key="+category;
+        //var reportURL1="http://azure.cloudcharge.com/services/reports/stimulsoft/index.php?stimulsoft_client_key=ViewerFx";
+        var reportURL1="http://azure.cloudcharge.com/services/reports/JS/viewer.php?";
+        //var reportURL2="&stimulsoft_report_key="+category;
+        var reportURL2="report="+category.split('.')[0];
         var reportURL3="&idToken="+getIdTokenForServices();
 
         $scope.reportURL=reportURL1+reportURL2+reportURL3;
