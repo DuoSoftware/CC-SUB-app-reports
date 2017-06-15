@@ -313,7 +313,8 @@
 
         //console.log(data);
         $scope.baseUrl=data.data["report"]["domain"];
-        $scope.loadFilterCategories('dashBoardReport.mrt');
+        //$scope.loadFilterCategories('dashBoardReport.mrt');
+        $scope.loadFilterCategories($scope.reportList[0].report);
 
         //for (key in data.data) {
         //  if (data.data.hasOwnProperty("report")) {
@@ -341,7 +342,7 @@
 		  vm.selectedReport = category;
 
         //var reportURL1="http://azure.cloudcharge.com/services/reports/stimulsoft/index.php?stimulsoft_client_key=ViewerFx";
-        var reportURL1="http://"+$scope.baseUrl+"/reports/JS/viewer.php?";
+        var reportURL1=$scope.baseUrl+"/reports/JS/viewer.php?";
         //var reportURL2="&stimulsoft_report_key="+category;
         var reportURL2="report="+category.split('.')[0];
         var reportURL3="&idToken="+getIdTokenForServices();
