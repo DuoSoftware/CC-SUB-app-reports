@@ -308,6 +308,26 @@
         //console.log(errorResponse);
       });
 
+      $scope.baseUrl="";
+      $http.get('app/core/cloudcharge/js/config.json').then(function(data){
+
+        //console.log(data);
+        $scope.baseUrl=data.data["report"]["domain"];
+        $scope.loadFilterCategories('dashBoardReport.mrt');
+
+        //for (key in data.data) {
+        //  if (data.data.hasOwnProperty("report")) {
+        //    $scope.baseUrl=data.data["report"]["domain"];
+        //
+        //    $scope.loadFilterCategories('dashBoardReport.mrt');
+        //    break;
+        //  }
+        //}
+      }, function(errorResponse){
+        //console.log(errorResponse);
+        $scope.baseUrl="";
+      });
+
       $scope.showFinanceReport=false;
       $scope.showTenantDetailReport=false;
       $scope.showAppUsageReport=false;
@@ -321,7 +341,7 @@
 		  vm.selectedReport = category;
 
         //var reportURL1="http://azure.cloudcharge.com/services/reports/stimulsoft/index.php?stimulsoft_client_key=ViewerFx";
-        var reportURL1="http://azure.cloudcharge.com/services/reports/JS/viewer.php?";
+        var reportURL1="http://"+$scope.baseUrl+"/reports/JS/viewer.php?";
         //var reportURL2="&stimulsoft_report_key="+category;
         var reportURL2="report="+category.split('.')[0];
         var reportURL3="&idToken="+getIdTokenForServices();
@@ -1271,7 +1291,7 @@
       };
 
       //Initialize DashBoard Report to Start
-      $scope.loadFilterCategories('dashBoardReport.mrt');
+      //$scope.loadFilterCategories('dashBoardReport.mrt');
 
       function maximizeReport(action) {
 		  action ? vm.showSidenav = false : vm.showSidenav = true
