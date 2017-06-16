@@ -72,6 +72,16 @@
       vm.loadByKeyword = $scope.loadByKeywordPayment;
 		vm.showSidenav = true;
 
+		// Collapsible panel
+		$scope.sidenavCollapseHandler = function (index) {
+			if($scope.reportList[index].collapse == undefined){
+				$scope.reportList[index].collapse = true;
+			}else{
+				$scope.reportList[index].collapse = !$scope.reportList[index].collapse;
+			}
+		}
+		// / Collapsible panel
+
         //////////
 
         // Watch screen size to activate responsive read pane
