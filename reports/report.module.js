@@ -1,8 +1,8 @@
 ////////////////////////////////
 // App : Reports
 // Owner  : Gihan Herath
-// Last changed date : 2017/06/16
-// Version : 6.1.0.5
+// Last changed date : 2017/06/10
+// Version : 6.1.0.6
 // Modified By : Kasun
 /////////////////////////////////
 (function ()
@@ -47,12 +47,24 @@
                     }
                 },
                 resolve: {
-                    security: ['$q','mesentitlement', function($q,mesentitlement){
-                        var entitledStatesReturn = mesentitlement.stateDepResolver('report');
+					security: ['$q','mesentitlement','$timeout','$rootScope','$state','$location', function($q,mesentitlement,$timeout,$rootScope,$state, $location){
+						return $q(function(resolve, reject) {
+							$timeout(function() {
+								if ($rootScope.isBaseSet2) {
+									resolve(function () {
+										var entitledStatesReturn = mesentitlement.stateDepResolver('report');
 
-                        if(entitledStatesReturn !== true){
-                              return $q.reject("unauthorized");
-                        };
+										mesentitlementProvider.setStateCheck("report");
+
+										if(entitledStatesReturn !== true){
+											return $q.reject("unauthorized");
+										}
+									});
+								} else {
+									return $location.path('/guide');
+								}
+							});
+						});
                     }]
                 },
                 bodyClass: 'report'
