@@ -89,9 +89,9 @@
           // Allow same origin resource loads.
           "self",
           // Allow loading from Google maps
-          "http://azure.cloudcharge.com/services/reports**",
+          "https://azure.cloudcharge.com/services/reports**",
 
-          "http://app.cloudcharge.com/services/reports**",
+          "https://app.cloudcharge.com/services/reports**",
 
           "https://cloudcharge.com/services/reports**"
         ]);
