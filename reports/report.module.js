@@ -1,9 +1,9 @@
 ////////////////////////////////
 // App : Reports
 // Owner  : Gihan Herath
-// Last changed date : 2017/06/10
+// Last changed date : 2017/07/18
 // Version : 6.1.0.6
-// Modified By : Kasun
+// Modified By : Gihan
 /////////////////////////////////
 (function ()
 {
@@ -47,24 +47,12 @@
                     }
                 },
                 resolve: {
-					security: ['$q','mesentitlement','$timeout','$rootScope','$state','$location', function($q,mesentitlement,$timeout,$rootScope,$state, $location){
-						return $q(function(resolve, reject) {
-							$timeout(function() {
-								if ($rootScope.isBaseSet2) {
-									resolve(function () {
-										var entitledStatesReturn = mesentitlement.stateDepResolver('report');
+                    security: ['$q','mesentitlement', function($q,mesentitlement){
+                        var entitledStatesReturn = mesentitlement.stateDepResolver('report');
 
-										mesentitlementProvider.setStateCheck("report");
-
-										if(entitledStatesReturn !== true){
-											return $q.reject("unauthorized");
-										}
-									});
-								} else {
-									return $location.path('/guide');
-								}
-							});
-						});
+                        if(entitledStatesReturn !== true){
+                              return $q.reject("unauthorized");
+                        };
                     }]
                 },
                 bodyClass: 'report'
@@ -89,7 +77,11 @@
           // Allow same origin resource loads.
           "self",
           // Allow loading from Google maps
+          "http://azure.cloudcharge.com/services/reports**",
+
           "https://azure.cloudcharge.com/services/reports**",
+
+          "http://app.cloudcharge.com/services/reports**",
 
           "https://app.cloudcharge.com/services/reports**",
 

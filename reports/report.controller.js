@@ -339,6 +339,15 @@
         $scope.baseUrl="";
       });
 
+      $scope.companyLogo="";
+      $charge.settingsapp().getDuobaseValuesByTableName("CTS_CompanyAttributes").success(function(data) {
+        //
+        $scope.companyLogo=(data[4].RecordFieldData=="")?"":data[4].RecordFieldData=="Array"?"":data[4].RecordFieldData;
+
+      }).error(function(data) {
+        $scope.companyLogo="";
+      })
+
       $scope.showFinanceReport=false;
       $scope.showTenantDetailReport=false;
       $scope.showAppUsageReport=false;
@@ -356,8 +365,9 @@
         //var reportURL2="&stimulsoft_report_key="+category;
         var reportURL2="report="+category.split('.')[0];
         var reportURL3="&idToken="+getIdTokenForServices();
+        var reportURL4="&cUrl="+$scope.companyLogo;
 
-        $scope.reportURL=reportURL1+reportURL2+reportURL3;
+        $scope.reportURL=reportURL1+reportURL2+reportURL3+reportURL4;
         //console.log($scope.reportURL);
 
         $scope.clickGoToFilter(category.split('.')[0]);
