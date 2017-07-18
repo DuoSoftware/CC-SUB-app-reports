@@ -1,75 +1,75 @@
 (function ()
 {
-	'use strict';
+    'use strict';
 
-	angular
-		.module('app.report')
-		//.directive('datepicker', function () {
-		//  return {
-		//    restrict: "A",
-		//    require: "ngModel",
-		//    link: function (scope, elem, attrs, ngModelCtrl) {
-		//      var updateModel = function (dateText) {
-		//        scope.$apply(function () {
-		//          ngModelCtrl.$setViewValue(dateText);
-		//        });
-		//      };
-		//      var options = {
-		//        dateFormat: "yy-mm-dd",
-		//        changeMonth: true,
-		//        changeYear: true,
-		//        onSelect: function (dateText) {
-		//          updateModel(dateText);
-		//        }
-		//      };
-		//      elem.datepicker(options);
-		//
-		//    }
-		//  }
-		//})
-		.controller('ReportController', ReportController);
+    angular
+        .module('app.report')
+      //.directive('datepicker', function () {
+      //  return {
+      //    restrict: "A",
+      //    require: "ngModel",
+      //    link: function (scope, elem, attrs, ngModelCtrl) {
+      //      var updateModel = function (dateText) {
+      //        scope.$apply(function () {
+      //          ngModelCtrl.$setViewValue(dateText);
+      //        });
+      //      };
+      //      var options = {
+      //        dateFormat: "yy-mm-dd",
+      //        changeMonth: true,
+      //        changeYear: true,
+      //        onSelect: function (dateText) {
+      //          updateModel(dateText);
+      //        }
+      //      };
+      //      elem.datepicker(options);
+      //
+      //    }
+      //  }
+      //})
+        .controller('ReportController', ReportController);
 
-	/** @ngInject */
-	function ReportController($scope, $document, $timeout, notifications, $mdDialog, $mdToast, $mdMedia, $mdSidenav,$charge,$filter, $http, $rootScope, $state, $window, $location, $anchorScroll, $stateParams, $sce)
-	{
-		//
-		var vm = this;
+    /** @ngInject */
+    function ReportController($scope, $document, $timeout, notifications, $mdDialog, $mdToast, $mdMedia, $mdSidenav,$charge,$filter, $http, $rootScope, $state, $window, $location, $anchorScroll, $stateParams, $sce)
+    {
+      //
+        var vm = this;
 
-		vm.appInnerState = "default";
-		vm.pageTitle="Create New";
-		vm.checked = [];
-		vm.colors = ['blue-bg', 'blue-grey-bg', 'orange-bg', 'pink-bg', 'purple-bg'];
-		$scope.iframeHeight=screen.height;
-		vm.selectedReport = {};
-		vm.toggleSidenav = toggleSidenav;
+        vm.appInnerState = "default";
+        vm.pageTitle="Create New";
+        vm.checked = [];
+        vm.colors = ['blue-bg', 'blue-grey-bg', 'orange-bg', 'pink-bg', 'purple-bg'];
+        $scope.iframeHeight=screen.height;
+        vm.selectedReport = {};
+        vm.toggleSidenav = toggleSidenav;
 
-		vm.responsiveReadPane = undefined;
-		vm.activeInvoicePaneIndex = 0;
-		vm.dynamicHeight = false;
+        vm.responsiveReadPane = undefined;
+        vm.activeInvoicePaneIndex = 0;
+        vm.dynamicHeight = false;
 
-		vm.scrollPos = 0;
-		vm.scrollEl = angular.element('#content');
+        vm.scrollPos = 0;
+        vm.scrollEl = angular.element('#content');
 
-		//vm.invoices = Invoice.data;
-		//console.log(vm.invoices);
-		//invoice data getter !
-		//vm.selectedInvoice = vm.invoices[0];
-		vm.selectedMailShowDetails = false;
+        //vm.invoices = Invoice.data;
+        //console.log(vm.invoices);
+        //invoice data getter !
+        //vm.selectedInvoice = vm.invoices[0];
+        vm.selectedMailShowDetails = false;
 
-		// Methods
-		vm.checkAll = checkAll;
-		vm.closeReadPane = closeReadPane;
-		vm.addInvoice = toggleinnerView;
-		vm.isChecked = isChecked;
-		vm.selectReport = selectReport;
-		vm.toggleStarred = toggleStarred;
-		vm.toggleCheck = toggleCheck;
-		vm.reportCategorySwitchState = 'default';
-		vm.sidenavActiveState = '';
-		vm.toggleinnerView = toggleinnerView;
-		vm.maximizeReport = maximizeReport;
+        // Methods
+        vm.checkAll = checkAll;
+        vm.closeReadPane = closeReadPane;
+        vm.addInvoice = toggleinnerView;
+        vm.isChecked = isChecked;
+        vm.selectReport = selectReport;
+        vm.toggleStarred = toggleStarred;
+        vm.toggleCheck = toggleCheck;
+        vm.reportCategorySwitchState = 'default';
+        vm.sidenavActiveState = '';
+        vm.toggleinnerView = toggleinnerView;
+        vm.maximizeReport = maximizeReport;
 
-		vm.loadByKeyword = $scope.loadByKeywordPayment;
+      vm.loadByKeyword = $scope.loadByKeywordPayment;
 		vm.showSidenav = true;
 
 		// Collapsible panel
@@ -82,1245 +82,1241 @@
 		}
 		// / Collapsible panel
 
-		//////////
+        //////////
 
-		// Watch screen size to activate responsive read pane
-		$scope.$watch(function ()
-		{
-			return $mdMedia('gt-md');
-		}, function (current)
-		{
-			vm.responsiveReadPane = !current;
-		});
+        // Watch screen size to activate responsive read pane
+        $scope.$watch(function ()
+        {
+            return $mdMedia('gt-md');
+        }, function (current)
+        {
+            vm.responsiveReadPane = !current;
+        });
 
-		// Watch screen size to activate dynamic height on tabs
-		$scope.$watch(function ()
-		{
-			return $mdMedia('xs');
-		}, function (current)
-		{
-			vm.dynamicHeight = current;
-		});
-		var reportPropertiesPanel;
-		$scope.$watch(function () {
-			var containerHeight = document.getElementsByClassName('content-wrapper');
+        // Watch screen size to activate dynamic height on tabs
+        $scope.$watch(function ()
+        {
+            return $mdMedia('xs');
+        }, function (current)
+        {
+            vm.dynamicHeight = current;
+        });
+
+        $scope.$watch(function () {
+        	var containerHeight = document.getElementsByClassName('content-wrapper');
 			containerHeight.length != 0 ? $scope.iframeHeight=containerHeight[0].scrollHeight - 5 : null
-
-			reportPropertiesPanel = document.getElementById('reportFram');
 		});
 
-		/**
-		 * Select product
-		 *
-		 * @param product
-		 */
+        /**
+         * Select product
+         *
+         * @param product
+         */
 
-		function gst(name) {
-			var nameEQ = name + "=";
-			var ca = document.cookie.split(';');
-			for (var i = 0; i < ca.length; i++) {
-				var c = ca[i];
-				while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-				if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-			}
-			//debugger;
-			return null;
-		}
+      function gst(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        }
+        //debugger;
+        return null;
+      }
 
-		function getIdTokenForServices() {
-			var _st = gst("securityToken");
-			return (_st != null) ? _st : "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ilg1ZVhrNHh5b2pORnVtMWtsMll0djhkbE5QNC1jNTdkTzZRR1RWQndhTmsifQ.eyJleHAiOjE0OTU1OTg0MTgsIm5iZiI6MTQ5NTUxNTYxOCwidmVyIjoiMS4wIiwiaXNzIjoiaHR0cHM6Ly9sb2dpbi5taWNyb3NvZnRvbmxpbmUuY29tL2MxZjlmOGU2LTM0NjktNGQ1Zi1hMzI2LTgzZTk5MGE5OTI2YS92Mi4wLyIsInN1YiI6IjUyZmE0ZjM3LWVlODktNDc4MS1iYTc0LWQ2ZmY3ODBkNTVhYiIsImF1ZCI6ImQwODRhMjI3LWJiNTItNDk5Mi04ODlkLTZlNDgzNTYxMGU3NiIsIm5vbmNlIjoiZGVmYXVsdE5vbmNlIiwiaWF0IjoxNDk1NTE1NjE4LCJhdXRoX3RpbWUiOjE0OTU1MTU2MTgsIm9pZCI6IjUyZmE0ZjM3LWVlODktNDc4MS1iYTc0LWQ2ZmY3ODBkNTVhYiIsImdpdmVuX25hbWUiOiJnaWhhbiIsIm5hbWUiOiJnaWhhbiIsImNvdW50cnkiOiJTcmkgTGFua2EiLCJleHRlbnNpb25fRG9tYWluIjoiZ2loYW4uYXBwLmNsb3VkY2hhcmdlLmNvbSIsImZhbWlseV9uYW1lIjoic3RhcnRlciIsImpvYlRpdGxlIjoiYWRtaW4iLCJlbWFpbHMiOlsiZ2loYW5AZHVvc29mdHdhcmUuY29tIl0sInRmcCI6IkIyQ18xX0RlZmF1bHRQb2xpY3kifQ.AKa_DTiIvvJEhpOrSJtKwR2BkI2f9U3Xfe4oJcSKTnyIGc66FPh1hlUFnj0eolHEA9tOQ0Q9XPoRm6JHGiekUtzCHcBMtnrHD1TuUpVUWT7dgRp6TBiVvvafAFka5aXi7KP5GuCVPsRPz9RguCipE9upQXzqF2ApwXQZ1S2H90LOEz_Ed2z2WYTi8dJcEabvJK9fkOjqMnvLbem2E3Ajj3Aj8CHINZu4W-Zv4IT7u8Aao2OjgBjhkdul687WRbILCuCJW3Hoz2_tX-5VBtk5-aetnYMAYM2JHyR5KcjNfNIhJOYJGyzPoI3vijMJ94i8lqnWcrTx9eRyNK4JttnZhQ"; //"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6ImdmSUtJSC15WjNwaFJIUnlqbnNISXFaTWFlUExHQUVMelBhdDBDTlk0c0EifQ";
-		}
+      function getIdTokenForServices() {
+        var _st = gst("securityToken");
+        return (_st != null) ? _st : "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ilg1ZVhrNHh5b2pORnVtMWtsMll0djhkbE5QNC1jNTdkTzZRR1RWQndhTmsifQ.eyJleHAiOjE0OTU1OTg0MTgsIm5iZiI6MTQ5NTUxNTYxOCwidmVyIjoiMS4wIiwiaXNzIjoiaHR0cHM6Ly9sb2dpbi5taWNyb3NvZnRvbmxpbmUuY29tL2MxZjlmOGU2LTM0NjktNGQ1Zi1hMzI2LTgzZTk5MGE5OTI2YS92Mi4wLyIsInN1YiI6IjUyZmE0ZjM3LWVlODktNDc4MS1iYTc0LWQ2ZmY3ODBkNTVhYiIsImF1ZCI6ImQwODRhMjI3LWJiNTItNDk5Mi04ODlkLTZlNDgzNTYxMGU3NiIsIm5vbmNlIjoiZGVmYXVsdE5vbmNlIiwiaWF0IjoxNDk1NTE1NjE4LCJhdXRoX3RpbWUiOjE0OTU1MTU2MTgsIm9pZCI6IjUyZmE0ZjM3LWVlODktNDc4MS1iYTc0LWQ2ZmY3ODBkNTVhYiIsImdpdmVuX25hbWUiOiJnaWhhbiIsIm5hbWUiOiJnaWhhbiIsImNvdW50cnkiOiJTcmkgTGFua2EiLCJleHRlbnNpb25fRG9tYWluIjoiZ2loYW4uYXBwLmNsb3VkY2hhcmdlLmNvbSIsImZhbWlseV9uYW1lIjoic3RhcnRlciIsImpvYlRpdGxlIjoiYWRtaW4iLCJlbWFpbHMiOlsiZ2loYW5AZHVvc29mdHdhcmUuY29tIl0sInRmcCI6IkIyQ18xX0RlZmF1bHRQb2xpY3kifQ.AKa_DTiIvvJEhpOrSJtKwR2BkI2f9U3Xfe4oJcSKTnyIGc66FPh1hlUFnj0eolHEA9tOQ0Q9XPoRm6JHGiekUtzCHcBMtnrHD1TuUpVUWT7dgRp6TBiVvvafAFka5aXi7KP5GuCVPsRPz9RguCipE9upQXzqF2ApwXQZ1S2H90LOEz_Ed2z2WYTi8dJcEabvJK9fkOjqMnvLbem2E3Ajj3Aj8CHINZu4W-Zv4IT7u8Aao2OjgBjhkdul687WRbILCuCJW3Hoz2_tX-5VBtk5-aetnYMAYM2JHyR5KcjNfNIhJOYJGyzPoI3vijMJ94i8lqnWcrTx9eRyNK4JttnZhQ"; //"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6ImdmSUtJSC15WjNwaFJIUnlqbnNISXFaTWFlUExHQUVMelBhdDBDTlk0c0EifQ";
+      }
 
 
-		function selectReport(report)
-		{
+      function selectReport(report)
+        {
 
-			$scope.showFinanceReport=false;
-			$scope.showTenantDetailReport=false;
-			$scope.showAppUsageReport=false;
-			// $scope.iframeHeight=screen.height;
+            $scope.showFinanceReport=false;
+            $scope.showTenantDetailReport=false;
+            $scope.showAppUsageReport=false;
+            // $scope.iframeHeight=screen.height;
 
-			// $timeout(function ()
-			// {
-			//     vm.activeInvoicePaneIndex = 1;
+            // $timeout(function ()
+            // {
+            //     vm.activeInvoicePaneIndex = 1;
 			//
-			//     // Store the current scrollPos
-			//     vm.scrollPos = vm.scrollEl.scrollTop();
+            //     // Store the current scrollPos
+            //     vm.scrollPos = vm.scrollEl.scrollTop();
 			//
-			//     // Scroll to the top
-			//     vm.scrollEl.scrollTop(0);
-			// });
-		}
+            //     // Scroll to the top
+            //     vm.scrollEl.scrollTop(0);
+            // });
+        }
 
-		/**
-		 * Close read pane
-		 */
-		function closeReadPane()
-		{
-			vm.activeInvoicePaneIndex = 0;
-			angular.element('.sidenav').show();
+        /**
+         * Close read pane
+         */
+        function closeReadPane()
+        {
+            vm.activeInvoicePaneIndex = 0;
+          angular.element('.sidenav').show();
 
-			$scope.onClickRefresh();
-			$timeout(function ()
-			{
-				vm.scrollEl.scrollTop(vm.scrollPos);
-			}, 650);
+            $scope.onClickRefresh();
+            $timeout(function ()
+            {
+                vm.scrollEl.scrollTop(vm.scrollPos);
+            }, 650);
 
-			$scope.showFinanceReport=false;
-			$scope.showTenantDetailReport=false;
-			$scope.showAppUsageReport=false;
-			//$scope.iframeHeight=screen.height;
-		}
+          $scope.showFinanceReport=false;
+          $scope.showTenantDetailReport=false;
+          $scope.showAppUsageReport=false;
+          //$scope.iframeHeight=screen.height;
+        }
 
-		/**
-		 * Toggle starred
-		 *
-		 * @param mail
-		 * @param event
-		 */
-		function toggleStarred(mail, event)
-		{
-			event.stopPropagation();
-			mail.starred = !mail.starred;
-		}
+        /**
+         * Toggle starred
+         *
+         * @param mail
+         * @param event
+         */
+        function toggleStarred(mail, event)
+        {
+            event.stopPropagation();
+            mail.starred = !mail.starred;
+        }
 
-		/**
-		 * Toggle checked status of the mail
-		 *
-		 * @param invoice
-		 * @param event
-		 */
-		function toggleCheck(invoice, event)
-		{
-			if ( event )
-			{
-				event.stopPropagation();
-			}
+        /**
+         * Toggle checked status of the mail
+         *
+         * @param invoice
+         * @param event
+         */
+        function toggleCheck(invoice, event)
+        {
+            if ( event )
+            {
+                event.stopPropagation();
+            }
 
-			var idx = vm.checked.indexOf(invoice);
+            var idx = vm.checked.indexOf(invoice);
 
-			if ( idx > -1 )
-			{
-				vm.checked.splice(idx, 1);
-			}
-			else
-			{
-				vm.checked.push(invoice);
-			}
-		}
+            if ( idx > -1 )
+            {
+                vm.checked.splice(idx, 1);
+            }
+            else
+            {
+                vm.checked.push(invoice);
+            }
+        }
 
-		/**
-		 * Return checked status of the invoice
-		 *
-		 * @param invoice
-		 * @returns {boolean}
-		 */
-		function isChecked(invoice)
-		{
-			return vm.checked.indexOf(invoice) > -1;
-		}
+        /**
+         * Return checked status of the invoice
+         *
+         * @param invoice
+         * @returns {boolean}
+         */
+        function isChecked(invoice)
+        {
+            return vm.checked.indexOf(invoice) > -1;
+        }
 
-		/**
-		 * Check all
-		 */
-		function checkAll()
-		{
-			if ( vm.allChecked )
-			{
-				vm.checked = [];
-				vm.allChecked = false;
-			}
-			else
-			{
-				angular.forEach(vm.payments, function (invoice)
-				{
-					if ( !isChecked(invoice) )
-					{
-						toggleCheck(invoice);
-					}
-				});
+        /**
+         * Check all
+         */
+        function checkAll()
+        {
+            if ( vm.allChecked )
+            {
+                vm.checked = [];
+                vm.allChecked = false;
+            }
+            else
+            {
+                angular.forEach(vm.payments, function (invoice)
+                {
+                    if ( !isChecked(invoice) )
+                    {
+                        toggleCheck(invoice);
+                    }
+                });
 
-				vm.allChecked = true;
-			}
-		}
+                vm.allChecked = true;
+            }
+        }
 
-		/**
-		 * Open compose dialog
-		 *
-		 * @param ev
-		 */
-		function addReportDialog(ev)
-		{
-			$mdDialog.show({
-				controller         : 'AddReportController',
-				controllerAs       : 'vm',
-				locals             : {
-					selectedMail: undefined
-				},
-				templateUrl        : 'app/main/report/dialogs/compose/compose-dialog.html',
-				parent             : angular.element($document.body),
-				targetEvent        : ev,
-				clickOutsideToClose: true
-			});
-		}
+        /**
+         * Open compose dialog
+         *
+         * @param ev
+         */
+        function addReportDialog(ev)
+        {
+            $mdDialog.show({
+                controller         : 'AddReportController',
+                controllerAs       : 'vm',
+                locals             : {
+                    selectedMail: undefined
+                },
+                templateUrl        : 'app/main/report/dialogs/compose/compose-dialog.html',
+                parent             : angular.element($document.body),
+                targetEvent        : ev,
+                clickOutsideToClose: true
+            });
+        }
 
-		/**
-		 * Toggle sidenav
-		 *
-		 * @param sidenavId
-		 */
-		function toggleSidenav(sidenavId)
-		{
-			$mdSidenav(sidenavId).toggle();
-		}
+        /**
+         * Toggle sidenav
+         *
+         * @param sidenavId
+         */
+        function toggleSidenav(sidenavId)
+        {
+            $mdSidenav(sidenavId).toggle();
+        }
 
-		/**
-		 * Toggle innerview
-		 *
-		 */
+        /**
+         * Toggle innerview
+         *
+         */
 
-		function toggleinnerView(){
-			if(vm.appInnerState === "default"){
-				vm.appInnerState = "add";
-				vm.pageTitle="View Reports";
-			}else{
-				vm.appInnerState = "default";
-				vm.pageTitle="Create New";
-			}
-		}
-
-
-		$scope.reportCategory="";
-
-		$scope.companyReportList=[
-			{ company : 'Cloud Charge', type : 'cloudcharge'},
-			{ company : 'DuoWorld', type : 'duoworld'},
-			{ company : 'Smooth Flow', type : 'smoothflow'},
-			{ company : 'Digin', type : 'duodigin'}
-			//{ company : 'FaceTone', type : 'facetone'}
-		];
-
-		$scope.tenantReportList=[
-			{ name : 'Tenant Details', type : 'tenantdetails'},
-			{ name : 'App Usage Details', type : 'appdetails'}
-			//{ company : 'FaceTone', type : 'facetone'}
-		];
-
-		$scope.reportList=[];
-
-		$http.get('app/core/cloudcharge/js/reportList.json').then(function(data){
-
-			//console.log(data);
-
-			for (key in data.data) {
-				$scope.reportList.push(data.data[key]);
-			}
-		}, function(errorResponse){
-			//console.log(errorResponse);
-		});
-
-		$scope.baseUrl="";
-		$http.get('app/core/cloudcharge/js/config.json').then(function(data){
-
-			//console.log(data);
-			$scope.baseUrl=data.data["report"]["domain"];
-			//$scope.loadFilterCategories('dashBoardReport.mrt');
-			$scope.loadFilterCategories($scope.reportList[0].report);
-
-			//for (key in data.data) {
-			//  if (data.data.hasOwnProperty("report")) {
-			//    $scope.baseUrl=data.data["report"]["domain"];
-			//
-			//    $scope.loadFilterCategories('dashBoardReport.mrt');
-			//    break;
-			//  }
-			//}
-		}, function(errorResponse){
-			//console.log(errorResponse);
-			$scope.baseUrl="";
-		});
-
-		$scope.showFinanceReport=false;
-		$scope.showTenantDetailReport=false;
-		$scope.showAppUsageReport=false;
-
-		$scope.loadFilterCategories= function (category) {
-			//$scope.reportCategory=category;
-			// $timeout(function ()
-			// {
-			//   vm.activeInvoicePaneIndex = 0;
-			// });azure.cloudcharge.com/services/reports/JS/viewer.php?report=&idToken=
-			vm.selectedReport = category;
-
-			//var reportURL1="http://azure.cloudcharge.com/services/reports/stimulsoft/index.php?stimulsoft_client_key=ViewerFx";
-			var reportURL1=$scope.baseUrl+"/reports/JS/viewer.php?";
-			//var reportURL2="&stimulsoft_report_key="+category;
-			var reportURL2="report="+category.split('.')[0];
-			var reportURL3="&idToken="+getIdTokenForServices();
-
-			$scope.reportURL=reportURL1+reportURL2+reportURL3;
-			//console.log($scope.reportURL);
-
-			$scope.clickGoToFilter(category.split('.')[0]);
+        function toggleinnerView(){
+            if(vm.appInnerState === "default"){
+                vm.appInnerState = "add";
+                vm.pageTitle="View Reports";
+            }else{
+                vm.appInnerState = "default";
+                vm.pageTitle="Create New";
+            }
+        }
 
 
-			//$charge.report().getReport(category, getIdTokenForServices()).success(function (data) {
-			//  $scope.reportURL=data;
-			//
-			//  $scope.clickGoToFilter(category.split('.')[0]);
-			//
-			//}).error(function (data) {
-			//  $scope.reportURL="";
-			//});
+      $scope.reportCategory="";
+
+      $scope.companyReportList=[
+        { company : 'Cloud Charge', type : 'cloudcharge'},
+        { company : 'DuoWorld', type : 'duoworld'},
+        { company : 'Smooth Flow', type : 'smoothflow'},
+        { company : 'Digin', type : 'duodigin'}
+        //{ company : 'FaceTone', type : 'facetone'}
+      ];
+
+      $scope.tenantReportList=[
+        { name : 'Tenant Details', type : 'tenantdetails'},
+        { name : 'App Usage Details', type : 'appdetails'}
+        //{ company : 'FaceTone', type : 'facetone'}
+      ];
+
+      $scope.reportList=[];
+
+      $http.get('app/core/cloudcharge/js/reportList.json').then(function(data){
+
+        //console.log(data);
+
+        for (key in data.data) {
+          $scope.reportList.push(data.data[key]);
+        }
+      }, function(errorResponse){
+        //console.log(errorResponse);
+      });
+
+      $scope.baseUrl="";
+      $http.get('app/core/cloudcharge/js/config.json').then(function(data){
+
+        //console.log(data);
+        $scope.baseUrl=data.data["report"]["domain"];
+        //$scope.loadFilterCategories('dashBoardReport.mrt');
+        $scope.loadFilterCategories($scope.reportList[0].report);
+
+        //for (key in data.data) {
+        //  if (data.data.hasOwnProperty("report")) {
+        //    $scope.baseUrl=data.data["report"]["domain"];
+        //
+        //    $scope.loadFilterCategories('dashBoardReport.mrt');
+        //    break;
+        //  }
+        //}
+      }, function(errorResponse){
+        //console.log(errorResponse);
+        $scope.baseUrl="";
+      });
+
+      $scope.companyLogo="";
+      $charge.settingsapp().getDuobaseValuesByTableName("CTS_CompanyAttributes").success(function(data) {
+        //
+        $scope.companyLogo=(data[4].RecordFieldData=="")?"":data[4].RecordFieldData=="Array"?"":data[4].RecordFieldData;
+
+      }).error(function(data) {
+        $scope.companyLogo="";
+      })
+
+      $scope.showFinanceReport=false;
+      $scope.showTenantDetailReport=false;
+      $scope.showAppUsageReport=false;
+
+      $scope.loadFilterCategories= function (category) {
+        //$scope.reportCategory=category;
+        // $timeout(function ()
+        // {
+        //   vm.activeInvoicePaneIndex = 0;
+        // });azure.cloudcharge.com/services/reports/JS/viewer.php?report=&idToken=
+		  vm.selectedReport = category;
+
+        //var reportURL1="http://azure.cloudcharge.com/services/reports/stimulsoft/index.php?stimulsoft_client_key=ViewerFx";
+        var reportURL1=$scope.baseUrl+"/reports/JS/viewer.php?";
+        //var reportURL2="&stimulsoft_report_key="+category;
+        var reportURL2="report="+category.split('.')[0];
+        var reportURL3="&idToken="+getIdTokenForServices();
+        var reportURL4="&cUrl="+$scope.companyLogo;
+
+        $scope.reportURL=reportURL1+reportURL2+reportURL3+reportURL4;
+        //console.log($scope.reportURL);
+
+        $scope.clickGoToFilter(category.split('.')[0]);
 
 
-		}
+        //$charge.report().getReport(category, getIdTokenForServices()).success(function (data) {
+        //  $scope.reportURL=data;
+        //
+        //  $scope.clickGoToFilter(category.split('.')[0]);
+        //
+        //}).error(function (data) {
+        //  $scope.reportURL="";
+        //});
 
-		//server request handler
-		$scope.reports = null;
-		//var serverReq = {
-		//  reqParameter: {
-		//    apiBase: configReport.Digin_Engine_API,
-		//    tomCatBase: configReport.apiTomcatBase,
-		//    token: '',
-		//    reportName: '',
-		//    queryFiled: ''
-		//  },
-		//  getToken: function() {
-		//    var _st = "8298aa106590a6329df1a35032e687cd";
-		//    var nameEQ = "securityToken=";
-		//    var ca = document.cookie.split(';');
-		//    //get the tenant security token
-		//    for (var i = 0; i < ca.length; i++) {
-		//      var c = ca[i];
-		//      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-		//      if (c.indexOf(nameEQ) == 0){
-		//        _st = c.substring(nameEQ.length, c.length);
-		//      }
-		//    }
-		//    return _st;
-		//  },
-		//  startReportServer: function () {
-		//    dynamicallyReportSrv.startReportServer(this.reqParameter).success(function (res) {
-		//      console.log("report server start success...");
+
+      }
+
+      //server request handler
+      $scope.reports = null;
+      //var serverReq = {
+      //  reqParameter: {
+      //    apiBase: configReport.Digin_Engine_API,
+      //    tomCatBase: configReport.apiTomcatBase,
+      //    token: '',
+      //    reportName: '',
+      //    queryFiled: ''
+      //  },
+      //  getToken: function() {
+      //    var _st = "8298aa106590a6329df1a35032e687cd";
+      //    var nameEQ = "securityToken=";
+      //    var ca = document.cookie.split(';');
+      //    //get the tenant security token
+      //    for (var i = 0; i < ca.length; i++) {
+      //      var c = ca[i];
+      //      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+      //      if (c.indexOf(nameEQ) == 0){
+      //        _st = c.substring(nameEQ.length, c.length);
+      //      }
+      //    }
+      //    return _st;
+      //  },
+      //  startReportServer: function () {
+      //    dynamicallyReportSrv.startReportServer(this.reqParameter).success(function (res) {
+      //      console.log("report server start success...");
+      //
+      //    }).error(function (err) {
+      //      //false
+      //      console.log("report server start error...!");
+      //    });
+      //  },
+      //  getAllReports: function (callBack) {
+      //    this.reqParameter.token = serverReq.getToken();
+      //    var rep = [];
+      //    $scope.isReportLoading = true;
+      //    dynamicallyReportSrv.getAllReports(this.reqParameter).success(function (data) {
+      //      if (data.Is_Success) {
+      //        for (var i = 0; i < data.Result.length; i++) {
+      //          if ( data.Result[i].compType == "report"){
+      //            rep.push(data.Result[i].compName);
+      //          }
+      //        }
+      //        if ( rep.length > 0 ){
+      //          callBack(rep);
+      //        } else {
+      //          callBack(null);
+      //        }
+      //      }
+      //      else{
+      //        callBack(null);
+      //      }
+      //    }).error(function (err) {
+      //      callBack(null);
+      //      console.log("error get report layout..");
+      //    });
+      //
+      //  }
+      //
+      //};//end
+
+      $scope.reports = [];
+      function getAllReport() {
+        $scope.reports = [];
+        serverReq.getAllReports(function (resp) {
+          $scope.isReportLoading = false;
+          if ($scope.reports == null) {
+            return;
+          }
+          $scope.reports = resp;
+        });
+      }
+
+      // Call these functions only when the user is initialized
+      $rootScope.$watch('userStatus' , function(newValue,OldValue){
+        if ($rootScope.userStatus){
+          serverReq.startReportServer();
+          getAllReport();
+        }
+      },true);
+
+      //click event
+      //go to filter
+      var reportNme;
+      $scope.clickGoToFilter = function (reportName) {
+        //$state.go('reportFilter', {'reportNme': reportName});
+        // angular.element('.sidenav').hide();
+
+        reportNme=reportName;
+        $location.hash('top');
+        $anchorScroll();
+        document.body.style.overflow = 'hidden';
+        //serverRequest.getReportUIFromServer(eventHandler);
+        vm.reportCategorySwitchState = reportName;
+        vm.sidenavActiveState = reportName;
+        selectReport(reportName);
+
+        //onClickRefresh();
+        privateFun.clearAllUI();
+
+        // $timeout(function ()
+        // {
+        //   // Store the current scrollPos
+        //   vm.scrollPos = vm.scrollEl.scrollTop();
 		//
-		//    }).error(function (err) {
-		//      //false
-		//      console.log("report server start error...!");
-		//    });
-		//  },
-		//  getAllReports: function (callBack) {
-		//    this.reqParameter.token = serverReq.getToken();
-		//    var rep = [];
-		//    $scope.isReportLoading = true;
-		//    dynamicallyReportSrv.getAllReports(this.reqParameter).success(function (data) {
-		//      if (data.Is_Success) {
-		//        for (var i = 0; i < data.Result.length; i++) {
-		//          if ( data.Result[i].compType == "report"){
-		//            rep.push(data.Result[i].compName);
-		//          }
-		//        }
-		//        if ( rep.length > 0 ){
-		//          callBack(rep);
-		//        } else {
-		//          callBack(null);
-		//        }
-		//      }
-		//      else{
-		//        callBack(null);
-		//      }
-		//    }).error(function (err) {
-		//      callBack(null);
-		//      console.log("error get report layout..");
-		//    });
+        //   // Scroll to the top
+        //   vm.scrollEl.scrollTop(0);
+        // });
+        //selectReport('');
+      };
+
+      $scope.financeFilter={};
+
+      $scope.CompanyDetailList=[];
+      var tempCompanyList=[];
+      $scope.isAdmin=false;
+
+      var skip=0;
+      var take=100;
+      $scope.loadFinanceReports=false;
+      $scope.reportsLoding=false;
+      var selectedFinanceReport="";
+
+      var currntDay=moment(new Date()).format().split('T')[0];
+      var yearbacktime=(parseInt(currntDay.split('-')[0])-1).toString()+"-"+currntDay.split('-')[1]+"-"+currntDay.split('-')[2];
+
+      $scope.clickGoToComapny = function (reportName) {
+        angular.element('.sidenav').hide();
+
+        reportNme=reportName;
+        $location.hash('top');
+        $anchorScroll();
+        document.body.style.overflow = 'hidden';
+        //serverRequest.getReportUIFromServer(eventHandler);
+        vm.reportCategorySwitchState = reportName;
+        vm.sidenavActiveState = reportName;
+        selectReport(reportName);
+
+        $scope.showFinanceReport=true;
+        $scope.iframeHeight=0;
+
+        skip=0;
+        $scope.CompanyDetailList=[];
+        tempCompanyList=[];
+        $scope.loadFinanceReports=false;
+        selectedFinanceReport=reportName;
+        $scope.financeFilter={};
+
+        $scope.financeFilter.from=$scope.financeFilter.from==undefined?yearbacktime:$scope.financeFilter.from;
+        $scope.financeFilter.to=$scope.financeFilter.to==undefined?currntDay:$scope.financeFilter.to;
+
+        //$charge.paymentgateway().getAll(skip,take,reportName).success(function(data){
+        //  console.log(data);
+        //
+        //  for (var i = 0; i < data.length; i++) {
+        //    //
+        //    tempCompanyList.push(data[i]);
+        //  }
+        //  skip+=take;
+        //  $scope.CompanyDetailList=tempCompanyList;
+        //  //loadCompanyRecurr(skip,take,reportName);
+        //  //$scope.CompanyDetailList=data;
+        //  if(data.length<take)
+        //  {
+        //    $scope.loadFinanceReports=false;
+        //  }
+        //
+        //}).error(function(data){
+        //  console.log(data);
+        //  $scope.loadFinanceReports=false;
+        //})
+
+        //onClickRefresh();
+        privateFun.clearAllUI();
+
+        // $timeout(function ()
+        // {
+        //   vm.activeInvoicePaneIndex = 1;
 		//
-		//  }
+        //   // Store the current scrollPos
+        //   vm.scrollPos = vm.scrollEl.scrollTop();
 		//
-		//};//end
-
-		$scope.reports = [];
-		function getAllReport() {
-			$scope.reports = [];
-			serverReq.getAllReports(function (resp) {
-				$scope.isReportLoading = false;
-				if ($scope.reports == null) {
-					return;
-				}
-				$scope.reports = resp;
-			});
-		}
-
-		// Call these functions only when the user is initialized
-		$rootScope.$watch('userStatus' , function(newValue,OldValue){
-			if ($rootScope.userStatus){
-				serverReq.startReportServer();
-				getAllReport();
-			}
-		},true);
-
-		//click event
-		//go to filter
-		var reportNme;
-		$scope.clickGoToFilter = function (reportName) {
-			//$state.go('reportFilter', {'reportNme': reportName});
-			// angular.element('.sidenav').hide();
-
-			reportNme=reportName;
-			$location.hash('top');
-			$anchorScroll();
-			document.body.style.overflow = 'hidden';
-			//serverRequest.getReportUIFromServer(eventHandler);
-			vm.reportCategorySwitchState = reportName;
-			vm.sidenavActiveState = reportName;
-			selectReport(reportName);
-
-			//onClickRefresh();
-			privateFun.clearAllUI();
-
-			// $timeout(function ()
-			// {
-			//   // Store the current scrollPos
-			//   vm.scrollPos = vm.scrollEl.scrollTop();
-			//
-			//   // Scroll to the top
-			//   vm.scrollEl.scrollTop(0);
-			// });
-			//selectReport('');
-		};
-
-		$scope.financeFilter={};
-
-		$scope.CompanyDetailList=[];
-		var tempCompanyList=[];
-		$scope.isAdmin=false;
-
-		var skip=0;
-		var take=100;
-		$scope.loadFinanceReports=false;
-		$scope.reportsLoding=false;
-		var selectedFinanceReport="";
-
-		var currntDay=moment(new Date()).format().split('T')[0];
-		var yearbacktime=(parseInt(currntDay.split('-')[0])-1).toString()+"-"+currntDay.split('-')[1]+"-"+currntDay.split('-')[2];
-
-		$scope.clickGoToComapny = function (reportName) {
-			angular.element('.sidenav').hide();
-
-			reportNme=reportName;
-			$location.hash('top');
-			$anchorScroll();
-			document.body.style.overflow = 'hidden';
-			//serverRequest.getReportUIFromServer(eventHandler);
-			vm.reportCategorySwitchState = reportName;
-			vm.sidenavActiveState = reportName;
-			selectReport(reportName);
-
-			$scope.showFinanceReport=true;
-			$scope.iframeHeight=0;
-
-			skip=0;
-			$scope.CompanyDetailList=[];
-			tempCompanyList=[];
-			$scope.loadFinanceReports=false;
-			selectedFinanceReport=reportName;
-			$scope.financeFilter={};
-
-			$scope.financeFilter.from=$scope.financeFilter.from==undefined?yearbacktime:$scope.financeFilter.from;
-			$scope.financeFilter.to=$scope.financeFilter.to==undefined?currntDay:$scope.financeFilter.to;
-
-			//$charge.paymentgateway().getAll(skip,take,reportName).success(function(data){
-			//  console.log(data);
-			//
-			//  for (var i = 0; i < data.length; i++) {
-			//    //
-			//    tempCompanyList.push(data[i]);
-			//  }
-			//  skip+=take;
-			//  $scope.CompanyDetailList=tempCompanyList;
-			//  //loadCompanyRecurr(skip,take,reportName);
-			//  //$scope.CompanyDetailList=data;
-			//  if(data.length<take)
-			//  {
-			//    $scope.loadFinanceReports=false;
-			//  }
-			//
-			//}).error(function(data){
-			//  console.log(data);
-			//  $scope.loadFinanceReports=false;
-			//})
-
-			//onClickRefresh();
-			privateFun.clearAllUI();
-
-			// $timeout(function ()
-			// {
-			//   vm.activeInvoicePaneIndex = 1;
-			//
-			//   // Store the current scrollPos
-			//   vm.scrollPos = vm.scrollEl.scrollTop();
-			//
-			//   // Scroll to the top
-			//   vm.scrollEl.scrollTop(0);
-			// });
-		}
-
-		var from="";
-		var to="";
-		var type="";
-		var value="";
-
-		$scope.loadMoreFinanceReoprts = function () {
-
-			//from=$scope.financeFilter.from!=undefined?moment($scope.financeFilter.from).format().split('T')[0]:'';
-			//to=$scope.financeFilter.to!=undefined?moment($scope.financeFilter.to).format().split('T')[0]:'';
-			//type=$scope.financeFilter.type!=undefined?$scope.financeFilter.type:'';
-			//value=type!=''?($scope.financeFilter.value!=undefined?$scope.financeFilter.value:''):'';
-			$scope.moreReportsLoding=true;
-
-			$charge.paymentgateway().getAll(skip,take,selectedFinanceReport,to,from,type,value).success(function(data){
-				//console.log(data);
-
-				for (var i = 0; i < data.length; i++) {
-					//
-					tempCompanyList.push(data[i]);
-				}
-				skip+=take;
-				$scope.CompanyDetailList=tempCompanyList;
-				//loadCompanyRecurr(skip,take,reportName);
-				//$scope.CompanyDetailList=data;
-				$scope.moreReportsLoding=false;
-				if(data.length<take)
-				{
-					$scope.loadFinanceReports=false;
-				}
-
-			}).error(function(data){
-				//console.log(data);
-				$scope.loadFinanceReports=false;
-				$scope.moreReportsLoding=false;
-			})
-		}
-
-		$scope.applyFinanceFilter = function () {
-
-			//from=$scope.financeFilter.from!=undefined?moment($scope.financeFilter.from).format().split('T')[0]:'';
-			//to=$scope.financeFilter.to!=undefined?moment($scope.financeFilter.to).format().split('T')[0]:'';
-			from=$scope.financeFilter.from==undefined?'':$scope.financeFilter.from;
-			to=$scope.financeFilter.to==undefined?'':$scope.financeFilter.to;
-			type=$scope.financeFilter.type;
-			value=$scope.financeFilter.value;
-
-			//$scope.financeFilter.from=$scope.financeFilter.from==undefined?yearbacktime:$scope.financeFilter.from;
-			//$scope.financeFilter.to=$scope.financeFilter.to==undefined?currntDay:$scope.financeFilter.to;
-
-			skip=0;
-			$scope.CompanyDetailList=[];
-			tempCompanyList=[];
-			$scope.loadFinanceReports=false;
-			$scope.reportsLoding=true;
-			$charge.paymentgateway().getAll(skip,take,selectedFinanceReport,to,from,type,value).success(function(data){
-				//console.log(data);
-
-				for (var i = 0; i < data.length; i++) {
-					//
-					tempCompanyList.push(data[i]);
-				}
-				skip+=take;
-				$scope.CompanyDetailList=tempCompanyList;
-				//loadCompanyRecurr(skip,take,reportName);
-				//$scope.CompanyDetailList=data;
-				$scope.reportsLoding=false;
-				$scope.loadFinanceReports=true;
-				if(data.length<take)
-				{
-					$scope.loadFinanceReports=false;
-				}
-
-			}).error(function(data){
-				//console.log(data);
-				$scope.loadFinanceReports=false;
-				$scope.reportsLoding=false;
-			})
-		}
-
-		$scope.clearFilterValue = function () {
-			$scope.financeFilter.value="";
-		}
-
-		$scope.resetFilters = function () {
-			$scope.financeFilter={};
-			$scope.financeFilter.from=$scope.financeFilter.from==undefined?yearbacktime:$scope.financeFilter.from;
-			$scope.financeFilter.to=$scope.financeFilter.to==undefined?currntDay:$scope.financeFilter.to;
-			skip=0;
-			$scope.CompanyDetailList=[];
-			tempCompanyList=[];
-			$scope.loadFinanceReports=false;
-			$scope.reportsLoding=false;
-			//$scope.loadMoreFinanceReoprts();
-		}
-
-		function loadCompanyRecurr(skip,take,reportName){
-			$charge.paymentgateway().getAll(skip,take,reportName).success(function(data){
-				for (var i = 0; i < data.length; i++) {
-					//
-					tempCompanyList.push(data[i]);
-				}
-				skip+=take;
-				loadCompanyRecurr(skip,take,reportName);
-
-			}).error(function(data){
-				//console.log(data);
-				$scope.CompanyDetailList=tempCompanyList;
-				var dd=$scope.CompanyDetailList[1];
-				//console.log(dd);
-			})
-		}
-
-		$scope.tenantDetailFilter={};
-		$scope.appUsageFilter={};
-
-		$scope.TenantDetailList=[];
-		var tempTenantList=[];
-
-		var skipTenantWiseDetails=0;
-		var skipAppUsageDetails=0;
-		var takeTenantDetails=50;
-		var takeAppUsageDetails=20;
-		$scope.loadTenantReports=false;
-
-		var fromTenatDate='';
-		var toTenantDate='';
-		var plan='';
-		var tenantName='';
-		var selectedAppName='';
-		var usageAppType='';
-		var appUsageFilterType='';
-
-		$scope.clickGoToTenantDetails = function (reportName) {
-			angular.element('.sidenav').hide();
-
-			reportNme=reportName;
-			$location.hash('top');
-			$anchorScroll();
-			document.body.style.overflow = 'hidden';
-			//serverRequest.getReportUIFromServer(eventHandler);
-			vm.reportCategorySwitchState = reportName;
-			vm.sidenavActiveState = reportName;
-			selectReport(reportName);
-
-			$scope.iframeHeight=0;
-
-			if(reportName=="tenantdetails")
-			{
-				$scope.showTenantDetailReport=true;
-
-				skipTenantWiseDetails=0;
-				$scope.TenantDetailList=[];
-				tempTenantList=[];
-				$scope.loadTenantReports=false;
-				$scope.reportsLoding=false;
-				$scope.tenantDetailFilter={};
-
-				$scope.tenantDetailFilter.from=$scope.tenantDetailFilter.from==undefined?yearbacktime:$scope.tenantDetailFilter.from;
-				$scope.tenantDetailFilter.to=$scope.tenantDetailFilter.to==undefined?currntDay:$scope.tenantDetailFilter.to;
-
-				//$charge.dashboard().getTenantInfo(skipTenantWiseDetails,takeTenantDetails,'desc').success(function(data){
-				//  console.log(data);
-				//
-				//  for (var i = 0; i < data.length; i++) {
-				//    //
-				//    tempTenantList.push(data[i]);
-				//  }
-				//  skipTenantWiseDetails+=takeTenantDetails;
-				//  $scope.TenantDetailList=tempTenantList;
-				//  //loadCompanyRecurr(skip,take,reportName);
-				//  //$scope.CompanyDetailList=data;
-				//  $scope.reportsLoding=false;
-				//  $scope.loadTenantReports=true;
-				//  if(data.length<takeTenantDetails)
-				//  {
-				//    $scope.loadTenantReports=false;
-				//  }
-				//
-				//}).error(function(data){
-				//  console.log(data);
-				//  $scope.loadTenantReports=false;
-				//  $scope.reportsLoding=false;
-				//})
-			}
-			else if(reportName=="appdetails")
-			{
-				$scope.showAppUsageReport=true;
-
-				skipAppUsageDetails=0;
-				$scope.TenantDetailList=[];
-				tempTenantList=[];
-				$scope.loadTenantReports=false;
-				$scope.reportsLoding=false;
-				$scope.appUsageFilter={};
-
-				//$charge.dashboard().getAppUsageInfo(skipAppUsageDetails,takeTenantDetails,'desc').success(function(data){
-				//  console.log(data);
-				//
-				//  for (var i = 0; i < data.length; i++) {
-				//    //
-				//    tempTenantList.push(data[i]);
-				//  }
-				//  skipAppUsageDetails+=takeTenantDetails;
-				//  $scope.TenantDetailList=tempTenantList;
-				//  //loadCompanyRecurr(skip,take,reportName);
-				//  //$scope.CompanyDetailList=data;
-				//  $scope.reportsLoding=false;
-				//  $scope.loadTenantReports=true;
-				//  if(data.length<takeTenantDetails)
-				//  {
-				//    $scope.loadTenantReports=false;
-				//  }
-				//
-				//}).error(function(data){
-				//  console.log(data);
-				//  $scope.loadTenantReports=false;
-				//  $scope.reportsLoding=false;
-				//})
-			}
-
-			//onClickRefresh();
-			privateFun.clearAllUI();
-
-			// $timeout(function ()
-			// {
-			//   vm.activeInvoicePaneIndex = 1;
-			//
-			//   // Store the current scrollPos
-			//   vm.scrollPos = vm.scrollEl.scrollTop();
-			//
-			//   // Scroll to the top
-			//   vm.scrollEl.scrollTop(0);
-			// });
-		}
-
-		$scope.applyTenantDetailFilter = function () {
-
-			fromTenatDate=$scope.tenantDetailFilter.from==''?'':moment($scope.tenantDetailFilter.from).format('YYYY-MM-DD')+' 00:00:00';
-			toTenantDate=$scope.tenantDetailFilter.to==''?'':moment($scope.tenantDetailFilter.to).format('YYYY-MM-DD')+' 23:59:59';
-			plan=$scope.tenantDetailFilter.pricePlan==undefined?'':$scope.tenantDetailFilter.pricePlan;
-
-			$scope.showTenantDetailReport=true;
-
-			skipTenantWiseDetails=0;
-			$scope.TenantDetailList=[];
-			tempTenantList=[];
-			$scope.loadTenantReports=false;
-			$scope.reportsLoding=true;
-
-			fromTenatDate="'"+fromTenatDate+"'";
-			toTenantDate="'"+toTenantDate+"'";
-			plan="'"+plan+"'";
-			$charge.dashboard().getTenantInfoFilter(skipTenantWiseDetails,takeTenantDetails,'desc',fromTenatDate,toTenantDate,plan).success(function(data){
-				//$charge.dashboard().getTenantInfoFilter(skipTenantWiseDetails,takeTenantDetails,'desc','2016-01-05 00:00:00','2017-01-05 00:00:00','free_trial').success(function(data){
-				//  console.log(data);
-
-				for (var i = 0; i < data.Tenants.length; i++) {
-					//
-					tempTenantList.push(data.Tenants[i]);
-				}
-				if(plan=="''")
-				{
-					skipTenantWiseDetails+=parseInt(data.CheckedTenants);
-				}
-				else
-				{
-					skipTenantWiseDetails=parseInt(data.CheckedTenants);
-				}
-				$scope.TenantDetailList=tempTenantList;
-				//loadCompanyRecurr(skip,take,reportName);
-				//$scope.CompanyDetailList=data;
-				$scope.reportsLoding=false;
-				$scope.loadTenantReports=true;
-				if(data.Tenants.length<takeTenantDetails)
-				{
-					$scope.loadTenantReports=false;
-				}
-
-			}).error(function(data){
-				//console.log(data);
-				$scope.loadTenantReports=false;
-				$scope.reportsLoding=false;
-			})
-		}
-
-		$scope.loadMoreTenantDetailReports = function () {
-
-			$scope.moreReportsLoding=true;
-
-			$charge.dashboard().getTenantInfoFilter(skipTenantWiseDetails,takeTenantDetails,'desc',fromTenatDate,toTenantDate,plan).success(function(data){
-				//console.log(data);
-
-				for (var i = 0; i < data.Tenants.length; i++) {
-					//
-					tempTenantList.push(data.Tenants[i]);
-				}
-				if(plan=="''")
-				{
-					skipTenantWiseDetails+=parseInt(data.CheckedTenants);
-				}
-				else
-				{
-					skipTenantWiseDetails=parseInt(data.CheckedTenants);
-				}
-				$scope.TenantDetailList=tempTenantList;
-				//loadCompanyRecurr(skip,take,reportName);
-				//$scope.CompanyDetailList=data;
-				$scope.moreReportsLoding=false;
-				if(data.Tenants.length<takeTenantDetails)
-				{
-					$scope.loadTenantReports=false;
-				}
-
-			}).error(function(data){
-				//console.log(data);
-				$scope.loadTenantReports=false;
-				$scope.moreReportsLoding=false;
-			})
-		}
-
-		$scope.resetTenantWiseFilters = function () {
-			$scope.tenantDetailFilter={};
-			$scope.tenantDetailFilter.from=$scope.tenantDetailFilter.from==undefined?yearbacktime:$scope.tenantDetailFilter.from;
-			$scope.tenantDetailFilter.to=$scope.tenantDetailFilter.to==undefined?currntDay:$scope.tenantDetailFilter.to;
-
-			skipTenantWiseDetails=0;
-			$scope.TenantDetailList=[];
-			tempTenantList=[];
-			$scope.loadTenantReports=false;
-			$scope.reportsLoding=false;
-		}
-
-		$scope.applyAppUsageFilter = function () {
-			appUsageFilterType=$scope.appUsageFilter.type==undefined?'':$scope.appUsageFilter.type;
-			tenantName=$scope.appUsageFilter.tenantName==undefined?'':$scope.appUsageFilter.tenantName;
-			selectedAppName=$scope.appUsageFilter.appName==undefined?'':$scope.appUsageFilter.appName;
-			usageAppType=$scope.appUsageFilter.appUsage==undefined?'':$scope.appUsageFilter.appUsage;
-
-			$scope.showAppUsageReport=true;
-
-			skipAppUsageDetails=0;
-			$scope.TenantDetailList=[];
-			tempTenantList=[];
-			$scope.loadTenantReports=false;
-			$scope.reportsLoding=true;
-
-			if(appUsageFilterType=='tenant')
-			{
-				$charge.dashboard().getAppUsageTenantFilter(tenantName).success(function(data){
-					//console.log(data);
-
-					tempTenantList.push({
-						Tenant:tenantName,
-						AppInfo:data
-					});
-					$scope.TenantDetailList=tempTenantList;
-					//loadCompanyRecurr(skip,take,reportName);
-					//$scope.CompanyDetailList=data;
-					$scope.reportsLoding=false;
-
-				}).error(function(data){
-					//console.log(data);
-					$scope.reportsLoding=false;
-				})
-			}
-			else if(appUsageFilterType=='app')
-			{
-
-			}
-			else
-			{
-				$charge.dashboard().getAppUsageInfo(skipAppUsageDetails,takeTenantDetails,'desc').success(function(data){
-					//console.log(data);
-
-					for (var i = 0; i < data.length; i++) {
-						//
-						tempTenantList.push(data[i]);
-					}
-					skipAppUsageDetails+=takeTenantDetails;
-					$scope.TenantDetailList=tempTenantList;
-					//loadCompanyRecurr(skip,take,reportName);
-					//$scope.CompanyDetailList=data;
-					$scope.reportsLoding=false;
-					$scope.loadTenantReports=true;
-					if(data.length<takeTenantDetails)
-					{
-						$scope.loadTenantReports=false;
-					}
-
-				}).error(function(data){
-					//console.log(data);
-					$scope.loadTenantReports=false;
-					$scope.reportsLoding=false;
-				})
-			}
-
-		}
-
-		$scope.loadMoreAppUsageReports = function () {
-
-			$scope.moreReportsLoding=true;
-
-			$charge.dashboard().getAppUsageInfo(skipAppUsageDetails,takeTenantDetails,'desc').success(function(data){
-				//console.log(data);
-
-				for (var i = 0; i < data.length; i++) {
-					//
-					tempTenantList.push(data[i]);
-				}
-				skipAppUsageDetails+=takeTenantDetails;
-				$scope.TenantDetailList=tempTenantList;
-				//loadCompanyRecurr(skip,take,reportName);
-				//$scope.CompanyDetailList=data;
-				$scope.moreReportsLoding=false;
-				if(data.length<takeTenantDetails)
-				{
-					$scope.loadTenantReports=false;
-				}
-
-			}).error(function(data){
-				//console.log(data);
-				$scope.loadTenantReports=false;
-				$scope.moreReportsLoding=false;
-			})
-		}
-
-		$scope.clearFilterAppUsage = function () {
-			$scope.appUsageFilter.tenantName="";
-			$scope.appUsageFilter.appName="";
-			$scope.appUsageFilter.appUsage="";
-		}
-
-		$scope.resetAppUsageFilters = function () {
-			$scope.appUsageFilter={};
-
-			skipAppUsageDetails=0;
-			$scope.TenantDetailList=[];
-			tempTenantList=[];
-			$scope.loadTenantReports=false;
-			$scope.reportsLoding=false;
-		}
-
-		function toggleinnerView(){
-			if(vm.appInnerState === "default"){
-				vm.appInnerState = "add";
-				vm.pageTitle="View Invoices";
-			}else{
-				vm.appInnerState = "default";
-				vm.pageTitle="Create New";
-			}
-		}
-
-		//refresh reports view
-		$scope.refresh = function () {
-			$scope.searchReport = "";
-			getAllReport();
-		}
-
-		//go to page up
-		$scope.goToTop = function () {
-			//$window.scrollTo(0, angular.element(document.getElementById('top')).offsetTop);
-			//$window.scrollTo(0, 0);
-			$location.hash('bottom');
-			$anchorScroll();
-		};
-
-
-
-		//reportFilterCtrl.js
-
-		$scope.isFiled = {
-			loading: false,
-			found: false
-		};
-		//back to home
-		$scope.onClickBack = function () {
-			$state.go('report');
-			document.body.style.overflow = 'auto';
-		};
-
-		//#event handler
-		//report event handler
-		$scope.reportName = null;
-		var eventHandler = {
-			reportName: '',
-			isReportLoad: false,
-			isFiled: {
-				loading: false,
-				found: false
-			},
-			error: {
-				isGetError: false,
-				msg: ''
-			},
-			isFiledData: false,
-			isDataFound: true
-		};
-		$scope.eventHandler = eventHandler;
-		//end
-
-		//#report filed
-		//report data
-		var reportFiledList = {
-			UIDate: [],
-			currentDateFiledName: [],
-			loader: [],
-			UITextBox: [],
-			UIDropDown: [],
-			UIElement: [],
-			selectedDrpFiled: [],
-			selectedDate: [],
-			isDateFound: false,
-			isDropDownFound: false,
-			fromDate: '',
-			toDate: '',
-			cafDate: '',
-			tags: [
-				{id: 0, name: "SKY"},
-				{id: 1, name: "SKY2"}],
-			customerNames: [
-				{id: 0, name: 'RAJESWARI N'},
-				{id: 1, name: 'CHANDRASEKAR K'},
-				{id: 2, name: 'ANITHA B'},
-				{id: 3, name: 'ANANDALATCHOUMY S'},
-				{id: 4, name: 'ANURADHA R'},
-				{id: 5, name: 'VENKATESAN A'},
-				{id: 6, name: 'MURUGESAN S'},
-				{id: 7, name: 'GANESAN S'},
-				{id: 8, name: 'THIRUMANGAI G'}
-			]
-		};
-		$scope.reportFiledList = reportFiledList;
-		$scope.reportLayout = false;
-		var localStorage = [];
-
-		//#private function
-		//controller private function
-		var privateFun = (function () {
-			return {
-				fireMsg: function (msgType, content) {
-					if(msgType == '1')
-					{
-						var theme = 'success-toast';
-					}
-					else
-					{
-						var theme = 'error toast';
-					}
-					$mdToast.show(
-						$mdToast.simple()
-							.textContent(content)
-							.position('top right')
-							.hideDelay(3000)
-							.theme(theme));
-				},
-				capitalise: function (string) {
-					return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-				},
-				waitLoadingFiled: function (filedName) {
-					$scope.eventHandler.isFiledData = true;
-					// $scope.isFiled.found = false;
-					$scope.filedName = filedName;
-				}
-				,
-				doneLoadedFiled: function () {
-					$scope.eventHandler.isFiledData = false;
-					// $scope.eventHandler.isDataFound = false;
-					// $scope.isFiled.found = true;
-				}
-				,
-				waitParameterRender: function () {
-					$scope.isFiled.loading = true;
-					$scope.isFiled.found = false;
-					$scope.eventHandler.error.isGetError = false;
-				}
-				,
-				doneParameterRender: function () {
-					$scope.isFiled.loading = false;
-					$scope.isFiled.found = true;
-					$scope.eventHandler.error.isGetError = false;
-				}
-				,
-				gotParameterRenderError: function () {
-					$scope.isFiled.loading = false;
-					$scope.eventHandler.error.isGetError = true;
-				},
-				clearAllUI: function () {
-					$scope.reportFiledList.UIDate = [];
-					$scope.reportFiledList.UITextBox = [];
-					$scope.reportFiledList.UIDropDown = [];
-					$scope.reportFiledList.selectedDrpFiled = [];
-					$scope.reportFiledList.selectedDate = [];
-				},
-				doneReportLoad: function () {
-					var reportName = $scope.eventHandler.reportName;
-					$scope.eventHandler = {
-						reportName: reportName,
-						isDataFound: false,
-						isReportLoad: false,
-						isFiled: {
-							loading: false,
-							found: true
-						},
-						error: {
-							isGetError: false
-						}
-					}
-					$scope.reportFldLoading = false;
-
-				},
-				clearIframe: function () {
-					$scope.eventHandler.isDataFound = true;
-					$scope.eventHandler.isReportLoad = false;
-					$scope.reportURL = '';
-					var frame = $('#reportFram').get(0);
-					frame.src = "";
-				},
-				getNumberOfMonth: function (month) {
-					switch (month.toLowerCase()) {
-						case "january":
-							return '01';
-							break;
-						case "february":
-							return '02';
-							break;
-						case "march":
-							return '03';
-							break;
-						case "april":
-							return '04';
-							break;
-						case "may":
-							return '05';
-							break;
-						case "june":
-							return '06';
-							break;
-						case "july":
-							return '07';
-							break;
-						case "august":
-							return '08';
-							break;
-						case "september":
-							return '09';
-							break;
-						case "october":
-							return '10';
-							break;
-						case "november":
-							return '11';
-							break;
-						case "december":
-							return '12';
-							break;
-						case "all":
-							return '00';
-							break;
-					}
-				}
-			}
-		})();
-		//end
-
-		//#oncreate #report
-		$scope.onCreateReport = function () {
-			//serverRequest.reportCreate();
-		};
-
-
-		//#dropDown change selected
-		//drop down on change event select
-		$scope.onChangeSelected = function (val, filedName) {
-			//  var select_value = e.options[e.selectedIndex].text;
-			// var select_value = filedName;
-
-			//this function work on filedname must need month or months
-			//get number of month
-			var select_value = null;
-			if (filedName == 'month' || filedName == "months" || filedName == "Months" || filedName == "Month") {
-				select_value = privateFun.getNumberOfMonth(val);
-			}
-			else {
-				select_value = val;
-			}
-
-
-			var currentVal = {
-				data: $scope.reportFiledList.selectedDrpFiled,
-				length: $scope.reportFiledList.selectedDrpFiled.length,
-				filedName: filedName,
-				value: select_value
-			};
-
-			var currentFiledAry = $scope.reportFiledList.selectedDrpFiled;
-			for (var i = 0; i < currentFiledAry.length; i++) {
-				if (currentFiledAry[i].filedName == currentVal.filedName) {
-					$scope.reportFiledList.selectedDrpFiled[i].value = currentVal.value;
-				}
-			}
-
-			var executeQueryAry = $scope.executeQueryAry;
-			var findIndex = 0;
-			for (var loop = 0; loop < executeQueryAry.length; loop++) {
-				if (executeQueryAry[loop].ParamName == filedName) {
-					findIndex = loop;
-					findIndex++;
-				}
-			}
-
-			//check next query isHierarchy
-			//then true execute query
-			if (findIndex < executeQueryAry.length) {
-				if (executeQueryAry[findIndex].isHierarchy) {
-					executeQryHandler.executeNextQuery(filedName, currentVal.value, findIndex);
-				}
-			}
-		};//end
+        //   // Scroll to the top
+        //   vm.scrollEl.scrollTop(0);
+        // });
+      }
+
+      var from="";
+      var to="";
+      var type="";
+      var value="";
+
+      $scope.loadMoreFinanceReoprts = function () {
+
+        //from=$scope.financeFilter.from!=undefined?moment($scope.financeFilter.from).format().split('T')[0]:'';
+        //to=$scope.financeFilter.to!=undefined?moment($scope.financeFilter.to).format().split('T')[0]:'';
+        //type=$scope.financeFilter.type!=undefined?$scope.financeFilter.type:'';
+        //value=type!=''?($scope.financeFilter.value!=undefined?$scope.financeFilter.value:''):'';
+        $scope.moreReportsLoding=true;
+
+        $charge.paymentgateway().getAll(skip,take,selectedFinanceReport,to,from,type,value).success(function(data){
+          //console.log(data);
+
+          for (var i = 0; i < data.length; i++) {
+            //
+            tempCompanyList.push(data[i]);
+          }
+          skip+=take;
+          $scope.CompanyDetailList=tempCompanyList;
+          //loadCompanyRecurr(skip,take,reportName);
+          //$scope.CompanyDetailList=data;
+          $scope.moreReportsLoding=false;
+          if(data.length<take)
+          {
+            $scope.loadFinanceReports=false;
+          }
+
+        }).error(function(data){
+          //console.log(data);
+          $scope.loadFinanceReports=false;
+          $scope.moreReportsLoding=false;
+        })
+      }
+
+      $scope.applyFinanceFilter = function () {
+
+        //from=$scope.financeFilter.from!=undefined?moment($scope.financeFilter.from).format().split('T')[0]:'';
+        //to=$scope.financeFilter.to!=undefined?moment($scope.financeFilter.to).format().split('T')[0]:'';
+        from=$scope.financeFilter.from==undefined?'':$scope.financeFilter.from;
+        to=$scope.financeFilter.to==undefined?'':$scope.financeFilter.to;
+        type=$scope.financeFilter.type;
+        value=$scope.financeFilter.value;
+
+        //$scope.financeFilter.from=$scope.financeFilter.from==undefined?yearbacktime:$scope.financeFilter.from;
+        //$scope.financeFilter.to=$scope.financeFilter.to==undefined?currntDay:$scope.financeFilter.to;
+
+        skip=0;
+        $scope.CompanyDetailList=[];
+        tempCompanyList=[];
+        $scope.loadFinanceReports=false;
+        $scope.reportsLoding=true;
+        $charge.paymentgateway().getAll(skip,take,selectedFinanceReport,to,from,type,value).success(function(data){
+          //console.log(data);
+
+          for (var i = 0; i < data.length; i++) {
+            //
+            tempCompanyList.push(data[i]);
+          }
+          skip+=take;
+          $scope.CompanyDetailList=tempCompanyList;
+          //loadCompanyRecurr(skip,take,reportName);
+          //$scope.CompanyDetailList=data;
+          $scope.reportsLoding=false;
+          $scope.loadFinanceReports=true;
+          if(data.length<take)
+          {
+            $scope.loadFinanceReports=false;
+          }
+
+        }).error(function(data){
+          //console.log(data);
+          $scope.loadFinanceReports=false;
+          $scope.reportsLoding=false;
+        })
+      }
+
+      $scope.clearFilterValue = function () {
+        $scope.financeFilter.value="";
+      }
+
+      $scope.resetFilters = function () {
+        $scope.financeFilter={};
+        $scope.financeFilter.from=$scope.financeFilter.from==undefined?yearbacktime:$scope.financeFilter.from;
+        $scope.financeFilter.to=$scope.financeFilter.to==undefined?currntDay:$scope.financeFilter.to;
+        skip=0;
+        $scope.CompanyDetailList=[];
+        tempCompanyList=[];
+        $scope.loadFinanceReports=false;
+        $scope.reportsLoding=false;
+        //$scope.loadMoreFinanceReoprts();
+      }
+
+      function loadCompanyRecurr(skip,take,reportName){
+        $charge.paymentgateway().getAll(skip,take,reportName).success(function(data){
+          for (var i = 0; i < data.length; i++) {
+            //
+            tempCompanyList.push(data[i]);
+          }
+          skip+=take;
+          loadCompanyRecurr(skip,take,reportName);
+
+        }).error(function(data){
+          //console.log(data);
+          $scope.CompanyDetailList=tempCompanyList;
+          var dd=$scope.CompanyDetailList[1];
+          //console.log(dd);
+        })
+      }
+
+      $scope.tenantDetailFilter={};
+      $scope.appUsageFilter={};
+
+      $scope.TenantDetailList=[];
+      var tempTenantList=[];
+
+      var skipTenantWiseDetails=0;
+      var skipAppUsageDetails=0;
+      var takeTenantDetails=50;
+      var takeAppUsageDetails=20;
+      $scope.loadTenantReports=false;
+
+      var fromTenatDate='';
+      var toTenantDate='';
+      var plan='';
+      var tenantName='';
+      var selectedAppName='';
+      var usageAppType='';
+      var appUsageFilterType='';
+
+      $scope.clickGoToTenantDetails = function (reportName) {
+        angular.element('.sidenav').hide();
+
+        reportNme=reportName;
+        $location.hash('top');
+        $anchorScroll();
+        document.body.style.overflow = 'hidden';
+        //serverRequest.getReportUIFromServer(eventHandler);
+        vm.reportCategorySwitchState = reportName;
+        vm.sidenavActiveState = reportName;
+        selectReport(reportName);
+
+        $scope.iframeHeight=0;
+
+        if(reportName=="tenantdetails")
+        {
+          $scope.showTenantDetailReport=true;
+
+          skipTenantWiseDetails=0;
+          $scope.TenantDetailList=[];
+          tempTenantList=[];
+          $scope.loadTenantReports=false;
+          $scope.reportsLoding=false;
+          $scope.tenantDetailFilter={};
+
+          $scope.tenantDetailFilter.from=$scope.tenantDetailFilter.from==undefined?yearbacktime:$scope.tenantDetailFilter.from;
+          $scope.tenantDetailFilter.to=$scope.tenantDetailFilter.to==undefined?currntDay:$scope.tenantDetailFilter.to;
+
+          //$charge.dashboard().getTenantInfo(skipTenantWiseDetails,takeTenantDetails,'desc').success(function(data){
+          //  console.log(data);
+          //
+          //  for (var i = 0; i < data.length; i++) {
+          //    //
+          //    tempTenantList.push(data[i]);
+          //  }
+          //  skipTenantWiseDetails+=takeTenantDetails;
+          //  $scope.TenantDetailList=tempTenantList;
+          //  //loadCompanyRecurr(skip,take,reportName);
+          //  //$scope.CompanyDetailList=data;
+          //  $scope.reportsLoding=false;
+          //  $scope.loadTenantReports=true;
+          //  if(data.length<takeTenantDetails)
+          //  {
+          //    $scope.loadTenantReports=false;
+          //  }
+          //
+          //}).error(function(data){
+          //  console.log(data);
+          //  $scope.loadTenantReports=false;
+          //  $scope.reportsLoding=false;
+          //})
+        }
+        else if(reportName=="appdetails")
+        {
+          $scope.showAppUsageReport=true;
+
+          skipAppUsageDetails=0;
+          $scope.TenantDetailList=[];
+          tempTenantList=[];
+          $scope.loadTenantReports=false;
+          $scope.reportsLoding=false;
+          $scope.appUsageFilter={};
+
+          //$charge.dashboard().getAppUsageInfo(skipAppUsageDetails,takeTenantDetails,'desc').success(function(data){
+          //  console.log(data);
+          //
+          //  for (var i = 0; i < data.length; i++) {
+          //    //
+          //    tempTenantList.push(data[i]);
+          //  }
+          //  skipAppUsageDetails+=takeTenantDetails;
+          //  $scope.TenantDetailList=tempTenantList;
+          //  //loadCompanyRecurr(skip,take,reportName);
+          //  //$scope.CompanyDetailList=data;
+          //  $scope.reportsLoding=false;
+          //  $scope.loadTenantReports=true;
+          //  if(data.length<takeTenantDetails)
+          //  {
+          //    $scope.loadTenantReports=false;
+          //  }
+          //
+          //}).error(function(data){
+          //  console.log(data);
+          //  $scope.loadTenantReports=false;
+          //  $scope.reportsLoding=false;
+          //})
+        }
+
+        //onClickRefresh();
+        privateFun.clearAllUI();
+
+        // $timeout(function ()
+        // {
+        //   vm.activeInvoicePaneIndex = 1;
+		//
+        //   // Store the current scrollPos
+        //   vm.scrollPos = vm.scrollEl.scrollTop();
+		//
+        //   // Scroll to the top
+        //   vm.scrollEl.scrollTop(0);
+        // });
+      }
+
+      $scope.applyTenantDetailFilter = function () {
+
+        fromTenatDate=$scope.tenantDetailFilter.from==''?'':moment($scope.tenantDetailFilter.from).format('YYYY-MM-DD')+' 00:00:00';
+        toTenantDate=$scope.tenantDetailFilter.to==''?'':moment($scope.tenantDetailFilter.to).format('YYYY-MM-DD')+' 23:59:59';
+        plan=$scope.tenantDetailFilter.pricePlan==undefined?'':$scope.tenantDetailFilter.pricePlan;
+
+        $scope.showTenantDetailReport=true;
+
+        skipTenantWiseDetails=0;
+        $scope.TenantDetailList=[];
+        tempTenantList=[];
+        $scope.loadTenantReports=false;
+        $scope.reportsLoding=true;
+
+        fromTenatDate="'"+fromTenatDate+"'";
+        toTenantDate="'"+toTenantDate+"'";
+        plan="'"+plan+"'";
+        $charge.dashboard().getTenantInfoFilter(skipTenantWiseDetails,takeTenantDetails,'desc',fromTenatDate,toTenantDate,plan).success(function(data){
+        //$charge.dashboard().getTenantInfoFilter(skipTenantWiseDetails,takeTenantDetails,'desc','2016-01-05 00:00:00','2017-01-05 00:00:00','free_trial').success(function(data){
+        //  console.log(data);
+
+          for (var i = 0; i < data.Tenants.length; i++) {
+            //
+            tempTenantList.push(data.Tenants[i]);
+          }
+          if(plan=="''")
+          {
+            skipTenantWiseDetails+=parseInt(data.CheckedTenants);
+          }
+          else
+          {
+            skipTenantWiseDetails=parseInt(data.CheckedTenants);
+          }
+          $scope.TenantDetailList=tempTenantList;
+          //loadCompanyRecurr(skip,take,reportName);
+          //$scope.CompanyDetailList=data;
+          $scope.reportsLoding=false;
+          $scope.loadTenantReports=true;
+          if(data.Tenants.length<takeTenantDetails)
+          {
+            $scope.loadTenantReports=false;
+          }
+
+        }).error(function(data){
+          //console.log(data);
+          $scope.loadTenantReports=false;
+          $scope.reportsLoding=false;
+        })
+      }
+
+      $scope.loadMoreTenantDetailReports = function () {
+
+        $scope.moreReportsLoding=true;
+
+        $charge.dashboard().getTenantInfoFilter(skipTenantWiseDetails,takeTenantDetails,'desc',fromTenatDate,toTenantDate,plan).success(function(data){
+          //console.log(data);
+
+          for (var i = 0; i < data.Tenants.length; i++) {
+            //
+            tempTenantList.push(data.Tenants[i]);
+          }
+          if(plan=="''")
+          {
+            skipTenantWiseDetails+=parseInt(data.CheckedTenants);
+          }
+          else
+          {
+            skipTenantWiseDetails=parseInt(data.CheckedTenants);
+          }
+          $scope.TenantDetailList=tempTenantList;
+          //loadCompanyRecurr(skip,take,reportName);
+          //$scope.CompanyDetailList=data;
+          $scope.moreReportsLoding=false;
+          if(data.Tenants.length<takeTenantDetails)
+          {
+            $scope.loadTenantReports=false;
+          }
+
+        }).error(function(data){
+          //console.log(data);
+          $scope.loadTenantReports=false;
+          $scope.moreReportsLoding=false;
+        })
+      }
+
+      $scope.resetTenantWiseFilters = function () {
+        $scope.tenantDetailFilter={};
+        $scope.tenantDetailFilter.from=$scope.tenantDetailFilter.from==undefined?yearbacktime:$scope.tenantDetailFilter.from;
+        $scope.tenantDetailFilter.to=$scope.tenantDetailFilter.to==undefined?currntDay:$scope.tenantDetailFilter.to;
+
+        skipTenantWiseDetails=0;
+        $scope.TenantDetailList=[];
+        tempTenantList=[];
+        $scope.loadTenantReports=false;
+        $scope.reportsLoding=false;
+      }
+
+      $scope.applyAppUsageFilter = function () {
+        appUsageFilterType=$scope.appUsageFilter.type==undefined?'':$scope.appUsageFilter.type;
+        tenantName=$scope.appUsageFilter.tenantName==undefined?'':$scope.appUsageFilter.tenantName;
+        selectedAppName=$scope.appUsageFilter.appName==undefined?'':$scope.appUsageFilter.appName;
+        usageAppType=$scope.appUsageFilter.appUsage==undefined?'':$scope.appUsageFilter.appUsage;
+
+        $scope.showAppUsageReport=true;
+
+        skipAppUsageDetails=0;
+        $scope.TenantDetailList=[];
+        tempTenantList=[];
+        $scope.loadTenantReports=false;
+        $scope.reportsLoding=true;
+
+        if(appUsageFilterType=='tenant')
+        {
+          $charge.dashboard().getAppUsageTenantFilter(tenantName).success(function(data){
+            //console.log(data);
+
+            tempTenantList.push({
+              Tenant:tenantName,
+              AppInfo:data
+            });
+            $scope.TenantDetailList=tempTenantList;
+            //loadCompanyRecurr(skip,take,reportName);
+            //$scope.CompanyDetailList=data;
+            $scope.reportsLoding=false;
+
+          }).error(function(data){
+            //console.log(data);
+            $scope.reportsLoding=false;
+          })
+        }
+        else if(appUsageFilterType=='app')
+        {
+
+        }
+        else
+        {
+          $charge.dashboard().getAppUsageInfo(skipAppUsageDetails,takeTenantDetails,'desc').success(function(data){
+            //console.log(data);
+
+            for (var i = 0; i < data.length; i++) {
+              //
+              tempTenantList.push(data[i]);
+            }
+            skipAppUsageDetails+=takeTenantDetails;
+            $scope.TenantDetailList=tempTenantList;
+            //loadCompanyRecurr(skip,take,reportName);
+            //$scope.CompanyDetailList=data;
+            $scope.reportsLoding=false;
+            $scope.loadTenantReports=true;
+            if(data.length<takeTenantDetails)
+            {
+              $scope.loadTenantReports=false;
+            }
+
+          }).error(function(data){
+            //console.log(data);
+            $scope.loadTenantReports=false;
+            $scope.reportsLoding=false;
+          })
+        }
+
+      }
+
+      $scope.loadMoreAppUsageReports = function () {
+
+        $scope.moreReportsLoding=true;
+
+        $charge.dashboard().getAppUsageInfo(skipAppUsageDetails,takeTenantDetails,'desc').success(function(data){
+          //console.log(data);
+
+          for (var i = 0; i < data.length; i++) {
+            //
+            tempTenantList.push(data[i]);
+          }
+          skipAppUsageDetails+=takeTenantDetails;
+          $scope.TenantDetailList=tempTenantList;
+          //loadCompanyRecurr(skip,take,reportName);
+          //$scope.CompanyDetailList=data;
+          $scope.moreReportsLoding=false;
+          if(data.length<takeTenantDetails)
+          {
+            $scope.loadTenantReports=false;
+          }
+
+        }).error(function(data){
+          //console.log(data);
+          $scope.loadTenantReports=false;
+          $scope.moreReportsLoding=false;
+        })
+      }
+
+      $scope.clearFilterAppUsage = function () {
+        $scope.appUsageFilter.tenantName="";
+        $scope.appUsageFilter.appName="";
+        $scope.appUsageFilter.appUsage="";
+      }
+
+      $scope.resetAppUsageFilters = function () {
+        $scope.appUsageFilter={};
+
+        skipAppUsageDetails=0;
+        $scope.TenantDetailList=[];
+        tempTenantList=[];
+        $scope.loadTenantReports=false;
+        $scope.reportsLoding=false;
+      }
+
+      function toggleinnerView(){
+        if(vm.appInnerState === "default"){
+          vm.appInnerState = "add";
+          vm.pageTitle="View Invoices";
+        }else{
+          vm.appInnerState = "default";
+          vm.pageTitle="Create New";
+        }
+      }
+
+      //refresh reports view
+      $scope.refresh = function () {
+        $scope.searchReport = "";
+        getAllReport();
+      }
+
+      //go to page up
+      $scope.goToTop = function () {
+        //$window.scrollTo(0, angular.element(document.getElementById('top')).offsetTop);
+        //$window.scrollTo(0, 0);
+        $location.hash('bottom');
+        $anchorScroll();
+      };
+
+
+
+      //reportFilterCtrl.js
+
+      $scope.isFiled = {
+        loading: false,
+        found: false
+      };
+      //back to home
+      $scope.onClickBack = function () {
+        $state.go('report');
+        document.body.style.overflow = 'auto';
+      };
+
+      //#event handler
+      //report event handler
+      $scope.reportName = null;
+      var eventHandler = {
+        reportName: '',
+        isReportLoad: false,
+        isFiled: {
+          loading: false,
+          found: false
+        },
+        error: {
+          isGetError: false,
+          msg: ''
+        },
+        isFiledData: false,
+        isDataFound: true
+      };
+      $scope.eventHandler = eventHandler;
+      //end
+
+      //#report filed
+      //report data
+      var reportFiledList = {
+        UIDate: [],
+        currentDateFiledName: [],
+        loader: [],
+        UITextBox: [],
+        UIDropDown: [],
+        UIElement: [],
+        selectedDrpFiled: [],
+        selectedDate: [],
+        isDateFound: false,
+        isDropDownFound: false,
+        fromDate: '',
+        toDate: '',
+        cafDate: '',
+        tags: [
+          {id: 0, name: "SKY"},
+          {id: 1, name: "SKY2"}],
+        customerNames: [
+          {id: 0, name: 'RAJESWARI N'},
+          {id: 1, name: 'CHANDRASEKAR K'},
+          {id: 2, name: 'ANITHA B'},
+          {id: 3, name: 'ANANDALATCHOUMY S'},
+          {id: 4, name: 'ANURADHA R'},
+          {id: 5, name: 'VENKATESAN A'},
+          {id: 6, name: 'MURUGESAN S'},
+          {id: 7, name: 'GANESAN S'},
+          {id: 8, name: 'THIRUMANGAI G'}
+        ]
+      };
+      $scope.reportFiledList = reportFiledList;
+      $scope.reportLayout = false;
+      var localStorage = [];
+
+      //#private function
+      //controller private function
+      var privateFun = (function () {
+        return {
+          fireMsg: function (msgType, content) {
+            if(msgType == '1')
+            {
+              var theme = 'success-toast';
+            }
+            else
+            {
+              var theme = 'error toast';
+            }
+            $mdToast.show(
+              $mdToast.simple()
+                .textContent(content)
+                .position('top right')
+                .hideDelay(3000)
+                .theme(theme));
+          },
+          capitalise: function (string) {
+            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+          },
+          waitLoadingFiled: function (filedName) {
+            $scope.eventHandler.isFiledData = true;
+            // $scope.isFiled.found = false;
+            $scope.filedName = filedName;
+          }
+          ,
+          doneLoadedFiled: function () {
+            $scope.eventHandler.isFiledData = false;
+            // $scope.eventHandler.isDataFound = false;
+            // $scope.isFiled.found = true;
+          }
+          ,
+          waitParameterRender: function () {
+            $scope.isFiled.loading = true;
+            $scope.isFiled.found = false;
+            $scope.eventHandler.error.isGetError = false;
+          }
+          ,
+          doneParameterRender: function () {
+            $scope.isFiled.loading = false;
+            $scope.isFiled.found = true;
+            $scope.eventHandler.error.isGetError = false;
+          }
+          ,
+          gotParameterRenderError: function () {
+            $scope.isFiled.loading = false;
+            $scope.eventHandler.error.isGetError = true;
+          },
+          clearAllUI: function () {
+            $scope.reportFiledList.UIDate = [];
+            $scope.reportFiledList.UITextBox = [];
+            $scope.reportFiledList.UIDropDown = [];
+            $scope.reportFiledList.selectedDrpFiled = [];
+            $scope.reportFiledList.selectedDate = [];
+          },
+          doneReportLoad: function () {
+            var reportName = $scope.eventHandler.reportName;
+            $scope.eventHandler = {
+              reportName: reportName,
+              isDataFound: false,
+              isReportLoad: false,
+              isFiled: {
+                loading: false,
+                found: true
+              },
+              error: {
+                isGetError: false
+              }
+            }
+            $scope.reportFldLoading = false;
+
+          },
+          clearIframe: function () {
+            $scope.eventHandler.isDataFound = true;
+            $scope.eventHandler.isReportLoad = false;
+            $scope.reportURL = '';
+            var frame = $('#reportFram').get(0);
+            frame.src = "";
+          },
+          getNumberOfMonth: function (month) {
+            switch (month.toLowerCase()) {
+              case "january":
+                return '01';
+                break;
+              case "february":
+                return '02';
+                break;
+              case "march":
+                return '03';
+                break;
+              case "april":
+                return '04';
+                break;
+              case "may":
+                return '05';
+                break;
+              case "june":
+                return '06';
+                break;
+              case "july":
+                return '07';
+                break;
+              case "august":
+                return '08';
+                break;
+              case "september":
+                return '09';
+                break;
+              case "october":
+                return '10';
+                break;
+              case "november":
+                return '11';
+                break;
+              case "december":
+                return '12';
+                break;
+              case "all":
+                return '00';
+                break;
+            }
+          }
+        }
+      })();
+      //end
+
+      //#oncreate #report
+      $scope.onCreateReport = function () {
+        //serverRequest.reportCreate();
+      };
+
+
+      //#dropDown change selected
+      //drop down on change event select
+      $scope.onChangeSelected = function (val, filedName) {
+        //  var select_value = e.options[e.selectedIndex].text;
+        // var select_value = filedName;
+
+        //this function work on filedname must need month or months
+        //get number of month
+        var select_value = null;
+        if (filedName == 'month' || filedName == "months" || filedName == "Months" || filedName == "Month") {
+          select_value = privateFun.getNumberOfMonth(val);
+        }
+        else {
+          select_value = val;
+        }
+
+
+        var currentVal = {
+          data: $scope.reportFiledList.selectedDrpFiled,
+          length: $scope.reportFiledList.selectedDrpFiled.length,
+          filedName: filedName,
+          value: select_value
+        };
+
+        var currentFiledAry = $scope.reportFiledList.selectedDrpFiled;
+        for (var i = 0; i < currentFiledAry.length; i++) {
+          if (currentFiledAry[i].filedName == currentVal.filedName) {
+            $scope.reportFiledList.selectedDrpFiled[i].value = currentVal.value;
+          }
+        }
+
+        var executeQueryAry = $scope.executeQueryAry;
+        var findIndex = 0;
+        for (var loop = 0; loop < executeQueryAry.length; loop++) {
+          if (executeQueryAry[loop].ParamName == filedName) {
+            findIndex = loop;
+            findIndex++;
+          }
+        }
+
+        //check next query isHierarchy
+        //then true execute query
+        if (findIndex < executeQueryAry.length) {
+          if (executeQueryAry[findIndex].isHierarchy) {
+            executeQryHandler.executeNextQuery(filedName, currentVal.value, findIndex);
+          }
+        }
+      };//end
 
 //#refresh
 //refresh all data
-		$scope.onClickRefresh = function () {
+      $scope.onClickRefresh = function () {
 
-			privateFun.clearIframe();
-			$scope.reportFiledList.selectedDate = [];
-			$("md-select").val("");
+        privateFun.clearIframe();
+        $scope.reportFiledList.selectedDate = [];
+        $("md-select").val("");
 
-			for (var i = 0; i < $scope.reportFiledList.UIDropDown.length; i++) {
-				var dropDown=$scope.reportFiledList.UIDropDown[i];
-				dropDown.selectedVal="";
-			}
-		};
+        for (var i = 0; i < $scope.reportFiledList.UIDropDown.length; i++) {
+          var dropDown=$scope.reportFiledList.UIDropDown[i];
+          dropDown.selectedVal="";
+        }
+      };
 
 //#onclick cancel filed load
-		$scope.onClickStLoading = function () {
-			privateFun.doneLoadedFiled();
-		};
+      $scope.onClickStLoading = function () {
+        privateFun.doneLoadedFiled();
+      };
 
-		//Initialize DashBoard Report to Start
-		//$scope.loadFilterCategories('dashBoardReport.mrt');
-		//
+      //Initialize DashBoard Report to Start
+      //$scope.loadFilterCategories('dashBoardReport.mrt');
 
-		function maximizeReport(action) {
-			var iframe = document.getElementById('reportFram');
-			var innerDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
-			if(action){
-				angular.forEach(reportPropertiesPanel.childNodes, function (panel) {
-					if(panel.className == 'stiJsViewerToolBar'){
-						panel.setAttribute('style','display:none!important');
-					}
-				});
-				vm.showSidenav = false;
-			}else{
-				vm.showSidenav = true;
-			}
-		}
+      function maximizeReport(action) {
+		  action ? vm.showSidenav = false : vm.showSidenav = true
+	  }
 
 
 //#server request
@@ -1723,149 +1719,147 @@
 //          }
 //        }
 //      })();
-		//serverRequest.getReportUIFromServer(eventHandler);
-		$scope.toggle = function (item, list) {
-			var idx = list.indexOf(item);
-			if (idx > -1) list.splice(idx, 1);
-			else list.push(item);
-		};
+      //serverRequest.getReportUIFromServer(eventHandler);
+      $scope.toggle = function (item, list) {
+        var idx = list.indexOf(item);
+        if (idx > -1) list.splice(idx, 1);
+        else list.push(item);
+      };
 
 
 //test code
-		$scope.noResultsTag = null;
-		$scope.addTag = function () {
-			$scope.tags.push({
-				id: $scope.tags.length,
-				name: $scope.noResultsTag
-			});
-		};
-		$scope.$watch('noResultsTag', function (newVal, oldVal) {
-			if (newVal && newVal !== oldVal) {
-				$timeout(function () {
-					var noResultsLink = $('.select2-no-results');
-					//console.log(noResultsLink.contents());
-					$compile(noResultsLink.contents())($scope);
-				});
-			}
-		}, true);
+      $scope.noResultsTag = null;
+      $scope.addTag = function () {
+        $scope.tags.push({
+          id: $scope.tags.length,
+          name: $scope.noResultsTag
+        });
+      };
+      $scope.$watch('noResultsTag', function (newVal, oldVal) {
+        if (newVal && newVal !== oldVal) {
+          $timeout(function () {
+            var noResultsLink = $('.select2-no-results');
+            //console.log(noResultsLink.contents());
+            $compile(noResultsLink.contents())($scope);
+          });
+        }
+      }, true);
 
 
 //select report parameter
-		$scope.selectedVal = null;
+      $scope.selectedVal = null;
 
 
 //#execute query handler
-		$scope.executeQueryAry = [];
-		var executeQryHandler = (function () {
-			return {
-				executeNextQuery: function (filedName, selectedVal, findIndex) {
-					//console.log(filedName);
-					//console.log(selectedVal);
-					var executeQueryAry = $scope.executeQueryAry;
-					for (var i = 0; i < executeQueryAry.length; i++) {
-						var nextRequst = i;
-						nextRequst++;
-						var length = $scope.reportFiledList.UIDropDown.length
-						if (executeQueryAry[i].ParamName == filedName &&
-							nextRequst != executeQueryAry.length) {
-							if (i != executeQueryAry.length) {
-								if (executeQueryAry[i].query != "") {
+      $scope.executeQueryAry = [];
+      var executeQryHandler = (function () {
+        return {
+          executeNextQuery: function (filedName, selectedVal, findIndex) {
+            //console.log(filedName);
+            //console.log(selectedVal);
+            var executeQueryAry = $scope.executeQueryAry;
+            for (var i = 0; i < executeQueryAry.length; i++) {
+              var nextRequst = i;
+              nextRequst++;
+              var length = $scope.reportFiledList.UIDropDown.length
+              if (executeQueryAry[i].ParamName == filedName &&
+                nextRequst != executeQueryAry.length) {
+                if (i != executeQueryAry.length) {
+                  if (executeQueryAry[i].query != "") {
 
-									//#nextquery
-									var nextQuery = executeQueryAry[nextRequst].query;
-									//var replaceTxt = privateFun.capitalise(filedName);
-									var replaceTxt = '${' + filedName + '}';
-									var nextQuery = nextQuery.replace(replaceTxt, "'" + selectedVal + "'");
-									//nextQuery = nextQuery.replace('All', selectedVal);
+                    //#nextquery
+                    var nextQuery = executeQueryAry[nextRequst].query;
+                    //var replaceTxt = privateFun.capitalise(filedName);
+                    var replaceTxt = '${' + filedName + '}';
+                    var nextQuery = nextQuery.replace(replaceTxt, "'" + selectedVal + "'");
+                    //nextQuery = nextQuery.replace('All', selectedVal);
 
-									//loader
-									var loaderIndex = 0;
-									for (var l = 0; l < reportFiledList.UIDropDown.length; l++) {
-										if (reportFiledList.UIDropDown[l].ParamName == executeQueryAry[nextRequst].filedName) {
-											loaderIndex = l;
-											reportFiledList.UIDropDown[l].loader = true;
-											l = reportFiledList.UIDropDown.length;
-										}
-									}
+                    //loader
+                    var loaderIndex = 0;
+                    for (var l = 0; l < reportFiledList.UIDropDown.length; l++) {
+                      if (reportFiledList.UIDropDown[l].ParamName == executeQueryAry[nextRequst].filedName) {
+                        loaderIndex = l;
+                        reportFiledList.UIDropDown[l].loader = true;
+                        l = reportFiledList.UIDropDown.length;
+                      }
+                    }
 
-									serverRequest.getExecuteQuery(nextQuery, length, function (res) {
-										if (res.data == 500) {
-											var result  = res.data;
-											privateFun.fireMsg('0', 'Error 500 :' +
-												' Report filed load error...');
-											reportFiledList.UIDropDown[loaderIndex].loader = false;
-											return;
-										}
-										var jsonObj = JSON.parse(res.data);
-										var filed = [];
-										var foundArray = 0
-										if (jsonObj.Result.length != 0) {
-											for (var c in jsonObj.Result) {
-												if (Object.prototype.hasOwnProperty.call(jsonObj.Result, c)) {
-													var val = jsonObj.Result[c];
-													angular.forEach(val, function (value, key) {
-														//console.log(key + "," + value);
-														if (key == "value") {
-															if (value == "All") {
-																value = "00";
-															}
-														}
-														//  console.log(key + "," + value);
-														if (value != "sort" && value != "1" && value != "2" && value != "3" && value != "4"
-															&& value != "5" && value != "6" && value != "7" && value != "8"
-															&& value != "9" && value != "10" && value != "11" && value != "12"
-															&& value != "01" && value != "02" && value != "03" && value != "05"
-															&& value != "04" && value != "13" && value != "00"
-															&& value != "06" && value != "07" && value != "08" && value != "09") {
-															filed.push(value);
-														}
-													});
-												}
-											}
-											$scope.$apply(function () {
-												$scope.reportFiledList.UIDropDown[loaderIndex].loader = false;
-												$scope.reportFiledList.UIDropDown[findIndex].data = filed;
-											});
+                    serverRequest.getExecuteQuery(nextQuery, length, function (res) {
+                      if (res.data == 500) {
+                        var result  = res.data;
+                        privateFun.fireMsg('0', 'Error 500 :' +
+                        ' Report filed load error...');
+                        reportFiledList.UIDropDown[loaderIndex].loader = false;
+                        return;
+                      }
+                      var jsonObj = JSON.parse(res.data);
+                      var filed = [];
+                      var foundArray = 0
+                      if (jsonObj.Result.length != 0) {
+                        for (var c in jsonObj.Result) {
+                          if (Object.prototype.hasOwnProperty.call(jsonObj.Result, c)) {
+                            var val = jsonObj.Result[c];
+                            angular.forEach(val, function (value, key) {
+                              //console.log(key + "," + value);
+                              if (key == "value") {
+                                if (value == "All") {
+                                  value = "00";
+                                }
+                              }
+                              //  console.log(key + "," + value);
+                              if (value != "sort" && value != "1" && value != "2" && value != "3" && value != "4"
+                                && value != "5" && value != "6" && value != "7" && value != "8"
+                                && value != "9" && value != "10" && value != "11" && value != "12"
+                                && value != "01" && value != "02" && value != "03" && value != "05"
+                                && value != "04" && value != "13" && value != "00"
+                                && value != "06" && value != "07" && value != "08" && value != "09") {
+                                filed.push(value);
+                              }
+                            });
+                          }
+                        }
+                        $scope.$apply(function () {
+                          $scope.reportFiledList.UIDropDown[loaderIndex].loader = false;
+                          $scope.reportFiledList.UIDropDown[findIndex].data = filed;
+                        });
 
-										} else {
-											privateFun.fireMsg('1', 'Data not found..');
+                      } else {
+                        privateFun.fireMsg('1', 'Data not found..');
 
-										}
+                      }
 
-									});
-								}
+                    });
+                  }
 
-							}
+                }
 
-						}
-					}
-				}
-			};
-		})();
+              }
+            }
+          }
+        };
+      })();
 
-		$scope.goToTop = function () {
-			$window.scrollTo(0, angular.element(document.getElementById('top')).offsetTop);
-			$window.scrollTo(0, 0);
-			//$location.hash('bottom');
-			//$anchorScroll();
-		};
-
-
-		//Export Reports==========================================================
-
-		$scope.reportExportXSL = function () {
-			var report = new Blob([document.getElementById('reports-exportable').innerHTML], {
-				type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
-			});
-			saveAs(report, "CloudCharge.xls");
-		}
-		//$scope.reportExportPDF = function () {
-		//  var report = new Blob([document.getElementById('finance-exportable').innerHTML], {
-		//    type: "application/pdf.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
-		//  });
-		//  saveAs(report, "Report Test.xls");
-		//}
+      $scope.goToTop = function () {
+        $window.scrollTo(0, angular.element(document.getElementById('top')).offsetTop);
+        $window.scrollTo(0, 0);
+        //$location.hash('bottom');
+        //$anchorScroll();
+      };
 
 
-	}
+      //Export Reports==========================================================
+
+      $scope.reportExportXSL = function () {
+        var report = new Blob([document.getElementById('reports-exportable').innerHTML], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        });
+        saveAs(report, "CloudCharge.xls");
+      }
+      //$scope.reportExportPDF = function () {
+      //  var report = new Blob([document.getElementById('finance-exportable').innerHTML], {
+      //    type: "application/pdf.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+      //  });
+      //  saveAs(report, "Report Test.xls");
+      //}
+    }
 })();
