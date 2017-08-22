@@ -30,7 +30,7 @@
         .controller('ReportController', ReportController);
 
     /** @ngInject */
-    function ReportController($scope, $document, $timeout, notifications, $mdDialog, $mdToast, $mdMedia, $mdSidenav,$charge,$filter, $http, $rootScope, $state, $window, $location, $anchorScroll, $stateParams, $sce)
+    function ReportController($scope, $document, $timeout, notifications, $mdDialog, $mdToast, $mdMedia, $mdSidenav,$charge,$filter, $http, $rootScope, $state, $window, $location, $anchorScroll, $stateParams, $sce,logHelper)
     {
       //
         var vm = this;
@@ -80,9 +80,14 @@
 				$scope.reportList[index].collapse = !$scope.reportList[index].collapse;
 			}
 		}
-		// / Collapsible panel
-
-        //////////
+		
+		
+    // == information log ==========
+      $scope.infoJson= {};
+      $scope.infoJson.message ='custom info';
+      $scope.infoJson.app ='report';
+      logHelper.info( $scope.infoJson);
+    // ======= end ====================
 
         // Watch screen size to activate responsive read pane
         $scope.$watch(function ()

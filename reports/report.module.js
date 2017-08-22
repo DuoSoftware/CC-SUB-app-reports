@@ -1,9 +1,9 @@
 ////////////////////////////////
 // App : Reports
 // Owner  : Gihan Herath
-// Last changed date : 2017/07/18
-// Version : 6.1.0.7
-// Modified By : Gihan
+// Last changed date : 2017/08/22
+// Version : 6.1.0.8
+// Modified By : Ishara
 /////////////////////////////////
 (function ()
 {
@@ -13,6 +13,14 @@
         .module('app.report', [])
         .config(config)
         .filter('parseDate',parseDateFilter)
+      .factory('$exceptionHandler',function(logHelper) {
+
+        return function (exception, cause) {
+          exception.app= 'report' ;
+          logHelper.error(exception);
+        };
+
+      });
         //.directive('datepicker',datePickerDirective)
         //.constant('configReport',{
         //      appName: 'diginReportViwer',
