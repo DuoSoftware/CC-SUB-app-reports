@@ -30,7 +30,7 @@
         .controller('ReportController', ReportController);
 
     /** @ngInject */
-    function ReportController($scope, $document, $timeout, notifications, $mdDialog, $mdToast, $mdMedia, $mdSidenav,$charge,$filter, $http, $rootScope, $state, $window, $location, $anchorScroll, $stateParams, $sce,logHelper)
+    function ReportController($scope, $document, $timeout, notifications, $mdDialog, $mdToast, $mdMedia, $mdSidenav,$charge,$filter, $http, $rootScope, $state, $window, $location, $anchorScroll, $stateParams, $sce)
     {
       //
         var vm = this;
@@ -80,14 +80,9 @@
 				$scope.reportList[index].collapse = !$scope.reportList[index].collapse;
 			}
 		}
-		
-		
-    // == information log ==========
-      $scope.infoJson= {};
-      $scope.infoJson.message ='custom info';
-      $scope.infoJson.app ='report';
-      logHelper.info( $scope.infoJson);
-    // ======= end ====================
+		// / Collapsible panel
+
+        //////////
 
         // Watch screen size to activate responsive read pane
         $scope.$watch(function ()
@@ -133,6 +128,11 @@
       function getIdTokenForServices() {
         var _st = gst("securityToken");
         return (_st != null) ? _st : "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ilg1ZVhrNHh5b2pORnVtMWtsMll0djhkbE5QNC1jNTdkTzZRR1RWQndhTmsifQ.eyJleHAiOjE0OTU1OTg0MTgsIm5iZiI6MTQ5NTUxNTYxOCwidmVyIjoiMS4wIiwiaXNzIjoiaHR0cHM6Ly9sb2dpbi5taWNyb3NvZnRvbmxpbmUuY29tL2MxZjlmOGU2LTM0NjktNGQ1Zi1hMzI2LTgzZTk5MGE5OTI2YS92Mi4wLyIsInN1YiI6IjUyZmE0ZjM3LWVlODktNDc4MS1iYTc0LWQ2ZmY3ODBkNTVhYiIsImF1ZCI6ImQwODRhMjI3LWJiNTItNDk5Mi04ODlkLTZlNDgzNTYxMGU3NiIsIm5vbmNlIjoiZGVmYXVsdE5vbmNlIiwiaWF0IjoxNDk1NTE1NjE4LCJhdXRoX3RpbWUiOjE0OTU1MTU2MTgsIm9pZCI6IjUyZmE0ZjM3LWVlODktNDc4MS1iYTc0LWQ2ZmY3ODBkNTVhYiIsImdpdmVuX25hbWUiOiJnaWhhbiIsIm5hbWUiOiJnaWhhbiIsImNvdW50cnkiOiJTcmkgTGFua2EiLCJleHRlbnNpb25fRG9tYWluIjoiZ2loYW4uYXBwLmNsb3VkY2hhcmdlLmNvbSIsImZhbWlseV9uYW1lIjoic3RhcnRlciIsImpvYlRpdGxlIjoiYWRtaW4iLCJlbWFpbHMiOlsiZ2loYW5AZHVvc29mdHdhcmUuY29tIl0sInRmcCI6IkIyQ18xX0RlZmF1bHRQb2xpY3kifQ.AKa_DTiIvvJEhpOrSJtKwR2BkI2f9U3Xfe4oJcSKTnyIGc66FPh1hlUFnj0eolHEA9tOQ0Q9XPoRm6JHGiekUtzCHcBMtnrHD1TuUpVUWT7dgRp6TBiVvvafAFka5aXi7KP5GuCVPsRPz9RguCipE9upQXzqF2ApwXQZ1S2H90LOEz_Ed2z2WYTi8dJcEabvJK9fkOjqMnvLbem2E3Ajj3Aj8CHINZu4W-Zv4IT7u8Aao2OjgBjhkdul687WRbILCuCJW3Hoz2_tX-5VBtk5-aetnYMAYM2JHyR5KcjNfNIhJOYJGyzPoI3vijMJ94i8lqnWcrTx9eRyNK4JttnZhQ"; //"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6ImdmSUtJSC15WjNwaFJIUnlqbnNISXFaTWFlUExHQUVMelBhdDBDTlk0c0EifQ";
+      }
+
+      function getSuperAdmin() {
+        var _st = gst("isSuperAdmin");
+        return (_st != null) ? _st : "false"; //"248570d655d8419b91f6c3e0da331707 51de1ea9effedd696741d5911f77a64f";
       }
 
 
@@ -315,9 +315,24 @@
       $http.get('app/core/cloudcharge/js/reportList.json').then(function(data){
 
         //console.log(data);
-
-        for (key in data.data) {
-          $scope.reportList.push(data.data[key]);
+        var IsSuperAdmin = getSuperAdmin();
+        if(IsSuperAdmin=="false")
+        {
+          for (key in data.data) {
+            if(!data.data[key].superadmin)
+            {
+              $scope.reportList.push(data.data[key]);
+            }
+          }
+        }
+        else
+        {
+          for (key in data.data) {
+            if(data.data[key].superadmin)
+            {
+              $scope.reportList.push(data.data[key]);
+            }
+          }
         }
       }, function(errorResponse){
         //console.log(errorResponse);

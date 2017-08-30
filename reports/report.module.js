@@ -1,9 +1,9 @@
 ////////////////////////////////
 // App : Reports
 // Owner  : Gihan Herath
-// Last changed date : 2017/08/22
+// Last changed date : 2017/08/30
 // Version : 6.1.0.8
-// Modified By : Ishara
+// Modified By : Gihan
 /////////////////////////////////
 (function ()
 {
@@ -13,14 +13,6 @@
         .module('app.report', [])
         .config(config)
         .filter('parseDate',parseDateFilter)
-      .factory('$exceptionHandler',function(logHelper) {
-
-        return function (exception, cause) {
-          exception.app= 'report' ;
-          logHelper.error(exception);
-        };
-
-      });
         //.directive('datepicker',datePickerDirective)
         //.constant('configReport',{
         //      appName: 'diginReportViwer',
@@ -43,7 +35,7 @@
     function config($stateProvider, $translatePartialLoaderProvider, $sceDelegateProvider, msApiProvider, mesentitlementProvider, msNavigationServiceProvider, $mdDateLocaleProvider)
     {
 
-        // mesentitlementProvider.setStateCheck("report");
+        mesentitlementProvider.setStateCheck("report");
 
         $stateProvider
             .state('app.report', {
@@ -55,24 +47,12 @@
                     }
                 },
                 resolve: {
-                    security: ['$q','mesentitlement', '$rootScope', '$timeout', '$location',  function($q,mesentitlement,$rootScope,$timeout, $location){
-						return $q(function(resolve, reject) {
-							$timeout(function() {
-								if ($rootScope.isBaseSet2) {
-									resolve(function () {
-										var entitledStatesReturn = mesentitlement.stateDepResolver('report');
+                    security: ['$q','mesentitlement', function($q,mesentitlement){
+                        var entitledStatesReturn = mesentitlement.stateDepResolver('report');
 
-										mesentitlementProvider.setStateCheck("report");
-
-										if(entitledStatesReturn !== true){
-											return $q.reject("unauthorized");
-										}
-									});
-								} else {
-									return $location.path('/guide');
-								}
-							});
-						});
+                        if(entitledStatesReturn !== true){
+                              return $q.reject("unauthorized");
+                        };
                     }]
                 },
                 bodyClass: 'report'
@@ -86,7 +66,7 @@
         msNavigationServiceProvider.saveItem('report', {
             title    : 'reports',
             state    : 'app.report',
-            weight   : 10
+            weight   : 8
         });
 
         $mdDateLocaleProvider.formatDate = function(date) {
