@@ -86,7 +86,7 @@
         msNavigationServiceProvider.saveItem('report', {
             title    : 'reports',
             state    : 'app.report',
-            weight   : 8
+            weight   : 10
         });
 
         $mdDateLocaleProvider.formatDate = function(date) {
