@@ -316,10 +316,10 @@
 
         //console.log(data);
         var IsSuperAdmin = getSuperAdmin();
-        if(IsSuperAdmin=="false")
+        if(IsSuperAdmin=="true")
         {
           for (key in data.data) {
-            if(!data.data[key].superadmin)
+            if(data.data[key].superadmin)
             {
               $scope.reportList.push(data.data[key]);
             }
@@ -328,7 +328,7 @@
         else
         {
           for (key in data.data) {
-            if(data.data[key].superadmin)
+            if(!data.data[key].superadmin)
             {
               $scope.reportList.push(data.data[key]);
             }
