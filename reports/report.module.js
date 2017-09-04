@@ -35,8 +35,6 @@
     function config($stateProvider, $translatePartialLoaderProvider, $sceDelegateProvider, msApiProvider, mesentitlementProvider, msNavigationServiceProvider, $mdDateLocaleProvider)
     {
 
-        mesentitlementProvider.setStateCheck("report");
-
         $stateProvider
             .state('app.report', {
                 url    : '/report',
@@ -47,19 +45,31 @@
                     }
                 },
                 resolve: {
-                    security: ['$q','mesentitlement', function($q,mesentitlement){
-                        var entitledStatesReturn = mesentitlement.stateDepResolver('report');
+					security: ['$q','mesentitlement','$timeout','$rootScope','$state','$location', function($q,mesentitlement,$timeout,$rootScope,$state, $location){
+						return $q(function(resolve, reject) {
+							$timeout(function() {
+								if ($rootScope.isBaseSet2) {
+									resolve(function () {
+										var entitledStatesReturn = mesentitlement.stateDepResolver('report');
 
-                        if(entitledStatesReturn !== true){
-                              return $q.reject("unauthorized");
-                        };
-                    }]
+										mesentitlementProvider.setStateCheck("report");
+
+										if(entitledStatesReturn !== true){
+											return $q.reject("unauthorized");
+										}
+									});
+								} else {
+									return $location.path('/guide');
+								}
+							});
+						});
+					}]
                 },
                 bodyClass: 'report'
             });
 
         //Api
-        msApiProvider.register('cc_invoice.invoices', ['app/data/cc_invoice/invoices.json']);
+        // msApiProvider.register('cc_invoice.invoices', ['app/data/cc_invoice/invoices.json']);
 
         // Navigation
 
