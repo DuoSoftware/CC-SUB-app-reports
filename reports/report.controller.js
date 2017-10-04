@@ -344,7 +344,7 @@
         //console.log(data);
         $scope.baseUrl=data.data["report"]["domain"];
         //$scope.loadFilterCategories('dashBoardReport.mrt');
-        $scope.loadFilterCategories($scope.reportList[0].report);
+		  $scope.loadFilterCategories($scope.reportList[0].data[0].report);
 
         //for (key in data.data) {
         //  if (data.data.hasOwnProperty("report")) {
