@@ -1,0 +1,64 @@
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+<div id="report" class="page-layout carded left-sidenav" layout="row" ng-switch="vm.appInnerState">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg md-accent-bg h-55"></div>
+  <!-- / TOP BACKGROUND -->
+
+  <!-- SIDENAV -->
+  <md-sidenav class="sidenav animate-slide-left" md-is-locked-open="$mdMedia('gt-md')" md-component-id="main-sidenav"
+              ng-include="'app/main/reports/sidenavs/main/main-sidenav.html'"
+              ng-if="vm.showSidenav" ms-scroll ms-sidenav-helper>
+  </md-sidenav>
+  <!-- / SIDENAV -->
+
+  <!-- CENTER -->
+  <div ng-switch-when="default" class="center" layout="column" flex>
+    <!-- CONTENT HEADER -->
+    <!-- / CONTENT HEADER -->
+
+    <!-- CONTENT CARD -->
+    <div class="content-card content-card-offset" layout="column" flex>
+
+      <!-- INVOICE VIEW PANE TOOLBAR -->
+      <!-- / INVOICE VIEW PANE TOOLBAR -->
+
+      <!-- CONTENT WRAPPER -->
+      <div class="content-wrapper" layout="row" flex>
+
+        <md-tabs md-selected="vm.activeInvoicePaneIndex" class="content-tabs" md-dynamic-height="{{vm.dynamicHeight}}" flex>
+          <!-- INVOICE LIST PANE -->
+          <md-tab>
+            <md-tab-label>Report List Pane</md-tab-label>
+            <md-tab-body>
+              <div class="content invoice-list-pane"
+                   ng-include="'app/main/reports/views/list/list-view.html'">
+              </div>
+            </md-tab-body>
+          </md-tab>
+          <!-- / INVOICE LIST PANE -->
+
+          <!-- INVOICE DISPLAY PANE -->
+          <md-tab>
+            <md-tab-label>Report Display Pane</md-tab-label>
+            <md-tab-body>
+              <div class="content invoice-display-pane"
+                   ng-include="'app/main/reports/views/read/read-view.html'" ms-scroll>
+              </div>
+            </md-tab-body>
+          </md-tab>
+          <!-- / INVOICE DISPLAY PANE -->
+        </md-tabs>
+
+      </div>
+      <!-- / CONTENT WRAPPER -->
+
+    </div>
+    <!-- / CONTENT CARD -->
+  </div>
+
+  <!-- / CENTER -->
+<!--<script src="FileSaver.min.js"></script>-->
+</div>

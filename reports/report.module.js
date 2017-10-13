@@ -1,8 +1,8 @@
 ////////////////////////////////
 // App : Reports
 // Owner  : Gihan Herath
-// Last changed date : 2017/07/18
-// Version : 6.1.0.7
+// Last changed date : 2017/08/30
+// Version : 6.1.0.8
 // Modified By : Gihan
 /////////////////////////////////
 (function ()
@@ -35,8 +35,6 @@
     function config($stateProvider, $translatePartialLoaderProvider, $sceDelegateProvider, msApiProvider, mesentitlementProvider, msNavigationServiceProvider, $mdDateLocaleProvider)
     {
 
-        // mesentitlementProvider.setStateCheck("report");
-
         $stateProvider
             .state('app.report', {
                 url    : '/report',
@@ -47,7 +45,7 @@
                     }
                 },
                 resolve: {
-                    security: ['$q','mesentitlement', '$rootScope', '$timeout', '$location',  function($q,mesentitlement,$rootScope,$timeout, $location){
+					security: ['$q','mesentitlement','$timeout','$rootScope','$state','$location', function($q,mesentitlement,$timeout,$rootScope,$state, $location){
 						return $q(function(resolve, reject) {
 							$timeout(function() {
 								if ($rootScope.isBaseSet2) {
@@ -65,13 +63,13 @@
 								}
 							});
 						});
-                    }]
+					}]
                 },
                 bodyClass: 'report'
             });
 
         //Api
-        msApiProvider.register('cc_invoice.invoices', ['app/data/cc_invoice/invoices.json']);
+        // msApiProvider.register('cc_invoice.invoices', ['app/data/cc_invoice/invoices.json']);
 
         // Navigation
 
