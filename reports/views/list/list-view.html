@@ -1,15 +1,19 @@
 <div>
     <toast></toast>
 
+    <div class="preloader" style="top: 0;" ng-if="!reportLoaded">
+        <md-progress-circular></md-progress-circular>
+    </div>
+
     <iframe fill-width
-            frameborder='0' src="{{reportURL}}"
-            frameborder="0"
+            frameborder='0'
             id="reportFram"
+            src="{{reportURL}}"
             marginwidth="0"
             marginheight="0"
             height="{{iframeHeight}}"
             onload=""
-            allowfullscreen ng-cloak>
+            allowfullscreen>
     </iframe>
 
   <!--<div id="top" class="header-wrap animated fadeIn" flex>-->
