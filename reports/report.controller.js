@@ -387,6 +387,10 @@
 		$scope.showAppUsageReport=false;
 
 		$scope.loadFilterCategories= function (category) {
+
+			
+			$scope.isUrlSet = false;
+			$('#reportFram').remove();
 			//$scope.reportCategory=category;
 			// $timeout(function ()
 			// {
@@ -403,7 +407,9 @@
 			var reportURL5="&domain="+getDomainForServices();
 
 			$scope.reportURL=reportURL1+reportURL2+reportURL3+reportURL4+reportURL5;
-			// document.getElementById('reportFram').setAttribute('src', $scope.reportURL);
+
+			var elemParent = $('#reportContainer');
+			elemParent.append('<iframe fill-width ng-show="isUrlSet" frameborder="0" id="reportFram" src="'+$scope.reportURL+'" marginwidth="0" marginheight="0" height="'+$scope.iframeHeight+'" onload="" allowfullscreen> </iframe>');
 			$scope.isUrlSet = true;
 
 			// $scope.clickGoToFilter(category.split('.')[0]);
