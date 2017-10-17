@@ -141,10 +141,17 @@
 			return (_st != null) ? _st : __st;
 		}
 
+		function getAccountCategory() {
+			var _st = gst("category");
+			return (_st != null) ? _st : "";
+		}
+
 		function getSuperAdmin() {
 			var _st = gst("isSuperAdmin");
 			return (_st != null) ? _st : "false"; //"248570d655d8419b91f6c3e0da331707 51de1ea9effedd696741d5911f77a64f";
 		}
+
+		var accCat = getAccountCategory();
 
 
 		function selectReport(report)
@@ -388,7 +395,6 @@
 
 		$scope.loadFilterCategories= function (category) {
 
-			
 			$scope.isUrlSet = false;
 			$('#reportFram').remove();
 			//$scope.reportCategory=category;
