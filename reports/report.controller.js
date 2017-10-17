@@ -334,51 +334,60 @@
 
 		$scope.reportURL = "";
 
-		$http.get('app/core/cloudcharge/js/reportList.json').then(function(data){
-
-			//console.log(data);
-			var IsSuperAdmin = getSuperAdmin();
-			if(IsSuperAdmin=="true")
-			{
-				for (key in data.data) {
-					if(data.data[key].superadmin)
-					{
-						$scope.reportList.push(data.data[key]);
-					}
-				}
-			}
-			else
-			{
-				for (key in data.data) {
-					if(!data.data[key].superadmin)
-					{
-						$scope.reportList.push(data.data[key]);
-					}
-				}
+		(function () {
+			var catReportList;
+			if(accCat == 'invoice'){
+				catReportList = 'app/core/cloudcharge/js/reportListList.json';
+			}else if(accCat == 'subscription'){
+				catReportList = 'app/core/cloudcharge/js/reportList.json';
 			}
 
-			$http.get('app/core/cloudcharge/js/config.json').then(function(data){
+			$http.get(catReportList).then(function(data){
 
 				//console.log(data);
-				$scope.baseUrl=data.data["report"]["domain"];
-				//$scope.loadFilterCategories('dashBoardReport.mrt');
-				$scope.loadFilterCategories($scope.reportList[0].data[0].report);
+				var IsSuperAdmin = getSuperAdmin();
+				if(IsSuperAdmin=="true")
+				{
+					for (key in data.data) {
+						if(data.data[key].superadmin)
+						{
+							$scope.reportList.push(data.data[key]);
+						}
+					}
+				}
+				else
+				{
+					for (key in data.data) {
+						if(!data.data[key].superadmin)
+						{
+							$scope.reportList.push(data.data[key]);
+						}
+					}
+				}
 
-				//for (key in data.data) {
-				//  if (data.data.hasOwnProperty("report")) {
-				//    $scope.baseUrl=data.data["report"]["domain"];
-				//
-				//    $scope.loadFilterCategories('dashBoardReport.mrt');
-				//    break;
-				//  }
-				//}
+				$http.get('app/core/cloudcharge/js/config.json').then(function(data){
+
+					//console.log(data);
+					$scope.baseUrl=data.data["report"]["domain"];
+					//$scope.loadFilterCategories('dashBoardReport.mrt');
+					$scope.loadFilterCategories($scope.reportList[0].data[0].report);
+
+					//for (key in data.data) {
+					//  if (data.data.hasOwnProperty("report")) {
+					//    $scope.baseUrl=data.data["report"]["domain"];
+					//
+					//    $scope.loadFilterCategories('dashBoardReport.mrt');
+					//    break;
+					//  }
+					//}
+				}, function(errorResponse){
+					//console.log(errorResponse);
+					$scope.baseUrl="";
+				});
 			}, function(errorResponse){
 				//console.log(errorResponse);
-				$scope.baseUrl="";
 			});
-		}, function(errorResponse){
-			//console.log(errorResponse);
-		});
+		})();
 
 		$scope.companyLogo="";
 		$charge.settingsapp().getDuobaseValuesByTableName("CTS_CompanyAttributes").success(function(data) {
