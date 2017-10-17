@@ -337,7 +337,7 @@
 		(function () {
 			var catReportList;
 			if(accCat == 'invoice'){
-				catReportList = 'app/core/cloudcharge/js/reportListList.json';
+				catReportList = 'app/core/cloudcharge/js/reportListInvoice.json';
 			}else if(accCat == 'subscription'){
 				catReportList = 'app/core/cloudcharge/js/reportList.json';
 			}
