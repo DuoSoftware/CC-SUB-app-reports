@@ -17,7 +17,7 @@
 
         function closeDialog()
         {
-            $mdDialog.hide();
+            $mdDialog.cancel();
         }
 
       vm.reportName = reportName;

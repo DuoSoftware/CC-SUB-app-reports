@@ -357,6 +357,10 @@
       $scope.loadCreatedReport(report.reportName,'view');
     }
 
+    $scope.editUserCreatedReport = function(report){
+      $scope.loadCreatedReport(report.reportName,'edit');
+    }
+
     $scope.loadCreatedReport= function (reportName,action) {
 
       $scope.isUrlSet = false;
