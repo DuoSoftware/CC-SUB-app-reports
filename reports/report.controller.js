@@ -104,19 +104,18 @@
 
 		function getIdTokenForServices() {
 			var _st = gst("securityToken");
-			return (_st != null) ? _st : "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ilg1ZVhrNHh5b2pORnVtMWtsMll0djhkbE5QNC1jNTdkTzZRR1RWQndhTmsifQ.eyJleHAiOjE1MTI2MTgyMzMsIm5iZiI6MTUxMjUzNTQzMywidmVyIjoiMS4wIiwiaXNzIjoiaHR0cHM6Ly9sb2dpbi5taWNyb3NvZnRvbmxpbmUuY29tL2MxZjlmOGU2LTM0NjktNGQ1Zi1hMzI2LTgzZTk5MGE5OTI2YS92Mi4wLyIsInN1YiI6ImUwN2YxMWVkLWEyYmYtNGI1Mi1hM2QxLTk5NTM1OTg4ZTcyOSIsImF1ZCI6ImQwODRhMjI3LWJiNTItNDk5Mi04ODlkLTZlNDgzNTYxMGU3NiIsIm5vbmNlIjoiZGVmYXVsdE5vbmNlIiwiaWF0IjoxNTEyNTM1NDMzLCJhdXRoX3RpbWUiOjE1MTI1MzU0MzMsIm9pZCI6ImUwN2YxMWVkLWEyYmYtNGI1Mi1hM2QxLTk5NTM1OTg4ZTcyOSIsImdpdmVuX25hbWUiOiJhbmFiZWxhIiwibmFtZSI6ImFuYWJlbGEiLCJjb3VudHJ5IjoiQmFuZ2xhZGVzaCIsImV4dGVuc2lvbl9tb2RlIjoidGVzdCIsImV4dGVuc2lvbl9Eb21haW4iOiJhbmFiZWxhLmFwcC5jbG91ZGNoYXJnZS5jb20sIGFuYWJlbGEtaW52MixhbmFiZWxhaW52MS5hcHAuY2xvdWRjaGFyZ2UuY29tIiwiZmFtaWx5X25hbWUiOiJmcmVlX3RyaWFsIiwiam9iVGl0bGUiOiJhZG1pbiIsImVtYWlscyI6WyJhbmFiZWxhLmtoYWRpamFoQG9vdS51cyJdLCJ0ZnAiOiJCMkNfMV9EZWZhdWx0UG9saWN5In0.XTEJwvsoSM0O18jWBfiSJ6o7OSoFCLBnihp1WI5uV0yaXz3Sws61sPXFN6wdbr6hEpiq5Sxad_2n8KeuOWghGe2MvajBtdhRiWmYYUoCbQizkZ49VarsTj34bzEigFGPd5a7iwZ7inzFJNdQQatf2pq19kknQ4hSbyMRovrITsdhd2cOqEKu17YeWtqIXvzvM-dr2L0mXZjUYbOykvLM177RTMsa6WBNzpHbdk3X3ZAJUmBPg1I5ZHUoYhnkBQQAWGCUokN7NzfrpiJ0tMhwo1G2Xh_HIwPr2c5r2aHAF5BJ4VpnjnAJ5Crel-nRinYUSfChGnPi2GkJwq-wYiKgBQ";
+			return (_st != null) ? _st : "";
 		}
 
 		function getDomainForServices() {
 			var _st = gst("currentDomain");
 			var __st = gst("domain");
-      __st = "anabela.app.cloudcharge.com";
 			return (_st != null) ? _st : __st;
 		}
 
 		function getAccountCategory() {
 			var _st = gst("category");
-			return (_st != null) ? _st : "subscription";
+			return (_st != null) ? _st : "";
 		}
 
 		function getSuperAdmin() {
