@@ -28,29 +28,38 @@
       <!-- CONTENT WRAPPER -->
       <div class="content-wrapper" layout="row" flex>
 
-        <md-tabs md-selected="vm.activeInvoicePaneIndex" class="content-tabs" md-dynamic-height="{{vm.dynamicHeight}}" flex>
-          <!-- INVOICE LIST PANE -->
-          <md-tab>
-            <md-tab-label>Report List Pane</md-tab-label>
-            <md-tab-body>
-              <div class="content invoice-list-pane"
-                   ng-include="'app/main/reports/views/list/list-view.html'">
-              </div>
-            </md-tab-body>
-          </md-tab>
-          <!-- / INVOICE LIST PANE -->
+        <!--<md-tabs md-selected="vm.activeInvoicePaneIndex" class="content-tabs" md-dynamic-height="{{vm.dynamicHeight}}" flex>-->
+          <!--&lt;!&ndash; INVOICE LIST PANE &ndash;&gt;-->
+          <!--<md-tab>-->
+            <!--<md-tab-label>Report List Pane</md-tab-label>-->
+            <!--<md-tab-body>-->
+              <!--<div class="content invoice-list-pane"-->
+                   <!--ng-include="'app/main/reports/views/list/list-view.html'">-->
+              <!--</div>-->
+            <!--</md-tab-body>-->
+          <!--</md-tab>-->
+          <!--&lt;!&ndash; / INVOICE LIST PANE &ndash;&gt;-->
 
-          <!-- INVOICE DISPLAY PANE -->
-          <md-tab>
-            <md-tab-label>Report Display Pane</md-tab-label>
-            <md-tab-body>
-              <div class="content invoice-display-pane"
-                   ng-include="'app/main/reports/views/read/read-view.html'" ms-scroll>
+          <!--&lt;!&ndash; INVOICE DISPLAY PANE &ndash;&gt;-->
+          <!--<md-tab>-->
+            <!--<md-tab-label>Report Display Pane</md-tab-label>-->
+            <!--<md-tab-body>-->
+              <!--<div class="content invoice-display-pane"-->
+                   <!--ng-include="'app/main/reports/views/read/read-view.html'" ms-scroll>-->
+              <!--</div>-->
+            <!--</md-tab-body>-->
+          <!--</md-tab>-->
+          <!--&lt;!&ndash; / INVOICE DISPLAY PANE &ndash;&gt;-->
+        <!--</md-tabs>-->
+
+          <div id="reportContainer" flex>
+              <toast></toast>
+
+              <div class="preloader" style="top: 0;" ng-if="!reportLoaded">
+                  <md-progress-circular></md-progress-circular>
               </div>
-            </md-tab-body>
-          </md-tab>
-          <!-- / INVOICE DISPLAY PANE -->
-        </md-tabs>
+
+          </div>
 
       </div>
       <!-- / CONTENT WRAPPER -->
