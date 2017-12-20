@@ -34,9 +34,10 @@
     <div class="item subheader mt-20 mb-20 op-5"><hr/></div>
 
     <div class="collapsible-nav-item" ng-repeat="item in reportList" ng-class="{'selected': vm.selectedReport == item.report}" >
-        <div class="heading" layout="row" layout-align="space-between center" ng-click="sidenavCollapseHandler(item.category)" ng-class="{'bb':item.collapse}">
+        <div class="heading" layout="row" layout-align="space-between center" ng-click="sidenavCollapseHandler($index)" ng-class="{'bb':item.collapse}">
             <div layout="row" layout-align="start center">
-                <i class="material-icons fs-20 op-5 mr-10" ng-click="addEditCategory(this,item.category)">timeline</i>
+              <i class="material-icons" ng-click="addEditCategory(this,item.category)">mode_edit</i>
+              <!--<i class="material-icons fs-20 op-5 mr-10" ng-click="addEditCategory(this,item.category)">timeline</i>-->
                 <span class="title">{{item.category}}</span>
             </div>
             <md-icon md-font-icon="icon-chevron-{{item.collapse ? 'down' : 'right'}}" class="m-10"></md-icon>

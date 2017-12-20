@@ -322,7 +322,8 @@
         controller         : 'AddReportController',
         controllerAs       : 'vm',
         locals             : {
-          reportName : vm.reportName
+          reportName : vm.reportName,
+          categoryList : vm.categoryList
         },
         templateUrl        : 'app/main/reports/dialogs/compose/compose-dialog.html',
         parent             : angular.element($document.body),
@@ -334,6 +335,7 @@
         else {
           $scope.loadCreatedReports();
           $scope.loadCreatedReport(answer, 'edit');
+          vm.loadReportCategory();
         }
 
        }, function() {
@@ -346,12 +348,25 @@
     $scope.addEditCategory = function(ev,value){
 
       vm.category =  value;
+      vm.catId = '';
+      if(value != '')
+      {
+
+        angular.forEach(vm.categoryList,function(category){
+          if(category.cateName === value)
+          {
+            vm.catId = category.guCatId;
+          }
+        });
+
+      }
 
       $mdDialog.show({
         controller         : 'AddReportCategoryController',
         controllerAs       : 'vm',
         locals             : {
-          category : vm.category
+          category : vm.category,
+          categoryId : vm.catId
         },
         templateUrl        : 'app/main/reports/dialogs/compose/category-compose-dialog.html',
         parent             : angular.element($document.body),
@@ -359,11 +374,9 @@
         clickOutsideToClose: false
       }).then(function(answer) {
 
-        if(answer === undefined || answer === null){}
-        else {
-          $scope.loadCreatedReports();
 
-        }
+          $scope.loadCreatedReports();
+          vm.loadReportCategory();
 
       }, function() {
         $mdDialog.hide();
@@ -371,15 +384,47 @@
 
     }
 
+
+    vm.categoryList = [];
+    vm.loadReportCategory = function(){
+
+      var isSuperAdmin = getSuperAdmin() === "false" ? 0 : 1;
+      vm.categoryList = [];
+
+      $charge.settingsapp().getAllReportCategories(0,500,"asc",getAccountCategory()).success(function (data) {
+
+        angular.forEach(data.result,function(res){
+          if(res.isSuperAdmin === isSuperAdmin)
+            vm.categoryList.push(res);
+
+        });
+        //vm.categoryList = data.result;
+
+      }).error(function (res) {
+        // $scope.createdReportList = null;
+        vm.categoryList = [];
+      });
+    }
+
+    vm.loadReportCategory();
+
     //$scope.createdReportList = null;
     $scope.loadCreatedReports = function(){
+
+      var isSuperAdmin = getSuperAdmin() === "false" ? 0 : 1;
+      $scope.reportList = [];
       $charge.settingsapp().getAllReportInfo(0,500,"desc",getAccountCategory()).success(function (data) {
        // $scope.createdReportList = data.result;
-        $scope.reportList = data.result;
+
+        angular.forEach(data.result,function(res){
+          if(res.superadmin === isSuperAdmin)
+              $scope.reportList.push(res);
+        });
+
 
       }).error(function (res) {
        // $scope.createdReportList = null;
-        $scope.reportList = null;
+        $scope.reportList = [];
       });
     }
 

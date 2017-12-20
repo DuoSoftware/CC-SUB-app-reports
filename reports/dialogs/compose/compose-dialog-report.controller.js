@@ -7,7 +7,7 @@
         .controller('AddReportController', AddReportController);
 
     /** @ngInject */
-    function AddReportController($mdDialog,notifications,$charge,reportName)
+    function AddReportController($mdDialog,notifications,$charge,reportName,categoryList)
     {
         var vm = this;
         // Methods
@@ -42,17 +42,31 @@
             $mdDialog.cancel();
         }
 
-      vm.categoryList = null;
+      vm.categoryList = [];
       vm.loadReportCategory = function(){
-        $charge.settingsapp().getAllReportCategories(0,500,"desc",getAccountCategory()).success(function (data) {
 
-          vm.categoryList = data.result;
-          vm.category = data.result[data.result.length-1].guCatId;
+        if(categoryList != undefined && categoryList != null)
+        {
+          vm.categoryList = categoryList;
+        }else {
 
-        }).error(function (res) {
-          // $scope.createdReportList = null;
-          vm.categoryList = null;
-        });
+          var isSuperAdmin = getSuperAdmin() === "false" ? 0 : 1;
+
+          $charge.settingsapp().getAllReportCategories(0, 500, "asc", getAccountCategory()).success(function (data) {
+
+            angular.forEach(data.result, function (res) {
+              if (res.isSuperAdmin === isSuperAdmin)
+                vm.categoryList.push(res);
+
+            })
+            //vm.categoryList = data.result;
+            vm.category = data.result[data.result.length - 1].guCatId;
+
+          }).error(function (res) {
+            // $scope.createdReportList = null;
+            vm.categoryList = [];
+          });
+        }
       }
 
       vm.loadReportCategory();

@@ -7,7 +7,7 @@
         .controller('AddReportCategoryController', AddReportCategoryController);
 
     /** @ngInject */
-    function AddReportCategoryController($mdDialog,notifications,$charge,category)
+    function AddReportCategoryController($mdDialog,notifications,$charge,category,categoryId)
     {
         var vm = this;
         // Methods
@@ -15,6 +15,7 @@
         vm.saveReportCategory = saveReportCategory;
       vm.category = category;
       vm.reportCategory = category;
+      vm.isReportSaved = false;
 
       function gst(name) {
         var nameEQ = name + "=";
@@ -52,24 +53,52 @@
         if(category === '')
         {
           if(vm.reportCategory === "") {
-            notifications.toast("Please add report name", "error");
+            notifications.toast("Please add report Category", "error");
             return;
           }
-
+          vm.isReportSaved = true;
           var catdata ={
                         "category":vm.reportCategory,
                         "isParent":1,
-                        "isSuperAdmin":getSuperAdmin(),
+                        "isSuperAdmin":getSuperAdmin() === "false" ? 0 :1 ,
                         "module":getAccountCategory()
                       }
 
               $charge.settingsapp().insertReportCategory(catdata).success(function (data) {
-debugger;
+                vm.isReportSaved = false;
+                if(data.error===  "00000"){
+                  $mdDialog.hide();
+                  notifications.toast("Report Category added successfully.", "success");
+                }
               }).error(function (res) {
-
+                vm.isReportSaved = false;
+                notifications.toast("Error adding Report Category,Please try again", "error");
               });
         }else{
 
+          if(vm.reportCategory === "") {
+            notifications.toast("Please add report Category", "error");
+            return;
+          }
+          vm.isReportSaved = true;
+          var catdata ={
+            "cateName":vm.reportCategory,
+            "isParent":1,
+            "isSuperAdmin":getSuperAdmin() === "false" ? 0 :1 ,
+            "module":getAccountCategory(),
+            "guCatId":categoryId
+          }
+
+          $charge.settingsapp().updateReportCategory(catdata).success(function (data) {
+            vm.isReportSaved = false;
+            if(data.error===  "00000"){
+              $mdDialog.hide();
+              notifications.toast("Report Category updated successfully.", "success");
+            }
+          }).error(function (res) {
+            vm.isReportSaved = false;
+            notifications.toast("Error updating Report Category,Please try again", "error");
+          });
         }
 
       }
