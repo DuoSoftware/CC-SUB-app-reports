@@ -49,7 +49,7 @@
                     <span class="title">{{subitem.category}}</span>
                 </div>
                 <div style="float: right">
-                  <md-button ng-if="subitem.type === 'system'"  id="subitem.category" ng-click="editUserCreatedReport(subitem)" >EDIT</md-button>
+                  <md-button ng-if="subitem.type != 'system'"  id="subitem.category" ng-click="editUserCreatedReport(subitem)" >EDIT</md-button>
                 </div>
             </div>
         </div>

@@ -445,10 +445,10 @@
 
       vm.selectedReport = reportName;
 
-      var reportURL1=$scope.baseUrl+"/reports/CUSTOM/viewer.php?";
+      var reportURL1=$scope.baseUrl+"/services/reports/CUSTOM/viewer.php?";
       if(action === 'edit')
       {
-        reportURL1=$scope.baseUrl+"/reports/CUSTOM/designer.php?";
+        reportURL1=$scope.baseUrl+"/services/reports/CUSTOM/designer.php?";
       }
       var reportURL2="report="+reportName;
       var reportURL3="&idToken="+getIdTokenForServices();
