@@ -1,8 +1,8 @@
 ////////////////////////////////
 // App : Reports
 // Owner  : Gihan Herath
-// Last changed date : 2017/12/06
-// Version : 6.1.0.9
+// Last changed date : 2017/12/20
+// Version : 6.1.0.10
 // Modified By : Ishara
 /////////////////////////////////
 (function ()
@@ -48,7 +48,7 @@
 					security: ['$q','mesentitlement','$timeout','$rootScope','$state','$location', function($q,mesentitlement,$timeout,$rootScope,$state, $location){
 						return $q(function(resolve, reject) {
 							$timeout(function() {
-								if ($rootScope.isBaseSet2) {
+								if (true || $rootScope.isBaseSet2) {
 									resolve(function () {
 										var entitledStatesReturn = mesentitlement.stateDepResolver('report');
 

@@ -44,7 +44,7 @@
 
 		// Collapsible panel
 		$scope.sidenavCollapseHandler = function (index) {
-			if($scope.reportList[index].collapse == undefined){
+      if($scope.reportList[index].collapse == undefined){
 				$scope.reportList[index].collapse = true;
 			}else{
 				$scope.reportList[index].collapse = !$scope.reportList[index].collapse;
@@ -104,18 +104,18 @@
 
 		function getIdTokenForServices() {
 			var _st = gst("securityToken");
-			return (_st != null) ? _st : "";
+			return (_st != null) ? _st : "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ilg1ZVhrNHh5b2pORnVtMWtsMll0djhkbE5QNC1jNTdkTzZRR1RWQndhTmsifQ.eyJleHAiOjE1MTM0MTM3MzUsIm5iZiI6MTUxMzMzMDkzNSwidmVyIjoiMS4wIiwiaXNzIjoiaHR0cHM6Ly9sb2dpbi5taWNyb3NvZnRvbmxpbmUuY29tL2MxZjlmOGU2LTM0NjktNGQ1Zi1hMzI2LTgzZTk5MGE5OTI2YS92Mi4wLyIsInN1YiI6IjFmNGZkNjJmLWE3ZTItNGJiMS1hNTU2LTc1OWY1NmM3MzExOSIsImF1ZCI6ImQwODRhMjI3LWJiNTItNDk5Mi04ODlkLTZlNDgzNTYxMGU3NiIsIm5vbmNlIjoiZGVmYXVsdE5vbmNlIiwiaWF0IjoxNTEzMzMwOTM1LCJhdXRoX3RpbWUiOjE1MTMzMzA5MzUsIm9pZCI6IjFmNGZkNjJmLWE3ZTItNGJiMS1hNTU2LTc1OWY1NmM3MzExOSIsImdpdmVuX25hbWUiOiJsdXlkb2hvbHRpIiwibmFtZSI6InppeWFwIiwiY291bnRyeSI6IlNyaSBMYW5rYSIsImV4dGVuc2lvbl9tb2RlIjoidGVzdCIsImV4dGVuc2lvbl9Eb21haW4iOiJsdXlkb2hvbHRpLmFwcC5jbG91ZGNoYXJnZS5jb20iLCJmYW1pbHlfbmFtZSI6ImZyZWVfdHJpYWwiLCJqb2JUaXRsZSI6ImFkbWluIiwiZW1haWxzIjpbImx1eWRvaG9sdGlAeml5YXAuY29tIl0sInRmcCI6IkIyQ18xX0RlZmF1bHRQb2xpY3kifQ.oFIGKbst3hxBFqvH9A6fp-dfSIUDC1uQ0y_okarF_c2YbsB9i2TaNzXHHWoYs33cTJsbeA2jROqkFqyfMk6w5aUkcJYXFzgsejSIOoN1GrXgwqn62mLTg31TVK8RL3yIe71Nm3bizRbg4sbDDdpZ32n0bqiUv2GuI2SkaakdYgJ1m53boX5F4mWEvmIP-fxUu0up9n-CD3FIg6YuJGdvhq4uslI0_b4DQK81PKZ14HxRsAdSiNdOKxQRfbvoMaujCbz9L8MnQIfvfl-9GBT8z7KTAK9jvgWOv7awXSli-XHKFjmAtXGWJF6fvkKxkyIi6WNmBKwgG14Voz0dbAVzWA";
 		}
 
 		function getDomainForServices() {
 			var _st = gst("currentDomain");
-			var __st = gst("domain");
+			var __st = "luydoholti.app.cloudcharge.com";//gst("domain");
 			return (_st != null) ? _st : __st;
 		}
 
 		function getAccountCategory() {
 			var _st = gst("category");
-			return (_st != null) ? _st : "";
+			return (_st != null) ? _st : "subscription";
 		}
 
 		function getSuperAdmin() {
@@ -215,60 +215,60 @@
 
 		$scope.reportURL = "";
 
-		(function () {
-			var catReportList;
-			if(accCat == 'invoice'){
-				catReportList = 'app/core/cloudcharge/js/reportListInvoice.json';
-			}else if(accCat == 'subscription'){
-				catReportList = 'app/core/cloudcharge/js/reportList.json';
-			}
-
-			$http.get(catReportList).then(function(data){
-
-				//console.log(data);
-				var IsSuperAdmin = getSuperAdmin();
-				if(IsSuperAdmin=="true")
-				{
-					for (var key in data.data) {
-						if(data.data[key].superadmin)
-						{
-							$scope.reportList.push(data.data[key]);
-						}
-					}
-				}
-				else
-				{
-					for (var key in data.data) {
-						if(!data.data[key].superadmin)
-						{
-							$scope.reportList.push(data.data[key]);
-						}
-					}
-				}
-
-				$http.get('app/core/cloudcharge/js/config.json').then(function(data){
-
-					//console.log(data);
-					$scope.baseUrl=data.data["report"]["domain"];
-					//$scope.loadFilterCategories('dashBoardReport.mrt');
-					$scope.loadFilterCategories($scope.reportList[0].data[0].report);
-
-					//for (key in data.data) {
-					//  if (data.data.hasOwnProperty("report")) {
-					//    $scope.baseUrl=data.data["report"]["domain"];
-					//
-					//    $scope.loadFilterCategories('dashBoardReport.mrt');
-					//    break;
-					//  }
-					//}
-				}, function(errorResponse){
-					//console.log(errorResponse);
-					$scope.baseUrl="";
-				});
-			}, function(errorResponse){
-				//console.log(errorResponse);
-			});
-		})();
+		//(function () {
+		//	var catReportList;
+		//	if(accCat == 'invoice'){
+		//		catReportList = 'app/core/cloudcharge/js/reportListInvoice.json';
+		//	}else if(accCat == 'subscription'){
+		//		catReportList = 'app/core/cloudcharge/js/reportList.json';
+		//	}
+        //
+		//	$http.get(catReportList).then(function(data){
+        //
+		//		//console.log(data);
+		//		var IsSuperAdmin = getSuperAdmin();
+		//		if(IsSuperAdmin=="true")
+		//		{
+		//			for (var key in data.data) {
+		//				if(data.data[key].superadmin)
+		//				{
+		//					$scope.reportList.push(data.data[key]);
+		//				}
+		//			}
+		//		}
+		//		else
+		//		{
+		//			for (var key in data.data) {
+		//				if(!data.data[key].superadmin)
+		//				{
+		//					$scope.reportList.push(data.data[key]);
+		//				}
+		//			}
+		//		}
+        //
+		//		$http.get('app/core/cloudcharge/js/config.json').then(function(data){
+        //
+		//			//console.log(data);
+		//			$scope.baseUrl=data.data["report"]["domain"];
+		//			//$scope.loadFilterCategories('dashBoardReport.mrt');
+		//			$scope.loadFilterCategories($scope.reportList[0].data[0].report);
+        //
+		//			//for (key in data.data) {
+		//			//  if (data.data.hasOwnProperty("report")) {
+		//			//    $scope.baseUrl=data.data["report"]["domain"];
+		//			//
+		//			//    $scope.loadFilterCategories('dashBoardReport.mrt');
+		//			//    break;
+		//			//  }
+		//			//}
+		//		}, function(errorResponse){
+		//			//console.log(errorResponse);
+		//			$scope.baseUrl="";
+		//		});
+		//	}, function(errorResponse){
+		//		//console.log(errorResponse);
+		//	});
+		//})();
 
 		$scope.companyLogo="";
 		$charge.settingsapp().getDuobaseValuesByTableName("CTS_CompanyAttributes").success(function(data) {
@@ -279,36 +279,37 @@
 			$scope.companyLogo="";
 		})
 
+
+
 		$scope.showFinanceReport=false;
 		$scope.showTenantDetailReport=false;
 		$scope.showAppUsageReport=false;
 
-		$scope.loadFilterCategories= function (category) {
-
-			$scope.isUrlSet = false;
-			$('#reportFram').remove();
-			//$scope.reportCategory=category;
-			// $timeout(function ()
-			// {
-			//   vm.activeInvoicePaneIndex = 0;
-			// });azure.cloudcharge.com/services/reports/JS/viewer.php?report=&idToken=
-			vm.selectedReport = category;
-
-			//var reportURL1="http://azure.cloudcharge.com/services/reports/stimulsoft/index.php?stimulsoft_client_key=ViewerFx";
-			var reportURL1=$scope.baseUrl+"/reports/JS/viewer.php?";
-			//var reportURL2="&stimulsoft_report_key="+category;
-			var reportURL2="report="+category.split('.')[0];
-			var reportURL3="&idToken="+getIdTokenForServices();
-			var reportURL4="&cUrl="+$scope.companyLogo;
-			var reportURL5="&domain="+getDomainForServices();
-
-			$scope.reportURL=reportURL1+reportURL2+reportURL3+reportURL4+reportURL5;
-
-			var elemParent = $('#reportContainer');
-			elemParent.append('<iframe fill-width ng-show="isUrlSet" frameborder="0" id="reportFram" src="'+$scope.reportURL+'" marginwidth="0" marginheight="0" height="'+$scope.iframeHeight+'" onload="" allowfullscreen> </iframe>');
-			$scope.isUrlSet = true;
-
-		}
+		//$scope.loadFilterCategories= function (category) {
+		//	$scope.isUrlSet = false;
+		//	$('#reportFram').remove();
+		//	//$scope.reportCategory=category;
+		//	// $timeout(function ()
+		//	// {
+		//	//   vm.activeInvoicePaneIndex = 0;
+		//	// });azure.cloudcharge.com/services/reports/JS/viewer.php?report=&idToken=
+		//	vm.selectedReport = category;
+        //
+		//	//var reportURL1="http://azure.cloudcharge.com/services/reports/stimulsoft/index.php?stimulsoft_client_key=ViewerFx";
+		//	var reportURL1=$scope.baseUrl+"/reports/JS/viewer.php?";
+		//	//var reportURL2="&stimulsoft_report_key="+category;
+		//	var reportURL2="report="+category.split('.')[0];
+		//	var reportURL3="&idToken="+getIdTokenForServices();
+		//	var reportURL4="&cUrl="+$scope.companyLogo;
+		//	var reportURL5="&domain="+getDomainForServices();
+        //
+		//	$scope.reportURL=reportURL1+reportURL2+reportURL3+reportURL4+reportURL5;
+        //
+		//	var elemParent = $('#reportContainer');
+		//	elemParent.append('<iframe fill-width ng-show="isUrlSet" frameborder="0" id="reportFram" src="'+$scope.reportURL+'" marginwidth="0" marginheight="0" height="'+$scope.iframeHeight+'" onload="" allowfullscreen> </iframe>');
+		//	$scope.isUrlSet = true;
+        //
+		//}
 
 
     //===================================================User create report functions==============================================================================
@@ -341,12 +342,44 @@
 
     }
 
-    $scope.createdReportList = null;
+
+    $scope.addEditCategory = function(ev,value){
+
+      vm.category =  value;
+
+      $mdDialog.show({
+        controller         : 'AddReportCategoryController',
+        controllerAs       : 'vm',
+        locals             : {
+          category : vm.category
+        },
+        templateUrl        : 'app/main/reports/dialogs/compose/category-compose-dialog.html',
+        parent             : angular.element($document.body),
+        targetEvent        : ev,
+        clickOutsideToClose: false
+      }).then(function(answer) {
+
+        if(answer === undefined || answer === null){}
+        else {
+          $scope.loadCreatedReports();
+
+        }
+
+      }, function() {
+        $mdDialog.hide();
+      });
+
+    }
+
+    //$scope.createdReportList = null;
     $scope.loadCreatedReports = function(){
-      $charge.settingsapp().getAllReportInfo(0,50,"desc").success(function (data) {
-        $scope.createdReportList = data.result;
+      $charge.settingsapp().getAllReportInfo(0,500,"desc",getAccountCategory()).success(function (data) {
+       // $scope.createdReportList = data.result;
+        $scope.reportList = data.result;
+
       }).error(function (res) {
-        $scope.createdReportList = null;
+       // $scope.createdReportList = null;
+        $scope.reportList = null;
       });
     }
 
