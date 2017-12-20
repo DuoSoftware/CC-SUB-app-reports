@@ -285,31 +285,31 @@
 		$scope.showTenantDetailReport=false;
 		$scope.showAppUsageReport=false;
 
-		//$scope.loadFilterCategories= function (category) {
-		//	$scope.isUrlSet = false;
-		//	$('#reportFram').remove();
-		//	//$scope.reportCategory=category;
-		//	// $timeout(function ()
-		//	// {
-		//	//   vm.activeInvoicePaneIndex = 0;
-		//	// });azure.cloudcharge.com/services/reports/JS/viewer.php?report=&idToken=
-		//	vm.selectedReport = category;
-        //
-		//	//var reportURL1="http://azure.cloudcharge.com/services/reports/stimulsoft/index.php?stimulsoft_client_key=ViewerFx";
-		//	var reportURL1=$scope.baseUrl+"/reports/JS/viewer.php?";
-		//	//var reportURL2="&stimulsoft_report_key="+category;
-		//	var reportURL2="report="+category.split('.')[0];
-		//	var reportURL3="&idToken="+getIdTokenForServices();
-		//	var reportURL4="&cUrl="+$scope.companyLogo;
-		//	var reportURL5="&domain="+getDomainForServices();
-        //
-		//	$scope.reportURL=reportURL1+reportURL2+reportURL3+reportURL4+reportURL5;
-        //
-		//	var elemParent = $('#reportContainer');
-		//	elemParent.append('<iframe fill-width ng-show="isUrlSet" frameborder="0" id="reportFram" src="'+$scope.reportURL+'" marginwidth="0" marginheight="0" height="'+$scope.iframeHeight+'" onload="" allowfullscreen> </iframe>');
-		//	$scope.isUrlSet = true;
-        //
-		//}
+		$scope.loadFilterCategories= function (category) {
+			$scope.isUrlSet = false;
+			$('#reportFram').remove();
+			//$scope.reportCategory=category;
+			// $timeout(function ()
+			// {
+			//   vm.activeInvoicePaneIndex = 0;
+			// });azure.cloudcharge.com/services/reports/JS/viewer.php?report=&idToken=
+			vm.selectedReport = category;
+
+			//var reportURL1="http://azure.cloudcharge.com/services/reports/stimulsoft/index.php?stimulsoft_client_key=ViewerFx";
+			var reportURL1=$scope.baseUrl+"/services/reports/JS/viewer.php?";
+			//var reportURL2="&stimulsoft_report_key="+category;
+			var reportURL2="report="+category.split('.')[0];
+			var reportURL3="&idToken="+getIdTokenForServices();
+			var reportURL4="&cUrl="+$scope.companyLogo;
+			var reportURL5="&domain="+getDomainForServices();
+
+			$scope.reportURL=reportURL1+reportURL2+reportURL3+reportURL4+reportURL5;
+
+			var elemParent = $('#reportContainer');
+			elemParent.append('<iframe fill-width ng-show="isUrlSet" frameborder="0" id="reportFram" src="'+$scope.reportURL+'" marginwidth="0" marginheight="0" height="'+$scope.iframeHeight+'" onload="" allowfullscreen> </iframe>');
+			$scope.isUrlSet = true;
+
+		}
 
 
     //===================================================User create report functions==============================================================================
@@ -431,7 +431,12 @@
     $scope.loadCreatedReports();
 
     $scope.showCreatedReport = function(report){
-      $scope.loadCreatedReport(report.reportName,'view');
+      if(report.type === 'system')
+      {
+        $scope.loadFilterCategories(report.reportName);
+      }else {
+        $scope.loadCreatedReport(report.reportName, 'view');
+      }
     }
 
     $scope.editUserCreatedReport = function(report){
