@@ -104,12 +104,12 @@
 
 		function getIdTokenForServices() {
 			var _st = gst("securityToken");
-			return (_st != null) ? _st : "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ilg1ZVhrNHh5b2pORnVtMWtsMll0djhkbE5QNC1jNTdkTzZRR1RWQndhTmsifQ.eyJleHAiOjE1MTM0MTM3MzUsIm5iZiI6MTUxMzMzMDkzNSwidmVyIjoiMS4wIiwiaXNzIjoiaHR0cHM6Ly9sb2dpbi5taWNyb3NvZnRvbmxpbmUuY29tL2MxZjlmOGU2LTM0NjktNGQ1Zi1hMzI2LTgzZTk5MGE5OTI2YS92Mi4wLyIsInN1YiI6IjFmNGZkNjJmLWE3ZTItNGJiMS1hNTU2LTc1OWY1NmM3MzExOSIsImF1ZCI6ImQwODRhMjI3LWJiNTItNDk5Mi04ODlkLTZlNDgzNTYxMGU3NiIsIm5vbmNlIjoiZGVmYXVsdE5vbmNlIiwiaWF0IjoxNTEzMzMwOTM1LCJhdXRoX3RpbWUiOjE1MTMzMzA5MzUsIm9pZCI6IjFmNGZkNjJmLWE3ZTItNGJiMS1hNTU2LTc1OWY1NmM3MzExOSIsImdpdmVuX25hbWUiOiJsdXlkb2hvbHRpIiwibmFtZSI6InppeWFwIiwiY291bnRyeSI6IlNyaSBMYW5rYSIsImV4dGVuc2lvbl9tb2RlIjoidGVzdCIsImV4dGVuc2lvbl9Eb21haW4iOiJsdXlkb2hvbHRpLmFwcC5jbG91ZGNoYXJnZS5jb20iLCJmYW1pbHlfbmFtZSI6ImZyZWVfdHJpYWwiLCJqb2JUaXRsZSI6ImFkbWluIiwiZW1haWxzIjpbImx1eWRvaG9sdGlAeml5YXAuY29tIl0sInRmcCI6IkIyQ18xX0RlZmF1bHRQb2xpY3kifQ.oFIGKbst3hxBFqvH9A6fp-dfSIUDC1uQ0y_okarF_c2YbsB9i2TaNzXHHWoYs33cTJsbeA2jROqkFqyfMk6w5aUkcJYXFzgsejSIOoN1GrXgwqn62mLTg31TVK8RL3yIe71Nm3bizRbg4sbDDdpZ32n0bqiUv2GuI2SkaakdYgJ1m53boX5F4mWEvmIP-fxUu0up9n-CD3FIg6YuJGdvhq4uslI0_b4DQK81PKZ14HxRsAdSiNdOKxQRfbvoMaujCbz9L8MnQIfvfl-9GBT8z7KTAK9jvgWOv7awXSli-XHKFjmAtXGWJF6fvkKxkyIi6WNmBKwgG14Voz0dbAVzWA";
+			return (_st != null) ? _st : "";
 		}
 
 		function getDomainForServices() {
 			var _st = gst("currentDomain");
-			var __st = "luydoholti.app.cloudcharge.com";//gst("domain");
+			var __st = gst("domain");
 			return (_st != null) ? _st : __st;
 		}
 
