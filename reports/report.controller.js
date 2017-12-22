@@ -210,7 +210,7 @@
 		];
 
 		$scope.reportList=[];
-		$scope.baseUrl="http://"+getDomainForServices();
+		$scope.baseUrl="https://"+getDomainForServices();
 		$scope.isUrlSet = false;
 
 		$scope.reportURL = "";
