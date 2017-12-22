@@ -421,6 +421,7 @@
               $scope.reportList.push(res);
         });
 
+		$scope.loadFilterCategories('customerReport');
 
       }).error(function (res) {
        // $scope.createdReportList = null;
