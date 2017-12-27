@@ -7,18 +7,71 @@
         .controller('AddReportController', AddReportController);
 
     /** @ngInject */
-    function AddReportController($mdDialog,notifications,$charge,reportName)
+    function AddReportController($mdDialog,notifications,$charge,reportName,categoryList)
     {
         var vm = this;
         // Methods
         vm.closeDialog = closeDialog;
       vm.saveReport = saveReport;
 
+      function gst(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        }
+        //debugger;
+        return null;
+      }
+
+      function getAccountCategory() {
+        var _st = gst("category");
+        return (_st != null) ? _st : "subscription";
+      }
+
+      function getSuperAdmin() {
+        var _st = gst("isSuperAdmin");
+        return (_st != null) ? _st : "false"; //"248570d655d8419b91f6c3e0da331707 51de1ea9effedd696741d5911f77a64f";
+      }
+
 
         function closeDialog()
         {
             $mdDialog.cancel();
         }
+
+      vm.categoryList = [];
+      vm.loadReportCategory = function(){
+
+        if(categoryList != undefined && categoryList != null)
+        {
+          vm.categoryList = categoryList;
+        }else {
+
+          var isSuperAdmin = getSuperAdmin() === "false" ? 0 : 1;
+
+          $charge.settingsapp().getAllReportCategories(0, 500, "asc", getAccountCategory()).success(function (data) {
+
+            angular.forEach(data.result, function (res) {
+              if (res.isSuperAdmin === isSuperAdmin)
+                vm.categoryList.push(res);
+
+            })
+            //vm.categoryList = data.result;
+            vm.category = data.result[data.result.length - 1].guCatId;
+
+          }).error(function (res) {
+            // $scope.createdReportList = null;
+            vm.categoryList = [];
+          });
+        }
+      }
+
+      vm.loadReportCategory();
+
+
 
       vm.reportName = reportName;
       vm.isReportSaved = false;
@@ -49,7 +102,9 @@
                   var reportInfo = {
                         "reportName":vm.reportName,
                         "reportUrl":data.fileUrl,
-                        "note":""
+                        "note":vm.reportName,
+                        "guCatId": vm.category,
+                        "type":"custom"
                       }
                   $charge.settingsapp().insertReportInfo(reportInfo).success(function (result) {
                     if(result.error === "00000")

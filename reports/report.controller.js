@@ -1,4 +1,4 @@
-(function ()  
+(function ()
 {
 	'use strict';
 
@@ -44,7 +44,7 @@
 
 		// Collapsible panel
 		$scope.sidenavCollapseHandler = function (index) {
-			if($scope.reportList[index].collapse == undefined){
+      if($scope.reportList[index].collapse == undefined){
 				$scope.reportList[index].collapse = true;
 			}else{
 				$scope.reportList[index].collapse = !$scope.reportList[index].collapse;
@@ -115,7 +115,7 @@
 
 		function getAccountCategory() {
 			var _st = gst("category");
-			return (_st != null) ? _st : "";
+			return (_st != null) ? _st : "subscription";
 		}
 
 		function getSuperAdmin() {
@@ -210,65 +210,65 @@
 		];
 
 		$scope.reportList=[];
-		$scope.baseUrl="";
+		$scope.baseUrl="https://"+getDomainForServices();
 		$scope.isUrlSet = false;
 
 		$scope.reportURL = "";
 
-		(function () {
-			var catReportList;
-			if(accCat == 'invoice'){
-				catReportList = 'app/core/cloudcharge/js/reportListInvoice.json';
-			}else if(accCat == 'subscription'){
-				catReportList = 'app/core/cloudcharge/js/reportList.json';
-			}
-
-			$http.get(catReportList).then(function(data){
-
-				//console.log(data);
-				var IsSuperAdmin = getSuperAdmin();
-				if(IsSuperAdmin=="true")
-				{
-					for (var key in data.data) {
-						if(data.data[key].superadmin)
-						{
-							$scope.reportList.push(data.data[key]);
-						}
-					}
-				}
-				else
-				{
-					for (var key in data.data) {
-						if(!data.data[key].superadmin)
-						{
-							$scope.reportList.push(data.data[key]);
-						}
-					}
-				}
-
-				$http.get('app/core/cloudcharge/js/config.json').then(function(data){
-
-					//console.log(data);
-					$scope.baseUrl=data.data["report"]["domain"];
-					//$scope.loadFilterCategories('dashBoardReport.mrt');
-					$scope.loadFilterCategories($scope.reportList[0].data[0].report);
-
-					//for (key in data.data) {
-					//  if (data.data.hasOwnProperty("report")) {
-					//    $scope.baseUrl=data.data["report"]["domain"];
-					//
-					//    $scope.loadFilterCategories('dashBoardReport.mrt');
-					//    break;
-					//  }
-					//}
-				}, function(errorResponse){
-					//console.log(errorResponse);
-					$scope.baseUrl="";
-				});
-			}, function(errorResponse){
-				//console.log(errorResponse);
-			});
-		})();
+		//(function () {
+		//	var catReportList;
+		//	if(accCat == 'invoice'){
+		//		catReportList = 'app/core/cloudcharge/js/reportListInvoice.json';
+		//	}else if(accCat == 'subscription'){
+		//		catReportList = 'app/core/cloudcharge/js/reportList.json';
+		//	}
+        //
+		//	$http.get(catReportList).then(function(data){
+        //
+		//		//console.log(data);
+		//		var IsSuperAdmin = getSuperAdmin();
+		//		if(IsSuperAdmin=="true")
+		//		{
+		//			for (var key in data.data) {
+		//				if(data.data[key].superadmin)
+		//				{
+		//					$scope.reportList.push(data.data[key]);
+		//				}
+		//			}
+		//		}
+		//		else
+		//		{
+		//			for (var key in data.data) {
+		//				if(!data.data[key].superadmin)
+		//				{
+		//					$scope.reportList.push(data.data[key]);
+		//				}
+		//			}
+		//		}
+        //
+		//		$http.get('app/core/cloudcharge/js/config.json').then(function(data){
+        //
+		//			//console.log(data);
+		//			$scope.baseUrl=data.data["report"]["domain"];
+		//			//$scope.loadFilterCategories('dashBoardReport.mrt');
+		//			$scope.loadFilterCategories($scope.reportList[0].data[0].report);
+        //
+		//			//for (key in data.data) {
+		//			//  if (data.data.hasOwnProperty("report")) {
+		//			//    $scope.baseUrl=data.data["report"]["domain"];
+		//			//
+		//			//    $scope.loadFilterCategories('dashBoardReport.mrt');
+		//			//    break;
+		//			//  }
+		//			//}
+		//		}, function(errorResponse){
+		//			//console.log(errorResponse);
+		//			$scope.baseUrl="";
+		//		});
+		//	}, function(errorResponse){
+		//		//console.log(errorResponse);
+		//	});
+		//})();
 
 		$scope.companyLogo="";
 		$charge.settingsapp().getDuobaseValuesByTableName("CTS_CompanyAttributes").success(function(data) {
@@ -279,12 +279,13 @@
 			$scope.companyLogo="";
 		})
 
+
+
 		$scope.showFinanceReport=false;
 		$scope.showTenantDetailReport=false;
 		$scope.showAppUsageReport=false;
 
 		$scope.loadFilterCategories= function (category) {
-
 			$scope.isUrlSet = false;
 			$('#reportFram').remove();
 			//$scope.reportCategory=category;
@@ -295,7 +296,7 @@
 			vm.selectedReport = category;
 
 			//var reportURL1="http://azure.cloudcharge.com/services/reports/stimulsoft/index.php?stimulsoft_client_key=ViewerFx";
-			var reportURL1=$scope.baseUrl+"/reports/JS/viewer.php?";
+			var reportURL1=$scope.baseUrl+"/services/reports/JS/viewer.php?";
 			//var reportURL2="&stimulsoft_report_key="+category;
 			var reportURL2="report="+category.split('.')[0];
 			var reportURL3="&idToken="+getIdTokenForServices();
@@ -321,7 +322,8 @@
         controller         : 'AddReportController',
         controllerAs       : 'vm',
         locals             : {
-          reportName : vm.reportName
+          reportName : vm.reportName,
+          categoryList : vm.categoryList
         },
         templateUrl        : 'app/main/reports/dialogs/compose/compose-dialog.html',
         parent             : angular.element($document.body),
@@ -333,6 +335,7 @@
         else {
           $scope.loadCreatedReports();
           $scope.loadCreatedReport(answer, 'edit');
+          vm.loadReportCategory();
         }
 
        }, function() {
@@ -341,19 +344,100 @@
 
     }
 
-    $scope.createdReportList = null;
-    $scope.loadCreatedReports = function(){
-      $charge.settingsapp().getAllReportInfo(0,50,"desc").success(function (data) {
-        $scope.createdReportList = data.result;
+
+    $scope.addEditCategory = function(ev,value){
+
+      vm.category =  value;
+      vm.catId = '';
+      if(value != '')
+      {
+
+        angular.forEach(vm.categoryList,function(category){
+          if(category.cateName === value)
+          {
+            vm.catId = category.guCatId;
+          }
+        });
+
+      }
+
+      $mdDialog.show({
+        controller         : 'AddReportCategoryController',
+        controllerAs       : 'vm',
+        locals             : {
+          category : vm.category,
+          categoryId : vm.catId
+        },
+        templateUrl        : 'app/main/reports/dialogs/compose/category-compose-dialog.html',
+        parent             : angular.element($document.body),
+        targetEvent        : ev,
+        clickOutsideToClose: false
+      }).then(function(answer) {
+
+
+          $scope.loadCreatedReports();
+          vm.loadReportCategory();
+
+      }, function() {
+        $mdDialog.hide();
+      });
+
+    }
+
+
+    vm.categoryList = [];
+    vm.loadReportCategory = function(){
+
+      var isSuperAdmin = getSuperAdmin() === "false" ? 0 : 1;
+      vm.categoryList = [];
+
+      $charge.settingsapp().getAllReportCategories(0,500,"asc",getAccountCategory()).success(function (data) {
+
+        angular.forEach(data.result,function(res){
+          if(res.isSuperAdmin === isSuperAdmin)
+            vm.categoryList.push(res);
+
+        });
+        //vm.categoryList = data.result;
+
       }).error(function (res) {
-        $scope.createdReportList = null;
+        // $scope.createdReportList = null;
+        vm.categoryList = [];
+      });
+    }
+
+    vm.loadReportCategory();
+
+    //$scope.createdReportList = null;
+    $scope.loadCreatedReports = function(){
+
+      var isSuperAdmin = getSuperAdmin() === "false" ? 0 : 1;
+      $scope.reportList = [];
+      $charge.settingsapp().getAllReportInfo(0,500,"desc",getAccountCategory()).success(function (data) {
+       // $scope.createdReportList = data.result;
+
+        angular.forEach(data.result,function(res){
+          if(res.superadmin === isSuperAdmin)
+              $scope.reportList.push(res);
+        });
+
+		$scope.loadFilterCategories('customerReport');
+
+      }).error(function (res) {
+       // $scope.createdReportList = null;
+        $scope.reportList = [];
       });
     }
 
     $scope.loadCreatedReports();
 
     $scope.showCreatedReport = function(report){
-      $scope.loadCreatedReport(report.reportName,'view');
+      if(report.type === 'system')
+      {
+        $scope.loadFilterCategories(report.reportName);
+      }else {
+        $scope.loadCreatedReport(report.reportName, 'view');
+      }
     }
 
     $scope.editUserCreatedReport = function(report){
@@ -367,10 +451,10 @@
 
       vm.selectedReport = reportName;
 
-      var reportURL1=$scope.baseUrl+"/reports/CUSTOM/viewer.php?";
+      var reportURL1=$scope.baseUrl+"/services/reports/CUSTOM/viewer.php?";
       if(action === 'edit')
       {
-        reportURL1=$scope.baseUrl+"/reports/CUSTOM/designer.php?";
+        reportURL1=$scope.baseUrl+"/services/reports/CUSTOM/designer.php?";
       }
       var reportURL2="report="+reportName;
       var reportURL3="&idToken="+getIdTokenForServices();
