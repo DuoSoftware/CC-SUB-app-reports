@@ -1,0 +1,100 @@
+<!--<div>-->
+  <!--<a id="top"></a>-->
+  <!--<toast></toast>-->
+  <!--&lt;!&ndash;<div class="header-wrap animated fadeIn" flex>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="report-main-wrap report-filter-header position-fixed">&ndash;&gt;-->
+      <!--&lt;!&ndash;<div layout="row">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div layout="row" flex class="header-report-name">&ndash;&gt;-->
+            <!--&lt;!&ndash;<h3>{{eventHandler.reportName}}</h3>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+  <!--&lt;!&ndash;&lt;!&ndash; #filed view &ndash;&gt;&ndash;&gt;-->
+  <!--&lt;!&ndash;<div class="report-view-wrap" md-whiteframe="2dp">&ndash;&gt;-->
+    <!--&lt;!&ndash;<div flex layout="row" class="left-wrap position-fixed">&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;<div class="parameter-header" ng-show="reportLayout">&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;<small>Parameters</small>&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+
+      <!--&lt;!&ndash;<div flex layout="row">&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<div ng-repeat="picker in reportFiledList.UIDate">&ndash;&gt;-->
+          <!--&lt;!&ndash;<md-datepicker ng-model="reportFiledList.selectedDate[picker.fieldname]" flex md-placeholder="{{picker.label}}"></md-datepicker>&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;<label>{{picker.label}}</label>&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;<input type="text" datepicker&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;class="form-control datep"&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;ng-model="reportFiledList.selectedDate[picker.fieldname]">&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+      <!--&lt;!&ndash;<div flex="10"></div>&ndash;&gt;-->
+
+      <!--&lt;!&ndash;<div flex class="drop-down">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div layout="row" class="p-l-r-25 position-over" ng-repeat="dropDown in reportFiledList.UIDropDown"&ndash;&gt;-->
+             <!--&lt;!&ndash;layout="column">&ndash;&gt;-->
+          <!--&lt;!&ndash;<div flex="15" class="filed-loading" layout-align="center center"&ndash;&gt;-->
+               <!--&lt;!&ndash;ng-class="dropDown.loader==true?'display-block':'display-none'">&ndash;&gt;-->
+            <!--&lt;!&ndash;<svg class="spinner-container" width="20px" height="20px" viewBox="0 0 52 52">&ndash;&gt;-->
+              <!--&lt;!&ndash;<circle class="path" cx="26px" cy="26px" r="20px" fill="none" stroke-width="4px"/>&ndash;&gt;-->
+            <!--&lt;!&ndash;</svg>&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+          <!--&lt;!&ndash;<md-input-container flex class="report-dropdown">&ndash;&gt;-->
+            <!--&lt;!&ndash;<label>Select {{dropDown.fieldname}}</label>&ndash;&gt;-->
+            <!--&lt;!&ndash;<md-select ng-model="selectedVal"&ndash;&gt;-->
+                       <!--&lt;!&ndash;id="{{dropDown.fieldname}}"&ndash;&gt;-->
+                       <!--&lt;!&ndash;ng-change="onChangeSelected(selectedVal,dropDown.fieldname)">&ndash;&gt;-->
+              <!--&lt;!&ndash;<md-option value="{{filed}}"&ndash;&gt;-->
+                         <!--&lt;!&ndash;ng-repeat="filed in  dropDown.data track by filed">&ndash;&gt;-->
+                <!--&lt;!&ndash;{{filed}}&ndash;&gt;-->
+              <!--&lt;!&ndash;</md-option>&ndash;&gt;-->
+            <!--&lt;!&ndash;</md-select>&ndash;&gt;-->
+          <!--&lt;!&ndash;</md-input-container>&ndash;&gt;-->
+
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+      <!--&lt;!&ndash;<div class="report-btn-wrap" flex="32">&ndash;&gt;-->
+        <!--&lt;!&ndash;<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div>&ndash;&gt;-->
+            <!--&lt;!&ndash;<md-button ng-disabled="reportFldLoading || ! reportLayout" ng-click="onClickRefresh()" class="md-primary btn-case ">Clear&ndash;&gt;-->
+            <!--&lt;!&ndash;</md-button>&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div flex>&ndash;&gt;-->
+            <!--&lt;!&ndash;<md-button ng-disabled="reportFldLoading" class="md-raised btn-case" ng-click="onCreateReport()">&ndash;&gt;-->
+              <!--&lt;!&ndash;Genarate Report&ndash;&gt;-->
+            <!--&lt;!&ndash;</md-button>&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</section>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+  <!--<div layout="row" flex style="width: 100%;">-->
+    <!--<div class="report" id="report">-->
+      <!--<div class="report-loading" layout-align="center center"-->
+           <!--ng-if="reportFldLoading">-->
+        <!--<div class="loader more"></div>-->
+      <!--</div>-->
+      <!--<iframe frameborder='0' src="{{reportURL}}"-->
+              <!--frameborder="0"-->
+              <!--id="reportFram"-->
+              <!--marginwidth="0"-->
+              <!--marginheight="0"-->
+              <!--height="{{iframeHeight}}"-->
+              <!--onload=""-->
+              <!--allowfullscreen>-->
+      <!--</iframe>-->
+
+    <!--</div>-->
+  <!--</div>-->
+  <!--&lt;!&ndash;<div class="fab-go-up">&ndash;&gt;-->
+    <!--&lt;!&ndash;<md-button id="scrollToTop"&ndash;&gt;-->
+               <!--&lt;!&ndash;ng-click="goToTop()"&ndash;&gt;-->
+               <!--&lt;!&ndash;class="md-fab up-btn scrollToTo">&ndash;&gt;-->
+      <!--&lt;!&ndash;<i class="fa fa-arrow-up"></i>&ndash;&gt;-->
+    <!--&lt;!&ndash;</md-button>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--</div>-->

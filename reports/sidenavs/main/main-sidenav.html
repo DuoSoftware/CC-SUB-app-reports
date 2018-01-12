@@ -1,0 +1,62 @@
+<!-- SIDENAV HEADER -->
+<div class="header header-offset" layout="column" layout-align="space-between start">
+
+    <div class="logo" layout="row" layout-align="start center">
+        <span class="logo-icon">
+          <img src="app/core/app_icons/report_app_icon.png" alt=""/>
+        </span>
+        <span class="logo-text">Reports</span>
+    </div>
+
+</div>
+<!-- / SIDENAV HEADER -->
+
+<!-- SIDENAV CONTENT -->
+<md-content ms-scroll class="content sidenav p-0" flex>
+
+    <div class="navigation-simple" layout="column">
+
+        <md-button ng-click="addEditCategory(this,'')" class="md-accent md-raised m-15">New Category</md-button>
+        <md-button ng-click="addNewReport(this)" class="md-raised mh-15">Customize Report</md-button>
+
+        <div class="item subheader op-5 pl-15 mt-30 h-20 line-height-16">Current reports</div>
+        <div class="collapsible-nav-item" ng-repeat="item in reportList" ng-class="{'selected': vm.selectedReport == item.report}" >
+            <div class="heading" layout="row" layout-align="space-between center" ng-click="sidenavCollapseHandler($index)" ng-class="{'bb':item.collapse}">
+                <div layout="row" layout-align="start center" flex>
+                    <i class="material-icons fs-18 op-5 mr-5">timeline</i>
+                    <span class="title">{{item.category}}</span>
+                    <div flex></div>
+                </div>
+                <md-icon md-font-icon="icon-chevron-{{item.collapse ? 'down' : 'right'}}" class="fs-16 m-0 w-15"></md-icon>
+                <md-menu class="h-25 mr-5">
+                    <div class="h-25" ng-click="$mdOpenMenu($event)">
+                        <md-icon md-font-icon="icon-dots-vertical fs-20"></md-icon>
+                        <md-tooltip>Settings</md-tooltip>
+                    </div>
+
+                    <md-menu-content width="3">
+                        <md-menu-item>
+                            <md-button ng-click="addEditCategory(this,item.category)">
+                                <md-icon md-font-icon="icon-pencil"></md-icon>
+                                <span>Edit</span>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+            <div class="collapse-body light-gray animate-fade-in-out" ng-if="item.collapse">
+                <div layout="row" layout-align="start center" class="collapse-subnav-item" ng-repeat="subitem in item.data" ng-click="showCreatedReport(subitem)">
+                    <div layout="row" layout-align="start center" flex>
+                        <i class="material-icons op-5 mr-5">web</i>
+                        <span class="title">{{subitem.category}}</span>
+                    </div>
+                    <span ng-if="subitem.type != 'system'" style="display: inline-block;font-size: 10px;/* text-transform: uppercase; */padding: 0px 5px;border-radius: 10px;background: #039be5;color: #fff;position: absolute;top: 15px;left: 10px;height: 12px;line-height: 12px;">New</span>
+                    <md-button ng-if="subitem.type != 'system'" id="subitem.category" class="md-icon-button md-accent" ng-click="editUserCreatedReport(subitem)" ><md-icon md-font-icon="icon-pencil"></md-icon><md-tooltip>Design Report</md-tooltip></md-button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</md-content>
+<!-- / SIDENAV CONTENT -->

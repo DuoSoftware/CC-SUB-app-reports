@@ -1,0 +1,113 @@
+<!--<div id="reportContainer">-->
+    <!--<toast></toast>-->
+
+    <!--<div class="preloader" style="top: 0;" ng-if="!reportLoaded">-->
+        <!--<md-progress-circular></md-progress-circular>-->
+    <!--</div>-->
+
+    <!--&lt;!&ndash;<iframe fill-width ng-show="isUrlSet"&ndash;&gt;-->
+            <!--&lt;!&ndash;frameborder='0'&ndash;&gt;-->
+            <!--&lt;!&ndash;id="reportFram"&ndash;&gt;-->
+            <!--&lt;!&ndash;src="{{reportURL}}"&ndash;&gt;-->
+            <!--&lt;!&ndash;marginwidth="0"&ndash;&gt;-->
+            <!--&lt;!&ndash;marginheight="0"&ndash;&gt;-->
+            <!--&lt;!&ndash;height="{{iframeHeight}}"&ndash;&gt;-->
+            <!--&lt;!&ndash;onload=""&ndash;&gt;-->
+            <!--&lt;!&ndash;allowfullscreen>&ndash;&gt;-->
+    <!--&lt;!&ndash;</iframe>&ndash;&gt;-->
+
+  <!--&lt;!&ndash;<div id="top" class="header-wrap animated fadeIn" flex>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;&lt;!&ndash;<div layout="row" ng-show="isReportLoading==false">&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;<div flex="20"></div>&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;<md-input-container class="md-block" flex-gt-sm>&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<label>Search Reports here..</label>&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<input ng-model="searchReport">&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;</md-input-container>&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;<div flex="20"></div>&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+
+    <!--&lt;!&ndash;&lt;!&ndash;<div layout="row">&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;<div flex="45"></div>&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;<div class="header-btn-wrap" flex="10">&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<md-button ng-click="refresh()" class="md-raised md-search-btn btn-case">Refresh</md-button>&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;<div flex="45"></div>&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+
+    <!--&lt;!&ndash;&lt;!&ndash;<div class="navigation-simple" layout="column">&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;<div class="item subheader">General</div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;<h3 style="font-size: 16px;color: #999;font-weight: 500;padding-left: 10px">Select your report</h3>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;<md-button class="item" aria-label="inbox" ng-repeat="report in reports | filter : reportCategory | filter :vm.search" ng-mouseover = "tooltip = true" ng-mouseleave = "tooltip = false"  ng-click="clickGoToFilter(report)" ng-hide="reportCategory=='Finance'||reportCategory=='Tenant'" ng-class="{'sidenav-active': vm.sidenavActiveState == report}">&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<div layout="row" layout-align="start center">&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;<md-icon md-font-icon="icon-document" class="s16 report-doc-ico"></md-icon>&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;<span class="title">{{ report }}</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;<a class="title">{{ report }}</a>&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;<md-tooltip md-direction = "bottom">{{report}}</md-tooltip>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;</md-button>&ndash;&gt;&ndash;&gt;-->
+
+      <!--&lt;!&ndash;&lt;!&ndash;<md-button class="item" aria-label="inbox" ng-repeat="report in companyReportList | filter :vm.search" ng-mouseover = "tooltip = true" ng-mouseleave = "tooltip = false"  ng-click="clickGoToComapny(report.type)" ng-show="reportCategory=='Finance'" ng-class="{'sidenav-active': vm.sidenavActiveState == report}">&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<div layout="row" layout-align="start center">&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;<md-icon md-font-icon="icon-document" class="s16 report-doc-ico"></md-icon>&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;<span class="title">{{ report }}</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;<a class="title">{{ report.company }}</a>&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;<md-tooltip md-direction = "bottom">{{report}}</md-tooltip>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;</md-button>&ndash;&gt;&ndash;&gt;-->
+
+      <!--&lt;!&ndash;&lt;!&ndash;<md-button class="item" aria-label="inbox" ng-repeat="report in tenantReportList | filter :vm.search" ng-mouseover = "tooltip = true" ng-mouseleave = "tooltip = false"  ng-click="clickGoToTenantDetails(report.type)" ng-show="reportCategory=='Tenant'" ng-class="{'sidenav-active': vm.sidenavActiveState == report}">&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<div layout="row" layout-align="start center">&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;<md-icon md-font-icon="icon-document" class="s16 report-doc-ico"></md-icon>&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;<span class="title">{{ report }}</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;<a class="title">{{ report.name }}</a>&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;<md-tooltip md-direction = "bottom">{{report}}</md-tooltip>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;</md-button>&ndash;&gt;&ndash;&gt;-->
+
+    <!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+  <!--&lt;!&ndash;<div class="report-view-wrap report-viewer-wrap">&ndash;&gt;-->
+    <!--&lt;!&ndash;<div layout="row" layout-align="center center">&ndash;&gt;-->
+      <!--&lt;!&ndash;<div layout="row" flex flex-gt-xs="80">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class='md-padding position-relative' layout="row" flex>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="error-msg-wrap" ng-show="reports==null && isReportLoading==false ">&ndash;&gt;-->
+            <!--&lt;!&ndash;<md-card class="error-msg font-robot" layout-align="center center">&ndash;&gt;-->
+              <!--&lt;!&ndash;Report not found..&ndash;&gt;-->
+            <!--&lt;!&ndash;</md-card>&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div layout="row" flex>&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="loader more"&ndash;&gt;-->
+                 <!--&lt;!&ndash;ng-show="isReportLoading"&ndash;&gt;-->
+              <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class='md-padding' layout="row" layout-wrap flex&ndash;&gt;-->
+                 <!--&lt;!&ndash;layout-align="center center">&ndash;&gt;-->
+              <!--&lt;!&ndash;<md-card flex="20" class="report-wrap" ng-repeat="report in reports | filter : searchReport" ng-mouseover = "tooltip = true" ng-mouseleave = "tooltip = false"  ng-click="clickGoToFilter(report)">&ndash;&gt;-->
+                <!--&lt;!&ndash;<md-card-title>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<div style = "padding-left:16px;">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<md-card-title-text>&ndash;&gt;-->
+                      <!--&lt;!&ndash;<md-tooltip md-direction = "bottom">{{report}}</md-tooltip>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<span class="md-headline font-robot report-header">&ndash;&gt;-->
+                                            <!--&lt;!&ndash;{{ report | limitTo: 15 }}{{report.length > 15 ? '...' : ''}}&ndash;&gt;-->
+                                        <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</md-card-title-text></div>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<div class="image-report">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<img src="assets/img/report.png"/>&ndash;&gt;-->
+                  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</md-card-title>&ndash;&gt;-->
+                <!--&lt;!&ndash;<md-card-actions layout="row" layout-align="center center">&ndash;&gt;-->
+                  <!--&lt;!&ndash;<md-button ng-click="clickGoToFilter(report)">View Report&ndash;&gt;-->
+                  <!--&lt;!&ndash;</md-button>&ndash;&gt;-->
+                <!--&lt;!&ndash;</md-card-actions>&ndash;&gt;-->
+              <!--&lt;!&ndash;</md-card>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--</div>-->
