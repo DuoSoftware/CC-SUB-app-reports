@@ -8,14 +8,14 @@
   <!-- / TOP BACKGROUND -->
 
   <!-- SIDENAV -->
-  <md-sidenav class="sidenav animate-slide-left" md-is-locked-open="$mdMedia('gt-md')" md-component-id="main-sidenav"
+  <md-sidenav class="sidenav animate-slide-left w-250" md-is-locked-open="$mdMedia('gt-md')" md-component-id="main-sidenav"
               ng-include="'app/main/reports/sidenavs/main/main-sidenav.html'"
               ng-if="vm.showSidenav" ms-scroll ms-sidenav-helper>
   </md-sidenav>
   <!-- / SIDENAV -->
 
   <!-- CENTER -->
-  <div ng-switch-when="default" class="center" layout="column" flex>
+  <div ng-switch-when="default" class="center center-offset" md-whiteframe="2dp" layout="column" flex>
     <!-- CONTENT HEADER -->
     <!-- / CONTENT HEADER -->
 
@@ -58,111 +58,6 @@
               <div class="preloader" style="top: 0;" ng-if="!reportLoaded">
                   <md-progress-circular></md-progress-circular>
               </div>
-
-              <!--<iframe fill-width ng-show="isUrlSet"-->
-              <!--frameborder='0'-->
-              <!--id="reportFram"-->
-              <!--src="{{reportURL}}"-->
-              <!--marginwidth="0"-->
-              <!--marginheight="0"-->
-              <!--height="{{iframeHeight}}"-->
-              <!--onload=""-->
-              <!--allowfullscreen>-->
-              <!--</iframe>-->
-
-              <!--<div id="top" class="header-wrap animated fadeIn" flex>-->
-
-              <!--&lt;!&ndash;<div layout="row" ng-show="isReportLoading==false">&ndash;&gt;-->
-              <!--&lt;!&ndash;<div flex="20"></div>&ndash;&gt;-->
-              <!--&lt;!&ndash;<md-input-container class="md-block" flex-gt-sm>&ndash;&gt;-->
-              <!--&lt;!&ndash;<label>Search Reports here..</label>&ndash;&gt;-->
-              <!--&lt;!&ndash;<input ng-model="searchReport">&ndash;&gt;-->
-              <!--&lt;!&ndash;</md-input-container>&ndash;&gt;-->
-              <!--&lt;!&ndash;<div flex="20"></div>&ndash;&gt;-->
-              <!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-              <!--&lt;!&ndash;<div layout="row">&ndash;&gt;-->
-              <!--&lt;!&ndash;<div flex="45"></div>&ndash;&gt;-->
-              <!--&lt;!&ndash;<div class="header-btn-wrap" flex="10">&ndash;&gt;-->
-              <!--&lt;!&ndash;<md-button ng-click="refresh()" class="md-raised md-search-btn btn-case">Refresh</md-button>&ndash;&gt;-->
-              <!--&lt;!&ndash;</div>&ndash;&gt;-->
-              <!--&lt;!&ndash;<div flex="45"></div>&ndash;&gt;-->
-              <!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-              <!--&lt;!&ndash;<div class="navigation-simple" layout="column">&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<div class="item subheader">General</div>&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<h3 style="font-size: 16px;color: #999;font-weight: 500;padding-left: 10px">Select your report</h3>&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;<md-button class="item" aria-label="inbox" ng-repeat="report in reports | filter : reportCategory | filter :vm.search" ng-mouseover = "tooltip = true" ng-mouseleave = "tooltip = false"  ng-click="clickGoToFilter(report)" ng-hide="reportCategory=='Finance'||reportCategory=='Tenant'" ng-class="{'sidenav-active': vm.sidenavActiveState == report}">&ndash;&gt;-->
-              <!--&lt;!&ndash;<div layout="row" layout-align="start center">&ndash;&gt;-->
-              <!--&lt;!&ndash;<md-icon md-font-icon="icon-document" class="s16 report-doc-ico"></md-icon>&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<span class="title">{{ report }}</span>&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;<a class="title">{{ report }}</a>&ndash;&gt;-->
-              <!--&lt;!&ndash;</div>&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<md-tooltip md-direction = "bottom">{{report}}</md-tooltip>&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;</md-button>&ndash;&gt;-->
-
-              <!--&lt;!&ndash;<md-button class="item" aria-label="inbox" ng-repeat="report in companyReportList | filter :vm.search" ng-mouseover = "tooltip = true" ng-mouseleave = "tooltip = false"  ng-click="clickGoToComapny(report.type)" ng-show="reportCategory=='Finance'" ng-class="{'sidenav-active': vm.sidenavActiveState == report}">&ndash;&gt;-->
-              <!--&lt;!&ndash;<div layout="row" layout-align="start center">&ndash;&gt;-->
-              <!--&lt;!&ndash;<md-icon md-font-icon="icon-document" class="s16 report-doc-ico"></md-icon>&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<span class="title">{{ report }}</span>&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;<a class="title">{{ report.company }}</a>&ndash;&gt;-->
-              <!--&lt;!&ndash;</div>&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<md-tooltip md-direction = "bottom">{{report}}</md-tooltip>&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;</md-button>&ndash;&gt;-->
-
-              <!--&lt;!&ndash;<md-button class="item" aria-label="inbox" ng-repeat="report in tenantReportList | filter :vm.search" ng-mouseover = "tooltip = true" ng-mouseleave = "tooltip = false"  ng-click="clickGoToTenantDetails(report.type)" ng-show="reportCategory=='Tenant'" ng-class="{'sidenav-active': vm.sidenavActiveState == report}">&ndash;&gt;-->
-              <!--&lt;!&ndash;<div layout="row" layout-align="start center">&ndash;&gt;-->
-              <!--&lt;!&ndash;<md-icon md-font-icon="icon-document" class="s16 report-doc-ico"></md-icon>&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<span class="title">{{ report }}</span>&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;<a class="title">{{ report.name }}</a>&ndash;&gt;-->
-              <!--&lt;!&ndash;</div>&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<md-tooltip md-direction = "bottom">{{report}}</md-tooltip>&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;</md-button>&ndash;&gt;-->
-
-              <!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-              <!--</div>-->
-
-              <!--<div class="report-view-wrap report-viewer-wrap">-->
-              <!--<div layout="row" layout-align="center center">-->
-              <!--<div layout="row" flex flex-gt-xs="80">-->
-              <!--<div class='md-padding position-relative' layout="row" flex>-->
-              <!--<div class="error-msg-wrap" ng-show="reports==null && isReportLoading==false ">-->
-              <!--<md-card class="error-msg font-robot" layout-align="center center">-->
-              <!--Report not found..-->
-              <!--</md-card>-->
-              <!--</div>-->
-              <!--<div layout="row" flex>-->
-              <!--<div class="loader more"-->
-              <!--ng-show="isReportLoading"-->
-              <!--</div>-->
-              <!--<div class='md-padding' layout="row" layout-wrap flex-->
-              <!--layout-align="center center">-->
-              <!--<md-card flex="20" class="report-wrap" ng-repeat="report in reports | filter : searchReport" ng-mouseover = "tooltip = true" ng-mouseleave = "tooltip = false"  ng-click="clickGoToFilter(report)">-->
-              <!--<md-card-title>-->
-              <!--<div style = "padding-left:16px;">-->
-              <!--<md-card-title-text>-->
-              <!--<md-tooltip md-direction = "bottom">{{report}}</md-tooltip>-->
-              <!--<span class="md-headline font-robot report-header">-->
-              <!--{{ report | limitTo: 15 }}{{report.length > 15 ? '...' : ''}}-->
-              <!--</span>-->
-              <!--</md-card-title-text></div>-->
-              <!--<div class="image-report">-->
-              <!--<img src="assets/img/report.png"/>-->
-              <!--</div>-->
-              <!--</md-card-title>-->
-              <!--<md-card-actions layout="row" layout-align="center center">-->
-              <!--<md-button ng-click="clickGoToFilter(report)">View Report-->
-              <!--</md-button>-->
-              <!--</md-card-actions>-->
-              <!--</md-card>-->
-              <!--</div>-->
-              <!--</div>-->
-              <!--</div>-->
-
-              <!--</div>-->
-              <!--</div>-->
-              <!--</div>-->
 
           </div>
 
