@@ -1,8 +1,8 @@
 ////////////////////////////////
 // App : Reports
 // Owner  : Gihan Herath
-// Last changed date : 2018/01/12
-// Version : 6.1.0.10
+// Last changed date : 2018/02/12
+// Version : 6.1.0.11
 // Modified By : Kasun
 /////////////////////////////////
 (function ()
