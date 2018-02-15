@@ -91,9 +91,9 @@
 
           "https://azure.cloudcharge.com/services/reports**",
 
-          "http://cloudcharge.com/services/reports**",
+          "http://app.cloudcharge.com/services/reports**",
 
-          "https://cloudcharge.com/services/reports**",
+          "https://app.cloudcharge.com/services/reports**",
 
           "https://cloudcharge.com/services/reports**"
         ]);
