@@ -3,8 +3,7 @@
 
     <div class="logo" layout="row" layout-align="start center">
         <span class="logo-icon">
-          <img src="app/core/app_icons/report_app_icon.png" alt="" ng-if="!themeDuoworld"/>
-          <img src="app/core/app_icons/report_app_icon_black.png" alt="" ng-if="themeDuoworld"/>
+          <img src="app/core/app_icons/report_app_icon.png" alt=""/>
         </span>
         <span class="logo-text">Reports</span>
     </div>
@@ -51,7 +50,7 @@
                         <i class="material-icons op-5 mr-5">web</i>
                         <span class="title">{{subitem.category}}</span>
                     </div>
-                    <span ng-if="subitem.type != 'system'" class="list-text-status-pill">New</span>
+                    <span ng-if="subitem.type != 'system'" style="display: inline-block;font-size: 10px;/* text-transform: uppercase; */padding: 0px 5px;border-radius: 10px;background: #039be5;color: #fff;position: absolute;top: 15px;left: 10px;height: 12px;line-height: 12px;">New</span>
                     <md-button ng-if="subitem.type != 'system'" id="subitem.category" class="md-icon-button md-accent" ng-click="editUserCreatedReport(subitem)" ><md-icon md-font-icon="icon-pencil"></md-icon><md-tooltip>Design Report</md-tooltip></md-button>
                 </div>
             </div>
