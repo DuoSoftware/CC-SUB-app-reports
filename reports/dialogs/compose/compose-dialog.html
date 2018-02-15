@@ -1,75 +1,32 @@
-<md-dialog class="compose-dialog" aria-label="New Message">
-    <form class="md-inline-form">
-        <md-toolbar class="md-accent md-hue-2">
+<md-dialog class="prompt-dialog guided-payment" style="width: 65%;">
+    <form class="md-inline-form" ng-submit="vm.saveReport()" novalidate>
+        <md-toolbar>
             <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
-                <span class="title">New Product</span>
+                <div layout="row" layout-align="start center">
+                    <i class="material-icons">timeline</i><h3>New Report</h3>
+                </div>
                 <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Close dialog">
                     <md-icon md-font-icon="icon-close"></md-icon>
                 </md-button>
             </div>
         </md-toolbar>
-
-        <md-dialog-content ms-scroll>
-            <md-input-container class="md-block">
-                <label>Product Name</label>
-                <input ng-model="vm.product.name" type="text">
-            </md-input-container>
-
-            <md-input-container class="md-block">
-                <label>Product Code</label>
-                <input ng-model="vm.product.code" type="text">
-            </md-input-container>
-
-            <md-input-container class="md-block">
-                <label>Product Category</label>
-                <input ng-model="vm.product.category" type="text">
-            </md-input-container>
-
-            <md-input-container class="md-block">
-                <label>Brand</label>
-                <input ng-model="vm.product.brand" type="text">
-            </md-input-container>
-
-            <md-input-container class="md-block">
-                <label>Quantity of Unit</label>
-                <input ng-model="vm.product.QOU" type="text">
-            </md-input-container>
-
-            <md-input-container class="md-block">
-                <label>Unit of Meassure</label>
-                <input ng-model="vm.product.UOM" type="text">
-            </md-input-container>
-
-            <md-input-container class="md-block">
-                <label>Currency</label>
-                <input ng-model="vm.product.currency" type="text">
-            </md-input-container>
-
-            <md-input-container class="md-block">
-                <label>Price</label>
-                <input ng-model="vm.product.price" type="text">
-            </md-input-container>
-
-            <md-input-container class="md-block">
-                <label>Cost Price</label>
-                <input ng-model="vm.product.costprice" type="text">
-            </md-input-container>
-
-        </md-dialog-content>
-
-        <md-dialog-actions layout="row" layout-align="space-between center">
-            <div layout="row" layout-align="start center">
-                <md-button ng-click="vm.closeDialog()" class="send-button md-accent md-raised" aria-label="Create Product">
-                    Create
-                </md-button>
-            </div>
-
+        <md-content class="p-16" ms-scroll>
             <div layout="row">
-                <md-button class="md-icon-button" aria-label="Delete">
-                    <md-icon md-font-icon="icon-delete"></md-icon>
-                    <md-tooltip>Clear Product</md-tooltip>
-                </md-button>
+                <md-input-container class="md-block" flex="30">
+                    <label>Report Category</label>
+                    <md-select  ng-model="vm.category" required>
+                        <md-option ng-repeat="item in vm.categoryList" value="{{item.guCatId}}">{{item.cateName}}</md-option>
+                    </md-select>
+                </md-input-container>
+                <div flex="5"></div>
+                <md-input-container class="md-block" flex>
+                    <label>Report Name</label>
+                    <input ng-model="vm.reportName" type="text" required>
+                </md-input-container>
             </div>
+        </md-content>
+        <md-dialog-actions layout="row" layout-align="end center" md-whiteframe="5dp" class="pos-rel">
+            <md-button ng-disabled="vm.isReportSaved" type="submit" class="send-button md-accent md-raised" aria-label="Save Report">Create</md-button>
         </md-dialog-actions>
     </form>
 </md-dialog>

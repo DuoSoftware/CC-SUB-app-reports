@@ -1,0 +1,25 @@
+<md-dialog class="prompt-dialog guided-payment" style="width: 35%;">
+    <form class="md-inline-form" ng-submit="vm.saveReportCategory()" novalidate>
+        <md-toolbar>
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+                <div layout="row" layout-align="start center">
+                    <i class="material-icons">timeline</i><h3>New Report Category</h3>
+                </div>
+                <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Close dialog">
+                    <md-icon md-font-icon="icon-close"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-content class="p-16" ms-scroll>
+            <div layout="row" layout-align="center center" flex>
+                <md-input-container class="md-block" flex>
+                    <label>Report Category</label>
+                    <input ng-model="vm.reportCategory" type="text" required>
+                </md-input-container>
+            </div>
+        </md-content>
+        <md-dialog-actions layout="row" layout-align="end center" md-whiteframe="5dp" class="pos-rel">
+            <md-button ng-disabled="vm.isReportSaved" type="submit" class="send-button md-accent md-raised" aria-label="Save Report">{{vm.category === '' ? 'Create' : 'Update'}}</md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
