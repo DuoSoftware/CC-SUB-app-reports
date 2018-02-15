@@ -411,7 +411,7 @@
     //$scope.createdReportList = null;
     $scope.loadCreatedReports = function(){
 
-      var isSuperAdmin = getSuperAdmin() === "false" ? 0 : 1; 
+      var isSuperAdmin = getSuperAdmin() === "false" ? 0 : 1;
       $scope.reportList = [];
       $charge.settingsapp().getAllReportInfo(0,500,"desc",getAccountCategory()).success(function (data) {
        // $scope.createdReportList = data.result;
